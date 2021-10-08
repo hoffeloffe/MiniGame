@@ -9,6 +9,10 @@ namespace Server
     {
         private static void Main(string[] args)
         {
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Black;
+
             //Creates a UdpClient for reading incoming data.
             UdpClient receivingUdpClient = new UdpClient(11000);
 
