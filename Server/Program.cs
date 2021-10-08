@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Text;
 
 namespace Server
@@ -14,19 +16,35 @@ namespace Server
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
 
+            List<PlayerInfo> PlayerList = new List<PlayerInfo>();
+
             //Creates a UdpClient for reading incoming data.
             UdpClient receivingUdpClient = new UdpClient(12000);
             while (true)
             {
-                //Creates an IPEndPoint to record the IP Address and port number of the sender.
-                // The IPEndPoint will allow you to read datagrams sent from any source.
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
                 try
                 {
                     // Blocks until a message returns on this socket from a remote host.
                     Byte[] receiveBytes = receivingUdpClient.Receive(ref RemoteIpEndPoint);
 
                     string returnData = Encoding.ASCII.GetString(receiveBytes);
+
+                    if (!PlayerList.Any())
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            if (item.ip == RemoteIpEndPoint.Address.ToString())
+                            {
+                                item.position = returnData.ToString();
+                            }
+                            else
+                                PlayerList.Add(new PlayerInfo(returnData.ToString(), RemoteIpEndPoint.Address.ToString()));
+                        }
+                    }
+                    else
+                        PlayerList.Add(new PlayerInfo(returnData.ToString(), RemoteIpEndPoint.Address.ToString()));
 
                     Console.WriteLine("This is the message you received " +
                                               returnData.ToString());

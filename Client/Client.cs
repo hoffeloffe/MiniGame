@@ -22,10 +22,6 @@ namespace NotAGame
 
                 udpClient.Send(sendBytes, sendBytes.Length);
 
-                // Sends a message to a different host using optional hostname and port parameters.
-                UdpClient udpClientB = new UdpClient();
-                udpClientB.Send(sendBytes, sendBytes.Length, "AlternateHostMachineName", 12000);
-
                 //IPEndPoint object will allow us to read datagrams sent from any source.
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
@@ -42,7 +38,6 @@ namespace NotAGame
                                             RemoteIpEndPoint.Port.ToString());
 
                 udpClient.Close();
-                udpClientB.Close();
             }
             catch (Exception e)
             {
