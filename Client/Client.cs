@@ -6,15 +6,16 @@ using System.Text;
 
 namespace NotAGame
 {
-    internal class Client
+    public class Client
     {
-        private static void Connect()
+        // This constructor arbitrarily assigns the local port number.
+        public UdpClient udpClient = new UdpClient(13000);
+
+        public void Connect()
         {
-            // This constructor arbitrarily assigns the local port number.
-            UdpClient udpClient = new UdpClient(11000);
             try
             {
-                udpClient.Connect("www.contoso.com", 11000);
+                udpClient.Connect("10.131.69.127", 12000);
 
                 // Sends a message to the host to which you have connected.
                 Byte[] sendBytes = Encoding.ASCII.GetBytes("Is anybody there?");
@@ -23,7 +24,7 @@ namespace NotAGame
 
                 // Sends a message to a different host using optional hostname and port parameters.
                 UdpClient udpClientB = new UdpClient();
-                udpClientB.Send(sendBytes, sendBytes.Length, "AlternateHostMachineName", 11000);
+                udpClientB.Send(sendBytes, sendBytes.Length, "AlternateHostMachineName", 12000);
 
                 //IPEndPoint object will allow us to read datagrams sent from any source.
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);

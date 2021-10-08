@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
+using NotAGame;
 
 namespace SpaceRTS
 {
@@ -12,6 +13,7 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Map map;
+        private Client client = new Client();
 
         public GameWorld()
         {
@@ -25,6 +27,7 @@ namespace SpaceRTS
         protected override void Initialize()
         {
             map = new Map();
+            client.Connect();
             base.Initialize();
         }
 
