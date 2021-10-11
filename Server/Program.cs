@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -20,7 +21,7 @@ namespace Server
 
             List<PlayerInfo> PlayerList = new List<PlayerInfo>();
             //Creates a UdpClient for reading incoming data.
-            UdpClient receivingUdpClient = new UdpClient(12000);
+            UdpClient receivingUdpClient = new UdpClient(12001);
             while (true)
             {
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
@@ -32,7 +33,7 @@ namespace Server
 
                     string returnData = Encoding.ASCII.GetString(receiveBytes);
 
-                    if (!PlayerList.Any())
+                    if (PlayerList.Count != 0)
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
@@ -45,7 +46,12 @@ namespace Server
                         }
                     }
                     else
+                    {
                         PlayerList.Add(new PlayerInfo(returnData.ToString(), RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString()));
+                        Debug.WriteLine("Address: " + RemoteIpEndPoint.Address);
+                        Debug.WriteLine("Port: " + RemoteIpEndPoint.Address);
+                    }
+                        
 
                     Console.WriteLine("This is the message you received " +
                                               returnData.ToString());
@@ -56,6 +62,7 @@ namespace Server
 
                     foreach (PlayerInfo item in PlayerList)
                     {
+                        Debug.WriteLine("ip: " + item.ip);
                         receivingUdpClient.Connect(item.ip, Int32.Parse(item.port));
                         for (int i = 0; i < PlayerList.Count; i++)
                         {

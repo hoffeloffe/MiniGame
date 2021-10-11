@@ -12,3 +12,16 @@ C:\Users\Hoffe\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1
 C:\Users\Hoffe\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\Hoffe\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\Hoffe\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csproj.AssemblyReference.cache
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.dll
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache

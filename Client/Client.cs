@@ -17,7 +17,9 @@ namespace NotAGame
         {
             try
             {
-                udpClient.Connect("10.131.67.136", 12000);
+                udpClient.Connect("10.131.67.236", 12001);
+                //udpClient.Connect("10.131.67.136", 12000);
+                //mikkels 10.131.67.236
 
                 // Sends a message to the host to which you have connected.
                 Byte[] sendBytes = Encoding.ASCII.GetBytes("123423");
