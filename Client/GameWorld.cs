@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
 using NotAGame;
+using System.Linq;
 
 namespace SpaceRTS
 {
@@ -30,6 +31,10 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Map map;
         private Client client = new Client();
+        private string serverMessage;
+        private List<string> playerPositionList = new List<string>();
+        private string playerPosition;
+        private Color color;
 
         public GameWorld()
         {
@@ -44,6 +49,17 @@ namespace SpaceRTS
         {
             map = new Map();
             client.Connect();
+
+            foreach (var playerinfo in playerPositionList)
+            {
+                foreach (var item in playerinfo)
+                {
+                    //position
+                    //playerPosition = item[0];
+                    //color
+                    //color = item[1];
+                }
+            }
             base.Initialize();
         }
 
@@ -57,6 +73,15 @@ namespace SpaceRTS
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
+
+            serverMessage = Client.playerPositionList;
+
+            playerPositionList = serverMessage.Split(',').ToList();
+
+            for (int i = 0; i < playerPositionList.Count; i++)
+            {
+                playerPositionList[i].Split('c').ToList();
+            }
 
             // TODO: Add your update logic here
 
