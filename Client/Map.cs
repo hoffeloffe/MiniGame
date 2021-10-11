@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NotAGame.Component;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,7 +43,11 @@ namespace SpaceRTS
             {
                 for (int y = 0; y < col; y++)
                 {
-                    grid.Add(new Tile(x, y, gridSize));
+                    GameObject go = new GameObject();
+                    go.AddComponent(new Tile(x,y,gridSize));
+                    grid.Add(go);
+
+                    //grid.Add(new Tile(x, y, gridSize));
                 }
             }
         }

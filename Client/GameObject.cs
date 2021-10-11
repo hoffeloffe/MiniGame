@@ -5,10 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NotAGame.Component;
+using NotAGame;
 
 namespace SpaceRTS
 {
-    public abstract class GameObject
+    public class GameObject
     {
         
         #region fields
@@ -25,6 +26,12 @@ namespace SpaceRTS
         #region GameObject component version
         private Dictionary<string, Component> components;
         public string Tag { get; set; }
+        public Transform transform { get; set; }
+
+        public GameObject()
+        {
+            transform = new Transform();
+        }
 
         public void AddComponent(Component component)
         {

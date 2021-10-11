@@ -11,9 +11,9 @@ namespace SpaceRTS
     public class GameWorld : Game
     {
         #region Singleton
-        private GameWorld instance;
+        private static GameWorld instance;
 
-        public GameWorld Instance 
+        public static GameWorld Instance 
         {
             get
             {

@@ -21,6 +21,7 @@ namespace NotAGame.Command_Pattern
             }
         }
         #endregion
+
         public Dictionary<Keys, ICommand> keybindings = new Dictionary<Keys, ICommand>();
 
         public InputHandler()
