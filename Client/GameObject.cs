@@ -4,11 +4,14 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using NotAGame.Component;
 
 namespace SpaceRTS
 {
     public abstract class GameObject
     {
+        
+        #region fields
         protected Texture2D sprite;
         protected Vector2 position;
         protected Color color;
@@ -17,41 +20,99 @@ namespace SpaceRTS
         protected float rotation;
         protected int offsetX;
         protected int offsetY;
+        #endregion
 
-        public GameObject()
+        #region GameObject component version
+        private Dictionary<string, Component> components;
+        public string Tag { get; set; }
+
+        public void AddComponent(Component component)
         {
+            components.Add(component.ToString(), component);
+
+            component.GameObject = this;
         }
 
-        public virtual Rectangle Collision
+        public Component GetComponent(string component)
         {
-            get
+            return components[component];
+        }
+
+        public void Awake()
+        {
+            foreach (Component component in components.Values)
             {
-                return new Rectangle(
-                       (int)position.X + offsetX,
-                       (int)position.Y,
-                       (int)sprite.Width,
-                       (int)sprite.Height + offsetY
-                   );
+                component.Awake();
             }
         }
 
-        public abstract void LoadContent(ContentManager content);
-
-        public abstract void Update(GameTime gameTime);
-
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void Start()
         {
-            spriteBatch.Draw(sprite, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
-        }
-
-        public abstract void OnCollision(GameObject other);
-
-        public void CheckCollision(GameObject other)
-        {
-            if (Collision.Intersects(other.Collision))
+            foreach (Component component in components.Values)
             {
-                OnCollision(other);
+                component.Start();
             }
         }
+
+        public void Update(GameTime gameTime)
+        {
+            foreach (Component component in components.Values)
+            {
+                if (component.IsEnabled)
+                {
+                    component.Update(gameTime);
+                }
+            }
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (Component component in components.Values)
+            {
+                if (component.IsEnabled)
+                {
+                    component.Draw(spriteBatch);
+                }
+            }
+        }
+
+        #endregion
+
+        //public GameObject()
+        //{
+        //}
+
+        //public virtual Rectangle Collision
+        //{
+        //    get
+        //    {
+        //        return new Rectangle(
+        //               (int)position.X + offsetX,
+        //               (int)position.Y,
+        //               (int)sprite.Width,
+        //               (int)sprite.Height + offsetY
+        //           );
+        //    }
+        //}
+
+        //public abstract void LoadContent(ContentManager content);
+
+        //public abstract void Update(GameTime gameTime);
+
+        //public virtual void Draw(SpriteBatch spriteBatch)
+        //{
+        //    spriteBatch.Draw(sprite, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
+        //}
+
+        //public abstract void OnCollision(GameObject other);
+
+        //public void CheckCollision(GameObject other)
+        //{
+        //    if (Collision.Intersects(other.Collision))
+        //    {
+        //        OnCollision(other);
+        //    }
+        //}
     }
 }

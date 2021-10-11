@@ -10,6 +10,22 @@ namespace SpaceRTS
 {
     public class GameWorld : Game
     {
+        #region Singleton
+        private GameWorld instance;
+
+        public GameWorld Instance 
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameWorld();
+                }
+                return instance;
+            }
+        }
+        #endregion
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Map map;
