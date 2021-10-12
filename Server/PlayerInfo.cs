@@ -11,6 +11,7 @@ namespace Server
         public string position;
         public string ip;
         public string port;
+
         public PlayerInfo(string position, string ip, string port)
         {
             position = this.position;
@@ -18,10 +19,10 @@ namespace Server
             this.port = port;
             Random rnd = new Random();
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            Console.WriteLine(randomColor);
             randomColor = playerColor;
         }
 
         public Color playerColor;
-        
     }
 }
