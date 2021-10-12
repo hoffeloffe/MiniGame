@@ -11,14 +11,18 @@ namespace NotAGame
         // This constructor arbitrarily assigns the local port number.
         public UdpClient udpClient = new UdpClient(13000);
 
+        public static string playerPositionList;
+
         public void Connect()
         {
             try
             {
-                udpClient.Connect("10.131.69.127", 12000);
+                udpClient.Connect("10.131.67.236", 12001);
+                //udpClient.Connect("10.131.67.136", 12000);
+                //mikkels 10.131.67.236
 
                 // Sends a message to the host to which you have connected.
-                Byte[] sendBytes = Encoding.ASCII.GetBytes("Is anybody there?");
+                Byte[] sendBytes = Encoding.ASCII.GetBytes("123423");
 
                 udpClient.Send(sendBytes, sendBytes.Length);
 
@@ -27,15 +31,12 @@ namespace NotAGame
 
                 // Blocks until a message returns on this socket from a remote host.
                 Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-                string returnData = Encoding.ASCII.GetString(receiveBytes);
+                string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
 
-                // Uses the IPEndPoint object to determine which of these two hosts responded.
-                Console.WriteLine("This is the message you received " +
-                                             returnData.ToString());
-                Console.WriteLine("This message was sent from " +
-                                            RemoteIpEndPoint.Address.ToString() +
-                                            " on their port number " +
-                                            RemoteIpEndPoint.Port.ToString());
+                playerPositionList = returnData;
+
+                string ip = RemoteIpEndPoint.Address.ToString();
+                string port = RemoteIpEndPoint.Port.ToString();
 
                 udpClient.Close();
             }
