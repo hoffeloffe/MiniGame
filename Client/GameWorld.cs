@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Windows.Forms;
+
 using System.Diagnostics;
 using NotAGame;
 using System.Linq;
+using System.Threading;
 
 namespace SpaceRTS
 {
@@ -43,18 +45,29 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
+            Thread sendThread = new Thread(() => (client.SendData("1234")));
+
+            Thread reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
-                Exit();
-
-            client.SendData("1234");
-            serverMessage = client.ReceiveData();
-
-            playerInfomationList.AddRange(serverMessage.Split(','));
-
-            for (int i = 0; i < playerInfomationList.Count; i++)
             {
-                playerInfomationList[i].Split('c').ToList();
-                playerInfomationList[0][0].ToString();
+                Exit();
+                sendThread.Abort();
+                reciveThread.Abort();
+            }
+
+            sendThread.Start();
+            reciveThread.Start();
+
+            if (serverMessage != null)
+            {
+                playerInfomationList.AddRange(serverMessage.Split(','));
+
+                for (int i = 0; i < playerInfomationList.Count; i++)
+                {
+                    playerInfomationList[i].Split('c').ToList();
+                    playerInfomationList[0][0].ToString();
+                }
             }
 
             // TODO: Add your update logic here
