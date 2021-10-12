@@ -8,17 +8,17 @@ using System.Text;
 
 namespace SpaceRTS
 {
-    internal class Map
+    internal class Lobby
     {
         private int row = 30;
         private int col = 17;
         private int gridSize = 65;
         private List<GameObject> grid;
 
-        public Map()
+        public Lobby()
         {
             grid = new List<GameObject>();
-            mapMaker();
+            LobbyMaker();
         }
 
         public void LoadContent(ContentManager content)
@@ -37,7 +37,7 @@ namespace SpaceRTS
             }
         }
 
-        private void mapMaker()
+        private void LobbyMaker()
         {
             GameObject go = new GameObject();
             for (int x = 0; x < row; x++)

@@ -29,7 +29,7 @@ namespace SpaceRTS
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Map map;
+        private Lobby lobby;
 
         //private GameObject gameObjects;
         private List<GameObject> gameObjects;
@@ -51,7 +51,7 @@ namespace SpaceRTS
         protected override void Initialize()
         {
             gameObjects = new List<GameObject>();
-            map = new Map();
+            lobby = new Lobby();
 
             foreach (GameObject go in gameObjects)
             {
@@ -110,7 +110,11 @@ namespace SpaceRTS
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            map.Draw(_spriteBatch);
+
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.Draw(_spriteBatch);
+            }
             base.Draw(gameTime);
             _spriteBatch.End();
         }
