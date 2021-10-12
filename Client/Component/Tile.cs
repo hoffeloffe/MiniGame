@@ -7,10 +7,8 @@ namespace NotAGame.Component
 {
     class Tile : Component
     {
-        private int x;
-        private int y;
         private Vector2 position;
-
+        private int x, y;
 
         public Tile()
         {
@@ -20,17 +18,18 @@ namespace NotAGame.Component
 
         public override void Awake()
         {
-            base.Awake();
+            position = new Vector2(x, y);
         }
 
         public override void Start()
         {
-            SpriteRenderer sr =  (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            sr.GameObject.transform.Position = position;
-            sr.Scale = 1;
+            //SpriteRenderer sr =  (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
+            //sr.SetSpriteName("Tile");
+            //sr.GameObject.transform.Position = position;
+            //sr.Scale = 1;
         }
 
-        public String ComponentName()
+        public override string ToString()
         {
             return "Tile";
         }

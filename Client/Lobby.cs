@@ -17,8 +17,8 @@ namespace SpaceRTS
 
         public Lobby()
         {
-            grid = new List<GameObject>();
-            LobbyMaker();
+            //grid = new List<GameObject>();
+            //LobbyMaker();
         }
 
         //public void LoadContent(ContentManager content)
@@ -44,8 +44,7 @@ namespace SpaceRTS
             {
                 for (int y = 0; y < col; y++)
                 {
-                    go.AddComponent(new Tile());
-                    grid.Add(go);
+                    
                 }
             }
         }

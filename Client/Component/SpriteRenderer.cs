@@ -24,7 +24,7 @@ namespace NotAGame.Component
             spriteBatch.Draw(Sprite, GameObject.transform.Position, Rectangle, Color.White, 0, Origin, Scale, SpriteEffects.None, 1);
         }
 
-        public String ComponentName()
+        public override string ToString()
         {
             return "SpriteRenderer";
         }

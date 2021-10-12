@@ -33,7 +33,7 @@ namespace SpaceRTS
         private Lobby lobby;
 
         //private GameObject gameObjects;
-        private List<GameObject> gameObjects;
+        private List<GameObject> gameObjects = new List<GameObject>();
         private Client client = new Client();
         private string serverMessage;
         private List<string> playerPositionList = new List<string>();
@@ -51,22 +51,22 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-            gameObjects = new List<GameObject>();
-            GameObject go = new GameObject();
-            go.AddComponent(new Tile());
-            go.AddComponent(new SpriteRenderer());
-            gameObjects.Add(go);
-            lobby = new Lobby();
+            client.Connect();
 
+            GameObject go = new GameObject();
+
+            go.AddComponent(new Tile());
+
+            go.AddComponent(new SpriteRenderer());
+
+            gameObjects.Add(go);
+
+            //lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
             {
-                for (int i = 0; i < gameObjects.Count; i++)
-                {
-                    gameObject.Awake();
-                }
+                gameObject.Awake();
             }
-            client.Connect();
 
             foreach (var playerinfo in playerPositionList)
             {
@@ -84,12 +84,9 @@ namespace SpaceRTS
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            foreach (GameObject go in gameObjects)
+            foreach (GameObject gameObject in gameObjects)
             {
-                for (int i = 0; i < gameObjects.Count; i++)
-                {
-                    go.Start();
-                }
+                gameObject.Start();
             }
         }
 
