@@ -26,7 +26,7 @@ namespace NotAGame.Component
 
         public override void Start()
         {
-            SpriteRenderer sr = new SpriteRenderer();
+            SpriteRenderer sr =  (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.Scale = 1;
         }
 

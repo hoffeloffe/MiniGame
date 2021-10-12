@@ -25,7 +25,7 @@ namespace SpaceRTS
         {
             foreach (GameObject go in grid)
             {
-                go.LoadContent(content);
+                go.Awake();
             }
         }
 
@@ -33,21 +33,19 @@ namespace SpaceRTS
         {
             foreach (GameObject go in grid)
             {
-                go.Draw(spriteBatch);
+                go.Start();
             }
         }
 
         private void mapMaker()
         {
+            GameObject go = new GameObject();
             for (int x = 0; x < row; x++)
             {
                 for (int y = 0; y < col; y++)
                 {
-                    GameObject go = new GameObject();
                     go.AddComponent(new Tile(x,y,gridSize));
                     grid.Add(go);
-
-                    //grid.Add(new Tile(x, y, gridSize));
                 }
             }
         }

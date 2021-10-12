@@ -29,6 +29,9 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Map map;
+
+        //private GameObject gameObjects;
+        private List<GameObject> gameObjects;
         private Client client = new Client();
 
         public GameWorld()
@@ -42,7 +45,16 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
+            gameObjects = new List<GameObject>();
             map = new Map();
+
+            foreach (GameObject go in gameObjects)
+            {
+                for (int i = 0; i < gameObjects.Count; i++)
+                {
+                    go.Awake();
+                }
+            }
             client.Connect();
             base.Initialize();
         }
@@ -50,7 +62,13 @@ namespace SpaceRTS
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            map.LoadContent(Content);
+            foreach (GameObject go in gameObjects)
+            {
+                for (int i = 0; i < gameObjects.Count; i++)
+                {
+                    go.Start();
+                }
+            }
         }
 
         protected override void Update(GameTime gameTime)
