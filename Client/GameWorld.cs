@@ -3,18 +3,21 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Windows.Forms;
+
 using System.Diagnostics;
 using NotAGame;
 using System.Linq;
+using System.Threading;
 
 namespace SpaceRTS
 {
     public class GameWorld : Game
     {
         #region Singleton
+
         private static GameWorld instance;
 
-        public static GameWorld Instance 
+        public static GameWorld Instance
         {
             get
             {
@@ -25,7 +28,8 @@ namespace SpaceRTS
                 return instance;
             }
         }
-        #endregion
+
+        #endregion Singleton
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -33,9 +37,10 @@ namespace SpaceRTS
 
         //private GameObject gameObjects;
         private List<GameObject> gameObjects;
+
         private Client client = new Client();
         private string serverMessage;
-        private List<string> playerPositionList = new List<string>();
+        private List<string> playerInfomationList = new List<string>();
         private string playerPosition;
         private Color color;
 
@@ -60,18 +65,7 @@ namespace SpaceRTS
                     go.Awake();
                 }
             }
-            client.Connect();
 
-            foreach (var playerinfo in playerPositionList)
-            {
-                foreach (var item in playerinfo)
-                {
-                    //position
-                    //playerPosition = item[0];
-                    //color
-                    //color = item[1];
-                }
-            }
             base.Initialize();
         }
 
@@ -89,16 +83,29 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
+            Thread sendThread = new Thread(() => client.SendData("1234"));
+
+            Thread reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
-                Exit();
-
-            serverMessage = Client.playerPositionList;
-
-            playerPositionList = serverMessage.Split(',').ToList();
-
-            for (int i = 0; i < playerPositionList.Count; i++)
             {
-                playerPositionList[i].Split('c').ToList();
+                Exit();
+                sendThread.Abort();
+                reciveThread.Abort();
+            }
+
+            sendThread.Start();
+            reciveThread.Start();
+
+            if (serverMessage != null)
+            {
+                playerInfomationList.AddRange(serverMessage.Split(','));
+
+                for (int i = 0; i < playerInfomationList.Count; i++)
+                {
+                    playerInfomationList[i].Split('c').ToList();
+                    playerInfomationList[0][0].ToString();
+                }
             }
 
             // TODO: Add your update logic here

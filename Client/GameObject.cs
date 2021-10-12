@@ -11,8 +11,8 @@ namespace SpaceRTS
 {
     public class GameObject
     {
-        
         #region fields
+
         protected Texture2D sprite;
         protected Vector2 position;
         protected Color color;
@@ -21,10 +21,12 @@ namespace SpaceRTS
         protected float rotation;
         protected int offsetX;
         protected int offsetY;
-        #endregion
+
+        #endregion fields
 
         #region GameObject component version
-        private Dictionary<string, Component> components;
+
+        private Dictionary<string, Component> components = new Dictionary<string, Component>();
         public string Tag { get; set; }
         public Transform transform { get; set; }
 
@@ -70,7 +72,6 @@ namespace SpaceRTS
                     component.Update(gameTime);
                 }
             }
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -84,7 +85,7 @@ namespace SpaceRTS
             }
         }
 
-        #endregion
+        #endregion GameObject component version
 
         //public GameObject()
         //{

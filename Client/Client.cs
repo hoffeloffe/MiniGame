@@ -11,38 +11,55 @@ namespace NotAGame
         // This constructor arbitrarily assigns the local port number.
         public UdpClient udpClient = new UdpClient(13000);
 
-        public static string playerPositionList;
+        private string serverip = "127.0.0.1";
+        private int serverPort = 12000;
 
-        public void Connect()
+        public void SendData(string message)
         {
-            try
+            while (true)
             {
-                udpClient.Connect("10.131.67.236", 12001);
-                //udpClient.Connect("10.131.67.136", 12000);
-                //mikkels 10.131.67.236
+                try
+                {
+                    udpClient.Connect(serverip, serverPort);
+                    //mikkels 10.131.67.236
 
-                // Sends a message to the host to which you have connected.
-                Byte[] sendBytes = Encoding.ASCII.GetBytes("123423");
+                    // Sends a message to the host to which you have connected.
+                    Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
-                udpClient.Send(sendBytes, sendBytes.Length);
+                    udpClient.Send(sendBytes, sendBytes.Length);
 
-                //IPEndPoint object will allow us to read datagrams sent from any source.
-                IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-                // Blocks until a message returns on this socket from a remote host.
-                Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-                string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
-
-                playerPositionList = returnData;
-
-                string ip = RemoteIpEndPoint.Address.ToString();
-                string port = RemoteIpEndPoint.Port.ToString();
-
-                udpClient.Close();
+                    udpClient.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
             }
-            catch (Exception e)
+        }
+
+        public string ReceiveData()
+        {
+            while (true)
             {
-                Console.WriteLine(e.ToString());
+                try
+                {
+                    //IPEndPoint object will allow us to read datagrams sent from any source.
+                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, serverPort);
+
+                    // Blocks until a message returns on this socket from a remote host.
+                    Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
+                    string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
+
+                    if (returnData == "")
+                        return null;
+                    else
+                        return returnData;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    return null;
+                }
             }
         }
     }
