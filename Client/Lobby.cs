@@ -21,21 +21,21 @@ namespace SpaceRTS
             LobbyMaker();
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            foreach (GameObject go in grid)
-            {
-                go.Awake();
-            }
-        }
+        //public void LoadContent(ContentManager content)
+        //{
+        //    foreach (GameObject go in grid)
+        //    {
+        //        go.Awake();
+        //    }
+        //}
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (GameObject go in grid)
-            {
-                go.Start();
-            }
-        }
+        //public void Draw(SpriteBatch spriteBatch)
+        //{
+        //    foreach (GameObject go in grid)
+        //    {
+        //        go.Start();
+        //    }
+        //}
 
         private void LobbyMaker()
         {
@@ -44,7 +44,7 @@ namespace SpaceRTS
             {
                 for (int y = 0; y < col; y++)
                 {
-                    go.AddComponent(new Tile(x,y,gridSize));
+                    go.AddComponent(new Tile());
                     grid.Add(go);
                 }
             }

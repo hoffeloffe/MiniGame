@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using NotAGame;
 using System.Linq;
+using NotAGame.Component;
 
 namespace SpaceRTS
 {
@@ -51,13 +52,18 @@ namespace SpaceRTS
         protected override void Initialize()
         {
             gameObjects = new List<GameObject>();
+            GameObject go = new GameObject();
+            go.AddComponent(new Tile());
+            go.AddComponent(new SpriteRenderer());
+            gameObjects.Add(go);
             lobby = new Lobby();
 
-            foreach (GameObject go in gameObjects)
+
+            foreach (GameObject gameObject in gameObjects)
             {
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
-                    go.Awake();
+                    gameObject.Awake();
                 }
             }
             client.Connect();
@@ -91,6 +97,11 @@ namespace SpaceRTS
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
+
+            foreach (GameObject  gameObject in gameObjects)
+            {
+                gameObject.Update(gameTime);
+            }
 
             serverMessage = Client.playerPositionList;
 

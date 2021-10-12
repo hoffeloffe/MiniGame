@@ -24,7 +24,7 @@ namespace SpaceRTS
         #endregion
 
         #region GameObject component version
-        private Dictionary<string, Component> components;
+        private Dictionary<string, Component> components = new Dictionary<string, Component>();
         public string Tag { get; set; }
         public Transform transform { get; set; }
 

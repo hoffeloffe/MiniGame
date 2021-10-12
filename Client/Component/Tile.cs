@@ -12,9 +12,8 @@ namespace NotAGame.Component
         private Vector2 position;
 
 
-        public Tile(int x, int y, int tileSize)
+        public Tile()
         {
-            position = new Vector2(x * tileSize, y * tileSize);
             //color = Color.White;
             //scale = new Vector2(1, 1);
         }
@@ -27,6 +26,7 @@ namespace NotAGame.Component
         public override void Start()
         {
             SpriteRenderer sr =  (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
+            sr.GameObject.transform.Position = position;
             sr.Scale = 1;
         }
 
