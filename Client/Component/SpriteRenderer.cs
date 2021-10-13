@@ -21,7 +21,7 @@ namespace NotAGame.Component
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.transform.Position, Rectangle, Color.White, 0, Origin, Scale, SpriteEffects.None, 1);
+            spriteBatch.Draw(Sprite, GameObject.transform.Position, Rectangle, Color.White, 0f, Origin, Scale, SpriteEffects.None, 1);
         }
 
         public override string ToString()

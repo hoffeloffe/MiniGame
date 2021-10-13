@@ -31,6 +31,7 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
+        private Player player;
 
         //private GameObject gameObjects;
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -51,9 +52,14 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
+
             client.Connect();
 
             GameObject go = new GameObject();
+
+            player = new Player();
+
+            go.AddComponent(player);
 
             go.AddComponent(new Tile());
 
