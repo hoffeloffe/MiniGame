@@ -8,6 +8,7 @@ using NotAGame;
 using System.Linq;
 using NotAGame.Component;
 using System.Threading;
+using NotAGame.Command_Pattern;
 
 namespace SpaceRTS
 {
@@ -47,6 +48,8 @@ namespace SpaceRTS
         private Thread sendThread;
         private Thread reciveThread;
 
+        public float DeltaTime { get; set; }
+
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -65,7 +68,7 @@ namespace SpaceRTS
 
             go.AddComponent(player);
 
-            go.AddComponent(new Tile());
+            //go.AddComponent(new Tile());
 
             go.AddComponent(new SpriteRenderer());
 
@@ -106,6 +109,9 @@ namespace SpaceRTS
                 Exit();
             }
 
+            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            InputHandler.Instance.Excute(player);
+
             foreach (GameObject  gameObject in gameObjects)
             {
                 gameObject.Update(gameTime);
@@ -130,13 +136,14 @@ namespace SpaceRTS
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
             _spriteBatch.Begin();
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
+
             base.Draw(gameTime);
             _spriteBatch.End();
         }
