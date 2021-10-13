@@ -22,10 +22,12 @@ namespace SpaceRTS
         private string playerPosition;
         private Color color;
         private Thread sendThread;
-
         private Thread reciveThread;
 
+        private string serverMessageIsTheSame;
+
         public GameWorld()
+
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -61,15 +63,17 @@ namespace SpaceRTS
                 Exit();
             }
 
-            if (serverMessage != null)
+            if (serverMessage != null && serverMessage != serverMessageIsTheSame)
             {
                 playerInfomationList.AddRange(serverMessage.Split(','));
 
-                for (int i = 0; i < playerInfomationList.Count; i++)
+                for (int i = 0; i < playerInfomationList.Count - 1; i++)
                 {
-                    playerInfomationList[i].Split('c').ToList();
-                    playerInfomationList[0][0].ToString();
+                    playerInfomationList[i].Split('_').ToList();
                 }
+                playerInfomationList[0][0].ToString();
+
+                serverMessageIsTheSame = serverMessage;
             }
 
             // TODO: Add your update logic here

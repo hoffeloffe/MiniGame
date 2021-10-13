@@ -58,13 +58,13 @@ namespace Server
                     {
                         for (int i = 0; i < PlayerList.Count; i++)
                         {
-                            playerPosition += i + "c" + PlayerList[i].position + "c" + PlayerList[i].playerColor + ",";
+                            if (PlayerList[i].position != null || PlayerList[i].position != "")
+                                playerPosition += i + "_" + PlayerList[i].position + ",";
                         }
 
                         Byte[] sendBytes = Encoding.ASCII.GetBytes(playerPosition);
                         receivingUdpClient.Send(sendBytes, sendBytes.Length, item.ip, Int32.Parse(item.port));
                     }
-                    playerPosition = "";
 
                     // Sends a message to the host to which you have connected.
                 }

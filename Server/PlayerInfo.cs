@@ -14,7 +14,7 @@ namespace Server
 
         public PlayerInfo(string position, string ip, string port)
         {
-            position = this.position;
+            this.position = position;
             this.ip = ip;
             this.port = port;
             Random rnd = new Random();
