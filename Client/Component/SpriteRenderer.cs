@@ -13,6 +13,8 @@ namespace NotAGame.Component
         public Vector2 Origin { get; set; }
         public float Scale { get; set; }
         public Rectangle Rectangle { get; set; }
+        public SpriteFont _font { get; set; }
+        public String text { get; set; }
 
         public void SetSpriteName(string spriteName)
         {
@@ -23,6 +25,11 @@ namespace NotAGame.Component
         {
             spriteBatch.Draw(Sprite, GameObject.transform.Position, Rectangle, Color.White, 0f, Origin, Scale, SpriteEffects.None, 1);
         }
+        public override void DrawString(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(_font, text, GameObject.transform.Position, Color.Black, 0, Origin, 1, SpriteEffects.None, 1f);
+        }
+
 
         public override string ToString()
         {

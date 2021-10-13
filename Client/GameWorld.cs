@@ -73,6 +73,25 @@ namespace SpaceRTS
 
             gameObjects.Add(go);
 
+            //Tester tekst i spillet:
+            //GameObject testTextWoohoo = new GameObject();
+            //Text textext = new Text(3, 3, "Hello hello hello hello hellooo!");
+            //testTextWoohoo.AddComponent(textext);
+            //gameObjects.Add(testTextWoohoo);
+            
+            GameObject texty = new GameObject();
+            
+            SpriteRenderer textRender = new SpriteRenderer();
+            textRender._font = Instance.Content.Load<SpriteFont>("Fonts/Hands");
+            textRender.text = $"Hej med dig :)";
+            texty.transform.Position = new Vector2(20, 20);
+            //TextRenderer.MeasureText
+            //_spriteBatch.DrawString(_font, $"Press to buy", new Vector2(0.1f, 0.075f), Color.Black, 0, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
+            texty.AddComponent(textRender);
+            
+            gameObjects.Add(texty);
+
+
             //lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
@@ -127,7 +146,6 @@ namespace SpaceRTS
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);

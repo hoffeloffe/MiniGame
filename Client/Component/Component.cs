@@ -31,5 +31,9 @@ namespace NotAGame.Component
         {
 
         }
+        public virtual void DrawString(SpriteBatch spritebatch)
+        {
+
+        }
     }
 }

@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:Emil.png
 
+#begin Fonts/Hands.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Hands.spritefont
+
 #begin Tile.png
 /importer:TextureImporter
 /processor:TextureProcessor

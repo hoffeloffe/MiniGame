@@ -24,9 +24,9 @@ namespace NotAGame.Component
         public override void Start()
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            //sr.SetSpriteName("Emil");
-            //sr.GameObject.transform.Position = position;
-            //sr.Scale = 1;
+            sr.SetSpriteName("Emil");
+            sr.GameObject.transform.Position = position;
+            sr.Scale = 1;
         }
 
         public override string ToString()
