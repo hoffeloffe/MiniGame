@@ -47,8 +47,7 @@ namespace SpaceRTS
 
         private Thread reciveThread;
 
-        private Thread sendThread;
-        private Thread reciveThread;
+
 
         public GameWorld()
         {
