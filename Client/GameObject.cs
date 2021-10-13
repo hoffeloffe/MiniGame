@@ -80,7 +80,14 @@ namespace SpaceRTS
             {
                 if (component.IsEnabled)
                 {
-                    component.Draw(spriteBatch);
+                    if (component.IsText)
+                    {
+                        component.DrawString(spriteBatch);
+                    }
+                    else
+                    {
+                        component.Draw(spriteBatch);
+                    }
                 }
             }
         }
