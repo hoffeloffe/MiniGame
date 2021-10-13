@@ -43,6 +43,9 @@ namespace SpaceRTS
         private List<string> playerInfomationList = new List<string>();
         private string playerPosition;
         private Color color;
+        private Thread sendThread;
+
+        private Thread reciveThread;
 
         public GameWorld()
         {
@@ -66,6 +69,15 @@ namespace SpaceRTS
                 }
             }
 
+            sendThread = new Thread(() => client.SendData("1234"));
+
+            reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+            map = new Map();
+            sendThread.IsBackground = true;
+            reciveThread.IsBackground = true;
+            sendThread.Start();
+            reciveThread.Start();
+
             base.Initialize();
         }
 
@@ -83,19 +95,10 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
-            Thread sendThread = new Thread(() => client.SendData("1234"));
-
-            Thread reciveThread = new Thread(() => serverMessage = client.ReceiveData());
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
                 Exit();
-                sendThread.Abort();
-                reciveThread.Abort();
             }
-
-            sendThread.Start();
-            reciveThread.Start();
 
             if (serverMessage != null)
             {
