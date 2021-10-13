@@ -43,6 +43,9 @@ namespace SpaceRTS
         private List<string> playerInfomationList = new List<string>();
         private string playerPosition;
         private Color color;
+        private Thread sendThread;
+
+        private Thread reciveThread;
 
         private Thread sendThread;
         private Thread reciveThread;
@@ -100,17 +103,10 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
                 Exit();
             }
-
-            foreach (GameObject  gameObject in gameObjects)
-            {
-                gameObject.Update(gameTime);
-            }
-
 
             if (serverMessage != null)
             {

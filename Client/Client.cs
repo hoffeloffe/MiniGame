@@ -3,31 +3,30 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace NotAGame
 {
     public class Client
     {
         // This constructor arbitrarily assigns the local port number.
-        public UdpClient udpClient = new UdpClient(13000);
+        public UdpClient udpClient = new UdpClient(13001);
 
         private string serverip = "127.0.0.1";
         private int serverPort = 12000;
 
         public void SendData(string message)
         {
+            udpClient.Connect(serverip, serverPort);
             while (true)
             {
                 try
                 {
-                    udpClient.Connect(serverip, serverPort);
-
                     // Sends a message to the host to which you have connected.
                     Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
                     udpClient.Send(sendBytes, sendBytes.Length);
-
-                    udpClient.Close();
+                    Thread.Sleep(100);
                 }
                 catch (Exception e)
                 {
