@@ -7,15 +7,17 @@ using System.Diagnostics;
 using NotAGame;
 using System.Linq;
 using NotAGame.Component;
+using System.Threading;
 
 namespace SpaceRTS
 {
     public class GameWorld : Game
     {
         #region Singleton
+
         private static GameWorld instance;
 
-        public static GameWorld Instance 
+        public static GameWorld Instance
         {
             get
             {
@@ -26,20 +28,24 @@ namespace SpaceRTS
                 return instance;
             }
         }
-        #endregion
+
+        #endregion Singleton
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
         private Player player;
 
-        //private GameObject gameObjects;
         private List<GameObject> gameObjects = new List<GameObject>();
+
         private Client client = new Client();
         private string serverMessage;
-        private List<string> playerPositionList = new List<string>();
+        private List<string> playerInfomationList = new List<string>();
         private string playerPosition;
         private Color color;
+
+        private Thread sendThread;
+        private Thread reciveThread;
 
         public GameWorld()
         {
@@ -52,8 +58,6 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-
-            client.Connect();
 
             GameObject go = new GameObject();
 
@@ -74,16 +78,14 @@ namespace SpaceRTS
                 gameObject.Awake();
             }
 
-            foreach (var playerinfo in playerPositionList)
-            {
-                foreach (var item in playerinfo)
-                {
-                    //position
-                    //playerPosition = item[0];
-                    //color
-                    //color = item[1];
-                }
-            }
+            sendThread = new Thread(() => client.SendData("1234"));
+
+            reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+            sendThread.IsBackground = true;
+            reciveThread.IsBackground = true;
+            sendThread.Start();
+            reciveThread.Start();
+
             base.Initialize();
         }
 
@@ -98,21 +100,27 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
+            {
                 Exit();
+            }
 
             foreach (GameObject  gameObject in gameObjects)
             {
                 gameObject.Update(gameTime);
             }
 
-            serverMessage = Client.playerPositionList;
 
-            playerPositionList = serverMessage.Split(',').ToList();
-
-            for (int i = 0; i < playerPositionList.Count; i++)
+            if (serverMessage != null)
             {
-                playerPositionList[i].Split('c').ToList();
+                playerInfomationList.AddRange(serverMessage.Split(','));
+
+                for (int i = 0; i < playerInfomationList.Count; i++)
+                {
+                    playerInfomationList[i].Split('c').ToList();
+                    playerInfomationList[0][0].ToString();
+                }
             }
 
             // TODO: Add your update logic here
