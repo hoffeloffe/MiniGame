@@ -18,13 +18,13 @@ namespace NotAGame.Component
 
         public override void Awake()
         {
-            position = new Vector2(x, y);
+            position = new Vector2(100, 250);
         }
 
         public override void Start()
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            sr.SetSpriteName("Emil");
+            sr.SetSpriteName("Tile");
             sr.GameObject.transform.Position = position;
             sr.Scale = 1;
         }

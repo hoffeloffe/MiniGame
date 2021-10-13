@@ -15,15 +15,17 @@ namespace NotAGame.Component
         public Rectangle Rectangle { get; set; }
         public SpriteFont _font { get; set; }
         public String text { get; set; }
+        //public Vector2 Position{ get; set; }
 
         public void SetSpriteName(string spriteName)
         {
            Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.transform.Position, Rectangle, Color.White, 0f, Origin, Scale, SpriteEffects.None, 1);
+            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color.White, 0f, Origin, Scale, SpriteEffects.None, 0);
         }
         public override void DrawString(SpriteBatch spriteBatch)
         {
