@@ -12,16 +12,17 @@ namespace NotAGame.Component
         public Texture2D Sprite { get; set; }
         public Vector2 Origin { get; set; }
         public float Scale { get; set; }
-        public Rectangle Rectangle { get; set; }
+        //public Vector2 Position{ get; set; }
 
         public void SetSpriteName(string spriteName)
         {
            Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.transform.Position, Rectangle, Color.White, 0f, Origin, Scale, SpriteEffects.None, 1);
+            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color.White, 0f, Origin, Scale, SpriteEffects.None, 0);
         }
 
         public override string ToString()

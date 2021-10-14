@@ -12,21 +12,21 @@ namespace NotAGame.Component
 
         public Tile()
         {
-            //color = Color.White;
-            //scale = new Vector2(1, 1);
+          
         }
 
         public override void Awake()
         {
-            position = new Vector2(x, y);
+            position = new Vector2(100, 250);
+            SpriteRenderer sr = new SpriteRenderer();
         }
 
         public override void Start()
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            //sr.SetSpriteName("Emil");
-            //sr.GameObject.transform.Position = position;
-            //sr.Scale = 1;
+            sr.SetSpriteName("Tile");
+            sr.GameObject.transform.Position = position;
+            sr.Scale = 1;
         }
 
         public override string ToString()

@@ -9,7 +9,7 @@ namespace NotAGame.Component
 {
     public class Component
     {
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; } = true;
         public GameObject GameObject { get; set; }
 
         public virtual void Awake()

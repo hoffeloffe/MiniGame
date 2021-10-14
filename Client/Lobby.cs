@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SpaceRTS
 {
-    internal class Lobby
+    class Lobby
     {
         private int row = 30;
         private int col = 17;
@@ -17,34 +17,24 @@ namespace SpaceRTS
 
         public Lobby()
         {
-            //grid = new List<GameObject>();
-            //LobbyMaker();
+            grid = new List<GameObject>();
+            LobbyMaker();
+            GameWorld.Instance.GameObjects.AddRange(grid);
         }
 
-        //public void LoadContent(ContentManager content)
-        //{
-        //    foreach (GameObject go in grid)
-        //    {
-        //        go.Awake();
-        //    }
-        //}
-
-        //public void Draw(SpriteBatch spriteBatch)
-        //{
-        //    foreach (GameObject go in grid)
-        //    {
-        //        go.Start();
-        //    }
-        //}
-
-        private void LobbyMaker()
+        public void LobbyMaker()
         {
-            GameObject go = new GameObject();
             for (int x = 0; x < row; x++)
             {
                 for (int y = 0; y < col; y++)
                 {
-                    
+                    GameObject tileObject = new GameObject();
+                    SpriteRenderer sr = new SpriteRenderer();
+                    tileObject.AddComponent(sr);
+                    tileObject.AddComponent(new Tile());
+                    sr.GameObject.transform.Position = new Vector2(x, y);
+                    sr.Scale = 65;
+                    grid.Add(tileObject);
                 }
             }
         }
