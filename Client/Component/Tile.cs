@@ -17,7 +17,6 @@ namespace NotAGame.Component
 
         public override void Awake()
         {
-            position = new Vector2(100, 250);
             SpriteRenderer sr = new SpriteRenderer();
         }
 
@@ -25,7 +24,6 @@ namespace NotAGame.Component
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Tile");
-            sr.GameObject.transform.Position = position;
             sr.Scale = 1;
         }
 

@@ -89,6 +89,8 @@ namespace SpaceRTS
             GameObject tile = new GameObject();
             tile.AddComponent(new Tile());
             tile.AddComponent(new SpriteRenderer());
+            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer")
+            sr.GameObject.transform.Position = new Vector2()
             gameObjects.Add(tile);
             lobby = new Lobby();
 
