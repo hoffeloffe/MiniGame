@@ -37,8 +37,8 @@ namespace SpaceRTS
         private Lobby lobby;
         private Player player;
 
-
         private List<GameObject> gameObjects = new List<GameObject>();
+
         public List<GameObject> GameObjects
         {
             get
@@ -78,15 +78,16 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-            #region Component
             lobby = new Lobby();
+
+            #region Component
 
             GameObject go = new GameObject();
             player = new Player();
             go.AddComponent(player);
             go.AddComponent(new SpriteRenderer());
             gameObjects.Add(go);
-            
+
             //Tekst
             GameObject goText = new GameObject();
             SpriteRenderer cpSprite = new SpriteRenderer();
@@ -136,7 +137,6 @@ namespace SpaceRTS
             cpSprite.Spin = true;
             gameObjects.Add(goText);
 
-
             //Opponent
             GameObject oppObj = new GameObject();
             SpriteRenderer oppSpr = new SpriteRenderer();
@@ -145,29 +145,30 @@ namespace SpaceRTS
             oppObj.AddComponent(oppOpp);
             gameObjects.Add(oppObj);
 
-
             GameObject tile = new GameObject();
             tile.AddComponent(new Tile());
             tile.AddComponent(new SpriteRenderer());
-            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer")
-            sr.GameObject.transform.Position = new Vector2()
+            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer");
+            sr.GameObject.transform.Position = new Vector2();
             gameObjects.Add(tile);
-            lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Awake();
             }
-            #endregion
+
+            #endregion Component
 
             #region Server
+
             sendThread = new Thread(() => SendThread());
             reciveThread = new Thread(() => ReceiveThread());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
             reciveThread.Start();
-            #endregion
+
+            #endregion Server
 
             base.Initialize();
         }
@@ -176,10 +177,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                lock (recivelock)
-                {
-                    serverMessage = client.ReceiveData();
-                }
+                serverMessage = client.ReceiveData();
             }
         }
 
@@ -187,10 +185,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                lock (sendlock)
-                {
-                    client.SendData(new Vector2(2, 3).ToString());
-                }
+                client.SendData(new Vector2(2, 3).ToString());
             }
         }
 
@@ -220,10 +215,7 @@ namespace SpaceRTS
 
             string superservermessage;
 
-            lock (recivelock)
-            {
-                superservermessage = serverMessage;
-            }
+            superservermessage = serverMessage;
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame)
             {

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NotAGame.Component
 {
-    class Player : Component
+    internal class Player : Component
     {
         private float speed;
         private Vector2 startPosition;
@@ -28,14 +28,7 @@ namespace NotAGame.Component
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
             sr.Scale = 1;
-<<<<<<< HEAD
-
             sr.Layerdepth = 1;
-=======
-            
-            //sr.GameObject.transform.Position;
-
->>>>>>> parent of a191e2d (There you go Mikkel)
         }
 
         public void Move(Vector2 velocity)

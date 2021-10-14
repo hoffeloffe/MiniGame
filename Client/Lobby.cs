@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SpaceRTS
 {
-    class Lobby
+    internal class Lobby
     {
         private int row = 30;
         private int col = 17;
