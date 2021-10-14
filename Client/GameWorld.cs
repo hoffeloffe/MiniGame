@@ -15,7 +15,6 @@ namespace SpaceRTS
     public class GameWorld : Game
     {
         #region Singleton
-
         private static GameWorld instance;
 
         public static GameWorld Instance
@@ -86,8 +85,8 @@ namespace SpaceRTS
             go.AddComponent(player);
             go.AddComponent(new SpriteRenderer());
             gameObjects.Add(go);
-            
-            //Tekst
+
+            #region Tekst
             GameObject goText = new GameObject();
             SpriteRenderer cpSprite = new SpriteRenderer();
             Text CpText = new Text();
@@ -135,7 +134,7 @@ namespace SpaceRTS
             cpSprite.hasShadow = true;
             cpSprite.Spin = true;
             gameObjects.Add(goText);
-
+            #endregion
 
             //Opponent
             GameObject oppObj = new GameObject();
