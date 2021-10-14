@@ -38,6 +38,18 @@ namespace SpaceRTS
         private Player player;
 
         private List<GameObject> gameObjects = new List<GameObject>();
+        public List<GameObject> GameObjects
+        {
+            get
+            {
+                return gameObjects;
+            }
+
+            set
+            {
+                gameObjects = value;
+            }
+        }
 
         private Client client = new Client();
         private string serverMessage;
@@ -49,6 +61,8 @@ namespace SpaceRTS
         private Thread reciveThread;
 
         public float DeltaTime { get; set; }
+
+        
 
         public GameWorld()
         {
@@ -74,7 +88,11 @@ namespace SpaceRTS
 
             gameObjects.Add(go);
 
-            //lobby = new Lobby();
+            GameObject tile = new GameObject();
+            tile.AddComponent(new Tile());
+            tile.AddComponent(new SpriteRenderer());
+            gameObjects.Add(tile);
+            lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
             {

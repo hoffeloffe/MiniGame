@@ -19,6 +19,7 @@ namespace NotAGame.Component
         public override void Awake()
         {
             position = new Vector2(100, 250);
+            SpriteRenderer sr = new SpriteRenderer();
         }
 
         public override void Start()

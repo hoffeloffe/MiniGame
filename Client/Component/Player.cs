@@ -28,6 +28,7 @@ namespace NotAGame.Component
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
             sr.Scale = 1;
+            
             //sr.GameObject.transform.Position;
 
         }
