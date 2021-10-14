@@ -40,16 +40,17 @@ namespace SpaceRTS
 
         private Client client = new Client();
         private string serverMessage;
-        private List<string> playerInfomationList = new List<string>();
+        private List<List<string>> playerInfomationList = new List<List<string>>();
         private string playerPosition;
         private Color color;
         private Thread sendThread;
-
         private Thread reciveThread;
-
-
+        private readonly object recivelock = new object();
+        private readonly object sendlock = new object();
+        private string serverMessageIsTheSame;
 
         public GameWorld()
+
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -60,7 +61,6 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-
             GameObject go = new GameObject();
 
             player = new Player();
@@ -80,15 +80,38 @@ namespace SpaceRTS
                 gameObject.Awake();
             }
 
-            sendThread = new Thread(() => client.SendData("1234"));
+            sendThread = new Thread(() => SendThread());
 
-            reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+            reciveThread = new Thread(() => ReceiveThread());
+
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
             reciveThread.Start();
 
             base.Initialize();
+        }
+
+        public void ReceiveThread()
+        {
+            while (true)
+            {
+                lock (recivelock)
+                {
+                    serverMessage = client.ReceiveData();
+                }
+            }
+        }
+
+        public void SendThread()
+        {
+            while (true)
+            {
+                lock (sendlock)
+                {
+                    client.SendData(new Vector2(2, 3).ToString());
+                }
+            }
         }
 
         protected override void LoadContent()
@@ -107,16 +130,35 @@ namespace SpaceRTS
                 Exit();
             }
 
-            if (serverMessage != null)
-            {
-                playerInfomationList.AddRange(serverMessage.Split(','));
+            string superservermessage;
 
-                for (int i = 0; i < playerInfomationList.Count; i++)
-                {
-                    playerInfomationList[i].Split('c').ToList();
-                    playerInfomationList[0][0].ToString();
-                }
+            lock (recivelock)
+            {
+                superservermessage = serverMessage;
             }
+
+            if (superservermessage != null && superservermessage != serverMessageIsTheSame)
+            {
+                string[] array = superservermessage.Split(',');
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (i + 1 > playerInfomationList.Count)
+                    {
+                        playerInfomationList.Add(array[i].Split('_').ToList());
+                    }
+                    else
+                        playerInfomationList[i] = array[i].Split('_').ToList();
+                }
+
+                string som = playerInfomationList[0][0].ToString();
+
+                serverMessageIsTheSame = superservermessage;
+            }
+
+            //foreach (var players in playerInfomationList)
+            //{
+            //}
 
             // TODO: Add your update logic here
 
