@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using SpaceRTS;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,12 @@ namespace NotAGame
                 Position += translation;
             }
         }
+
+        public Vector2 ReturnPosition(GameObject go)
+        {
+            return go.transform.Position;
+        }
+
         public void Roll(float rotation)
         {
             if (!float.IsNaN(rotation))

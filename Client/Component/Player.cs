@@ -10,7 +10,8 @@ namespace NotAGame.Component
     internal class Player : Component
     {
         private float speed;
-        private Vector2 startPosition;
+        private Vector2 updatesPosition;
+
 
         public Player()
         {
@@ -29,6 +30,7 @@ namespace NotAGame.Component
             sr.SetSpriteName("Emil");
             sr.Scale = 1;
             sr.Layerdepth = 1;
+            
         }
 
         public void Move(Vector2 velocity)

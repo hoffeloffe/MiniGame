@@ -148,13 +148,6 @@ namespace SpaceRTS
             oppObj.AddComponent(oppOpp);
             gameObjects.Add(oppObj);
 
-            GameObject tile = new GameObject();
-            tile.AddComponent(new Tile());
-            tile.AddComponent(new SpriteRenderer());
-            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer");
-            sr.GameObject.transform.Position = new Vector2();
-            gameObjects.Add(tile);
-
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Awake();
@@ -188,7 +181,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                client.SendData(new Vector2(2, 3).ToString());
+                client.SendData(playerGo.transform.ReturnPosition(playerGo).ToString());
             }
         }
 
