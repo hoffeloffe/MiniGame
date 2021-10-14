@@ -36,6 +36,7 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
         private Player player;
+        GameObject oppObj;
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -138,13 +139,14 @@ namespace SpaceRTS
             gameObjects.Add(goText);
 
             //Opponent
-            GameObject oppObj = new GameObject();
+            oppObj = new GameObject();
             SpriteRenderer oppSpr = new SpriteRenderer();
             Opponent oppOpp = new Opponent();
             oppObj.AddComponent(oppSpr);
             oppObj.AddComponent(oppOpp);
             gameObjects.Add(oppObj);
 
+            //Tile
             GameObject tile = new GameObject();
             tile.AddComponent(new Tile());
             tile.AddComponent(new SpriteRenderer());
@@ -232,6 +234,7 @@ namespace SpaceRTS
                 }
 
                 string som = playerInfomationList[0][0].ToString();
+                oppObj.transform.Position = new Vector2(300, 300);
 
                 serverMessageIsTheSame = superservermessage;
             }
