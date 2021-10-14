@@ -25,3 +25,15 @@ C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreap
 C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\Shadetrap\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+D:\App Files\Code\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.exe
+D:\App Files\Code\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+D:\App Files\Code\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+D:\App Files\Code\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+D:\App Files\Code\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.dll
+D:\App Files\Code\GitHub\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.pdb
+D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.dll
+D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.pdb
+D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache

@@ -37,6 +37,7 @@ namespace SpaceRTS
         private Lobby lobby;
         private Player player;
 
+
         private List<GameObject> gameObjects = new List<GameObject>();
 
         private Client client = new Client();
@@ -73,27 +74,64 @@ namespace SpaceRTS
             go.AddComponent(new SpriteRenderer());
 
             gameObjects.Add(go);
+            
+            //Tekst
+            GameObject goText = new GameObject();
+            SpriteRenderer cpSprite = new SpriteRenderer();
+            Text CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Arial96", "MonoParty!", 620, 5, 1f, 0.12f, Color.MonoGameOrange);
+            cpSprite.hasShadow = true;
+            cpSprite.Color2 = Color.Black;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Arial24", "More text here!", 100, 190, 1f, -0.05f, Color.Black);
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Outline test.", 100, 250, 0.5f, 0, Color.White);
+            cpSprite.hasOutline = true;
+            cpSprite.Color2 = Color.Black;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
+            cpSprite.hasShadow = true;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", ":D", 125, 425, 0.5f, 0, Color.Green);
+            cpSprite.hasOutline = false;
+            cpSprite.hasShadow = true;
+            cpSprite.Spin = true;
+            gameObjects.Add(goText);
 
-            //Tester tekst i spillet:
-            //GameObject testTextWoohoo = new GameObject();
-            //Text textext = new Text(3, 3, "Hello hello hello hello hellooo!");
-            //testTextWoohoo.AddComponent(textext);
-            //gameObjects.Add(testTextWoohoo);
-            
-            GameObject texty = new GameObject();
-            
-            SpriteRenderer textRender = new SpriteRenderer();
-            textRender._font = Instance.Content.Load<SpriteFont>("Fonts/Hands");
-            textRender.text = $"Hej med dig :)";
-            textRender.IsEnabled = true;
-            textRender.IsText = true;
-            texty.transform.Position = new Vector2(200, 200);
-            textRender.Scale = 0.5f;
-            //TextRenderer.MeasureText
-            //_spriteBatch.DrawString(_font, $"Press to buy", new Vector2(0.1f, 0.075f), Color.Black, 0, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0f);
-            texty.AddComponent(textRender);
-            
-            gameObjects.Add(texty);
+
+            //Opponent
+            GameObject oppObj = new GameObject();
+            SpriteRenderer oppSpr = new SpriteRenderer();
+            Opponent oppOpp = new Opponent();
+            oppObj.AddComponent(oppSpr);
+            oppObj.AddComponent(oppOpp);
+            gameObjects.Add(oppObj);
 
 
             //lobby = new Lobby();
