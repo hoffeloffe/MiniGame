@@ -10,6 +10,7 @@ namespace NotAGame.Component
     public class Component
     {
         public bool IsEnabled { get; set; } = true;
+        public bool IsText { get; set; }
         public GameObject GameObject { get; set; }
 
         public virtual void Awake()
@@ -28,6 +29,10 @@ namespace NotAGame.Component
         }
 
         public virtual void Draw(SpriteBatch spritebatch)
+        {
+
+        }
+        public virtual void DrawString(SpriteBatch spritebatch)
         {
 
         }

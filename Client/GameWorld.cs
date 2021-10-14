@@ -37,6 +37,7 @@ namespace SpaceRTS
         private Lobby lobby;
         private Player player;
 
+
         private List<GameObject> gameObjects = new List<GameObject>();
         public List<GameObject> GameObjects
         {
@@ -88,6 +89,65 @@ namespace SpaceRTS
             go.AddComponent(new SpriteRenderer());
 
             gameObjects.Add(go);
+            
+            //Tekst
+            GameObject goText = new GameObject();
+            SpriteRenderer cpSprite = new SpriteRenderer();
+            Text CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Arial96", "MonoParty!", 620, 5, 1f, 0.12f, Color.MonoGameOrange);
+            cpSprite.hasShadow = true;
+            cpSprite.Color2 = Color.Black;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Arial24", "More text here!", 100, 190, 1f, -0.05f, Color.Black);
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Outline test.", 100, 250, 0.5f, 0, Color.White);
+            cpSprite.hasOutline = true;
+            cpSprite.Color2 = Color.Black;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
+            cpSprite.hasShadow = true;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", ":D", 125, 425, 0.5f, 0, Color.Green);
+            cpSprite.hasOutline = false;
+            cpSprite.hasShadow = true;
+            cpSprite.Spin = true;
+            gameObjects.Add(goText);
+
+
+            //Opponent
+            GameObject oppObj = new GameObject();
+            SpriteRenderer oppSpr = new SpriteRenderer();
+            Opponent oppOpp = new Opponent();
+            oppObj.AddComponent(oppSpr);
+            oppObj.AddComponent(oppOpp);
+            gameObjects.Add(oppObj);
+
 
             GameObject tile = new GameObject();
             tile.AddComponent(new Tile());
@@ -193,7 +253,6 @@ namespace SpaceRTS
         {
             GraphicsDevice.Clear(Color.DarkGray);
             _spriteBatch.Begin();
-
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
