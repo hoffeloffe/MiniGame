@@ -35,7 +35,7 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
         private Player player;
-        GameObject oppObj;
+        public List<GameObject> opponents = new List<GameObject>();
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -142,24 +142,22 @@ namespace SpaceRTS
 
 
             //Opponent
-            oppObj = new GameObject();
+            GameObject oppObj = new GameObject();
             SpriteRenderer oppSpr = new SpriteRenderer();
             Opponent oppOpp = new Opponent();
             oppObj.AddComponent(oppSpr);
             oppObj.AddComponent(oppOpp);
-            gameObjects.Add(oppObj);
+            opponents.Add(oppObj);
 
-            //Tile
-            GameObject tile = new GameObject();
-            tile.AddComponent(new Tile());
-            tile.AddComponent(new SpriteRenderer());
-            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer");
-            sr.GameObject.transform.Position = new Vector2();
-            gameObjects.Add(tile);
+            
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Awake();
+            }
+            foreach (GameObject opponent in opponents)
+            {
+                opponent.Awake();
             }
 
             #endregion Component
@@ -190,7 +188,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                client.SendData(new Vector2(2, 3).ToString());
+                client.SendData(new Vector2(1000, 1000).ToString());
             }
         }
 
@@ -200,6 +198,10 @@ namespace SpaceRTS
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
+            }
+            foreach (GameObject opponent in opponents)
+            {
+                opponent.Start();
             }
         }
 
@@ -236,11 +238,27 @@ namespace SpaceRTS
                         playerInfomationList[i] = array[i].Split('_').ToList();
                 }
 
-                string som = playerInfomationList[0][0].ToString();
-                oppObj.transform.Position = new Vector2(300, 300);
+                string som = playerInfomationList[0][1].ToString();
+                string cleanString = som.Replace("{X:", "");
+                cleanString = cleanString.Replace("Y:", "");
+                cleanString = cleanString.Replace("}", "");  
+                string[] xyVals = cleanString.Split(' ');      
+                float XPos = float.Parse(xyVals[0]);
+                float YPos = float.Parse(xyVals[1]);
+                Debug.WriteLine(som + " anyway, X: " + XPos + ", og Y: " + YPos);
+
+                for (int i = 0; i < opponents.Count; i++)
+                {
+                    opponents[i].transform.Position = new Vector2(XPos, YPos);
+                }
 
                 serverMessageIsTheSame = superservermessage;
             }
+            foreach (GameObject opponent in opponents)
+            {
+                opponent.Update(gameTime);
+            }
+
 
             base.Update(gameTime);
         }
@@ -252,6 +270,10 @@ namespace SpaceRTS
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
+            }
+            foreach (GameObject opponent in opponents)
+            {
+                opponent.Draw(_spriteBatch);
             }
 
             base.Draw(gameTime);

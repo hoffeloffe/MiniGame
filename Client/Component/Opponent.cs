@@ -9,7 +9,7 @@ namespace NotAGame.Component
 {
     class Opponent : Component
     {
-        private Vector2 Position = new Vector2(800, 800);
+        private Vector2 Position = new Vector2(200, 200);
         SpriteRenderer sr;
 
         public Opponent()
@@ -23,11 +23,11 @@ namespace NotAGame.Component
         }
         public Opponent(int x, int y)
         {
-            Position = new Vector2(x, y);
+            //Position = new Vector2(x, y);
         }
         public override void Awake()
         {
-            GameObject.transform.Position = new Vector2(975, 500);
+            //GameObject.transform.Position = new Vector2(975, 500);
         }
         public override void Start()
         {
@@ -36,7 +36,7 @@ namespace NotAGame.Component
         }
         public override void Update(GameTime gametime)
         {
-            sr.GameObject.transform.Position = Position;
+            //sr.GameObject.transform.Position = Position;
             base.Update(gametime);
         }
 
