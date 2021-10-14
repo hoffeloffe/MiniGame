@@ -37,8 +37,8 @@ namespace SpaceRTS
         private Lobby lobby;
         private Player player;
 
-        private List<GameObject> gameObjects = new List<GameObject>();
 
+        private List<GameObject> gameObjects = new List<GameObject>();
         public List<GameObject> GameObjects
         {
             get
@@ -86,7 +86,7 @@ namespace SpaceRTS
             go.AddComponent(player);
             go.AddComponent(new SpriteRenderer());
             gameObjects.Add(go);
-
+            
             //Tekst
             GameObject goText = new GameObject();
             SpriteRenderer cpSprite = new SpriteRenderer();
@@ -136,6 +136,7 @@ namespace SpaceRTS
             cpSprite.Spin = true;
             gameObjects.Add(goText);
 
+
             //Opponent
             GameObject oppObj = new GameObject();
             SpriteRenderer oppSpr = new SpriteRenderer();
@@ -144,6 +145,13 @@ namespace SpaceRTS
             oppObj.AddComponent(oppOpp);
             gameObjects.Add(oppObj);
 
+
+            GameObject tile = new GameObject();
+            tile.AddComponent(new Tile());
+            tile.AddComponent(new SpriteRenderer());
+            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer")
+            sr.GameObject.transform.Position = new Vector2()
+            gameObjects.Add(tile);
             lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
@@ -168,7 +176,10 @@ namespace SpaceRTS
         {
             while (true)
             {
-                serverMessage = client.ReceiveData();
+                lock (recivelock)
+                {
+                    serverMessage = client.ReceiveData();
+                }
             }
         }
 
@@ -176,7 +187,10 @@ namespace SpaceRTS
         {
             while (true)
             {
-                client.SendData(new Vector2(2, 3).ToString());
+                lock (sendlock)
+                {
+                    client.SendData(new Vector2(2, 3).ToString());
+                }
             }
         }
 
@@ -197,7 +211,6 @@ namespace SpaceRTS
             }
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             InputHandler.Instance.Excute(player);
 
             foreach (GameObject gameObject in gameObjects)
@@ -207,7 +220,10 @@ namespace SpaceRTS
 
             string superservermessage;
 
-            superservermessage = serverMessage;
+            lock (recivelock)
+            {
+                superservermessage = serverMessage;
+            }
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame)
             {
