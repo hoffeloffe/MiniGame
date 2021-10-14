@@ -61,6 +61,7 @@ namespace Server
                             if (PlayerList[i].position != null || PlayerList[i].position != "")
                                 playerPosition += i + "_" + PlayerList[i].position + ",";
                         }
+                        playerPosition = playerPosition.Remove(playerPosition.Length - 1);
 
                         Byte[] sendBytes = Encoding.ASCII.GetBytes(playerPosition);
                         receivingUdpClient.Send(sendBytes, sendBytes.Length, item.ip, Int32.Parse(item.port));

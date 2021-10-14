@@ -18,12 +18,13 @@ namespace SpaceRTS
         private Map map;
         private Client client = new Client();
         private string serverMessage;
-        private List<string> playerInfomationList = new List<string>();
+        private List<List<string>> playerInfomationList = new List<List<string>>();
         private string playerPosition;
         private Color color;
         private Thread sendThread;
         private Thread reciveThread;
-
+        private readonly object recivelock = new object();
+        private readonly object sendlock = new object();
         private string serverMessageIsTheSame;
 
         public GameWorld()
@@ -38,9 +39,9 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-            sendThread = new Thread(() => client.SendData("1234"));
+            sendThread = new Thread(() => SendThread());
 
-            reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+            reciveThread = new Thread(() => ReceiveThread());
             map = new Map();
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
@@ -48,6 +49,28 @@ namespace SpaceRTS
             reciveThread.Start();
 
             base.Initialize();
+        }
+
+        public void ReceiveThread()
+        {
+            while (true)
+            {
+                lock (recivelock)
+                {
+                    serverMessage = client.ReceiveData();
+                }
+            }
+        }
+
+        public void SendThread()
+        {
+            while (true)
+            {
+                lock (sendlock)
+                {
+                    client.SendData(new Vector2(2, 3).ToString());
+                }
+            }
         }
 
         protected override void LoadContent()
@@ -63,17 +86,30 @@ namespace SpaceRTS
                 Exit();
             }
 
-            if (serverMessage != null && serverMessage != serverMessageIsTheSame)
+            string superservermessage;
+
+            lock (recivelock)
             {
-                playerInfomationList.AddRange(serverMessage.Split(','));
+                superservermessage = serverMessage;
+            }
 
-                for (int i = 0; i < playerInfomationList.Count - 1; i++)
+            if (superservermessage != null && superservermessage != serverMessageIsTheSame)
+            {
+                string[] array = superservermessage.Split(',');
+
+                for (int i = 0; i < array.Length; i++)
                 {
-                    playerInfomationList[i].Split('_').ToList();
+                    if (i + 1 > playerInfomationList.Count)
+                    {
+                        playerInfomationList.Add(array[i].Split('_').ToList());
+                    }
+                    else
+                        playerInfomationList[i] = array[i].Split('_').ToList();
                 }
-                playerInfomationList[0][0].ToString();
 
-                serverMessageIsTheSame = serverMessage;
+                string som = playerInfomationList[0][0].ToString();
+
+                serverMessageIsTheSame = superservermessage;
             }
 
             // TODO: Add your update logic here
