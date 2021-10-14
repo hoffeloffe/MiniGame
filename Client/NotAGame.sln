@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.30621.155
+VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceRTS", "SpaceRTS.csproj", "{5513027D-AB87-4D6A-835E-BAA8B59049A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotAGame", "NotAGame.csproj", "{CBC5B1CA-6F89-445C-A70E-7F9BE8D0336A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "..\Server\Server.csproj", "{631B686D-E61D-4A6C-8BD4-B065912B496C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5513027D-AB87-4D6A-835E-BAA8B59049A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5513027D-AB87-4D6A-835E-BAA8B59049A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5513027D-AB87-4D6A-835E-BAA8B59049A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5513027D-AB87-4D6A-835E-BAA8B59049A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC5B1CA-6F89-445C-A70E-7F9BE8D0336A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC5B1CA-6F89-445C-A70E-7F9BE8D0336A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC5B1CA-6F89-445C-A70E-7F9BE8D0336A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC5B1CA-6F89-445C-A70E-7F9BE8D0336A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{631B686D-E61D-4A6C-8BD4-B065912B496C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{631B686D-E61D-4A6C-8BD4-B065912B496C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{631B686D-E61D-4A6C-8BD4-B065912B496C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{631B686D-E61D-4A6C-8BD4-B065912B496C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0E2D271A-801D-41B8-9DDC-433362C11A29}
+		SolutionGuid = {1F9D288C-312F-4E59-8936-09D507960720}
 	EndGlobalSection
 EndGlobal

@@ -112,6 +112,10 @@ namespace SpaceRTS
                 serverMessageIsTheSame = superservermessage;
             }
 
+            //foreach (var players in playerInfomationList)
+            //{
+            //}
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
