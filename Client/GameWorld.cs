@@ -8,6 +8,7 @@ using NotAGame;
 using System.Linq;
 using NotAGame.Component;
 using System.Threading;
+using NotAGame.Command_Pattern;
 
 namespace SpaceRTS
 {
@@ -37,6 +38,18 @@ namespace SpaceRTS
         private Player player;
 
         private List<GameObject> gameObjects = new List<GameObject>();
+        public List<GameObject> GameObjects
+        {
+            get
+            {
+                return gameObjects;
+            }
+
+            set
+            {
+                gameObjects = value;
+            }
+        }
 
         private Client client = new Client();
         private string serverMessage;
@@ -45,9 +58,12 @@ namespace SpaceRTS
         private Color color;
         private Thread sendThread;
         private Thread reciveThread;
+
         private readonly object recivelock = new object();
         private readonly object sendlock = new object();
         private string serverMessageIsTheSame;
+
+        public float DeltaTime { get; set; }
 
         public GameWorld()
 
@@ -67,13 +83,17 @@ namespace SpaceRTS
 
             go.AddComponent(player);
 
-            go.AddComponent(new Tile());
+            //go.AddComponent(new Tile());
 
             go.AddComponent(new SpriteRenderer());
 
             gameObjects.Add(go);
 
-            //lobby = new Lobby();
+            GameObject tile = new GameObject();
+            tile.AddComponent(new Tile());
+            tile.AddComponent(new SpriteRenderer());
+            gameObjects.Add(tile);
+            lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -130,6 +150,14 @@ namespace SpaceRTS
                 Exit();
             }
 
+            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            InputHandler.Instance.Excute(player);
+
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.Update(gameTime);
+            }
+
             string superservermessage;
 
             lock (recivelock)
@@ -156,24 +184,19 @@ namespace SpaceRTS
                 serverMessageIsTheSame = superservermessage;
             }
 
-            //foreach (var players in playerInfomationList)
-            //{
-            //}
-
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
             _spriteBatch.Begin();
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
+
             base.Draw(gameTime);
             _spriteBatch.End();
         }
