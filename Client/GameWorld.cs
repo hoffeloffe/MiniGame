@@ -73,39 +73,29 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
+            #region Component
+            lobby = new Lobby();
 
             GameObject go = new GameObject();
-
             player = new Player();
-
             go.AddComponent(player);
-
-            //go.AddComponent(new Tile());
-
             go.AddComponent(new SpriteRenderer());
-
             gameObjects.Add(go);
-
-            GameObject tile = new GameObject();
-            tile.AddComponent(new Tile());
-            tile.AddComponent(new SpriteRenderer());
-            SpriteRenderer sr = (SpriteRenderer)tile.GetComponent("SpriteRenderer")
-            sr.GameObject.transform.Position = new Vector2()
-            gameObjects.Add(tile);
-            lobby = new Lobby();
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Awake();
             }
+            #endregion
 
+            #region Server
             sendThread = new Thread(() => client.SendData("1234"));
-
             reciveThread = new Thread(() => serverMessage = client.ReceiveData());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
             reciveThread.Start();
+            #endregion
 
             base.Initialize();
         }

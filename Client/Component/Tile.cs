@@ -17,14 +17,12 @@ namespace NotAGame.Component
 
         public override void Awake()
         {
-            SpriteRenderer sr = new SpriteRenderer();
+
         }
 
         public override void Start()
         {
-            SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            sr.SetSpriteName("Tile");
-            sr.Scale = 1;
+            
         }
 
         public override string ToString()

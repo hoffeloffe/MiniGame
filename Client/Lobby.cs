@@ -32,11 +32,17 @@ namespace SpaceRTS
                     SpriteRenderer sr = new SpriteRenderer();
                     tileObject.AddComponent(sr);
                     tileObject.AddComponent(new Tile());
-                    sr.GameObject.transform.Position = new Vector2(x, y);
-                    sr.Scale = 65;
+                    sr.SetSpriteName("Tile");
+                    tileObject.transform.Position = new Vector2(x * 64, y * 64);
+                    sr.Scale = 64;
+                    sr.Layerdepth = 1;
                     grid.Add(tileObject);
                 }
             }
         }
     }
 }
+
+//SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
+//sr.SetSpriteName("Tile");
+//sr.Scale = 1;

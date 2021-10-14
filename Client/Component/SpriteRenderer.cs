@@ -12,6 +12,7 @@ namespace NotAGame.Component
         public Texture2D Sprite { get; set; }
         public Vector2 Origin { get; set; }
         public float Scale { get; set; }
+        public float Layerdepth { get; set; }
         //public Vector2 Position{ get; set; }
 
         public void SetSpriteName(string spriteName)
@@ -22,7 +23,7 @@ namespace NotAGame.Component
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color.White, 0f, Origin, Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color.White, 0f, Origin, Scale, SpriteEffects.None, Layerdepth);
         }
 
         public override string ToString()
