@@ -50,6 +50,7 @@ namespace SpaceRTS
                 gameObjects = value;
             }
         }
+        GameObject playerGo;
 
         private Client client = new Client();
         private string serverMessage;
@@ -80,12 +81,13 @@ namespace SpaceRTS
             lobby = new Lobby();
 
             #region Component
+            
 
-            GameObject go = new GameObject();
+            playerGo = new GameObject();
             player = new Player();
-            go.AddComponent(player);
-            go.AddComponent(new SpriteRenderer());
-            gameObjects.Add(go);
+            playerGo.AddComponent(player);
+            playerGo.AddComponent(new SpriteRenderer());
+            gameObjects.Add(playerGo);
 
             #region Tekst
             GameObject goText = new GameObject();
