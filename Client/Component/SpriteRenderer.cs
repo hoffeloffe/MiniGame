@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NotAGame.Component
 {
-    class SpriteRenderer : Component
+    internal class SpriteRenderer : Component
     {
         public Texture2D Sprite { get; set; } = GameWorld.Instance.Content.Load<Texture2D>("Sprites/missing");
         public Vector2 Origin { get; set; }
@@ -18,9 +18,9 @@ namespace NotAGame.Component
         public bool Spin { get; set; } = false;
         public float Layerdepth { get; set; }
 
-
         //Font Properties
         public SpriteFont Font { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/Arial");
+
         public SpriteFont FontOut { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/HandsOut");
         public Color Color2 { get; set; } = Color.Black;
         public bool hasOutline { get; set; } = false;
@@ -29,7 +29,7 @@ namespace NotAGame.Component
         //public Vector2 Position{ get; set; }
         public void SetSpriteName(string spriteName)
         {
-           Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
+            Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -64,6 +64,5 @@ namespace NotAGame.Component
         {
             return "SpriteRenderer";
         }
-
     }
 }

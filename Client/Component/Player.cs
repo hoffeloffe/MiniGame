@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NotAGame.Component
 {
-    class Player : Component
+    internal class Player : Component
     {
         private float speed;
         private Vector2 startPosition;
