@@ -78,16 +78,13 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
+            #region Component
+            lobby = new Lobby();
+
             GameObject go = new GameObject();
-
             player = new Player();
-
             go.AddComponent(player);
-
-            //go.AddComponent(new Tile());
-
             go.AddComponent(new SpriteRenderer());
-
             gameObjects.Add(go);
 
             //Tekst
@@ -153,15 +150,16 @@ namespace SpaceRTS
             {
                 gameObject.Awake();
             }
+            #endregion
 
+            #region Server
             sendThread = new Thread(() => SendThread());
-
             reciveThread = new Thread(() => ReceiveThread());
-
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
             reciveThread.Start();
+            #endregion
 
             base.Initialize();
         }

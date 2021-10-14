@@ -16,6 +16,8 @@ namespace NotAGame.Component
         public string Text { get; set; } = "Undefined";
         public float Rotation { get; set; }
         public bool Spin { get; set; } = false;
+        public float Layerdepth { get; set; }
+
 
         //Font Properties
         public SpriteFont Font { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/Arial");
@@ -29,10 +31,12 @@ namespace NotAGame.Component
         {
            Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color, Rotation, Origin, Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color.White, 0f, Origin, Scale, SpriteEffects.None, Layerdepth)
         }
+
         public override void DrawString(SpriteBatch spriteBatch)
         {
             if (hasOutline)
@@ -45,6 +49,7 @@ namespace NotAGame.Component
             }
             spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, Scale, SpriteEffects.None, 1f);
         }
+
         public override void Update(GameTime gametime)
         {
             if (Spin == true)
