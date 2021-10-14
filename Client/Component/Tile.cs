@@ -12,8 +12,7 @@ namespace NotAGame.Component
 
         public Tile()
         {
-            //color = Color.White;
-            //scale = new Vector2(1, 1);
+          
         }
 
         public override void Awake()
