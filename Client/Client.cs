@@ -37,27 +37,21 @@ namespace NotAGame
 
         public string ReceiveData()
         {
-            while (true)
+            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            try
             {
-                try
-                {
-                    //IPEndPoint object will allow us to read datagrams sent from any source.
-                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, serverPort);
+                //IPEndPoint object will allow us to read datagrams sent from any source.
 
-                    // Blocks until a message returns on this socket from a remote host.
-                    Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-                    string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
+                // Blocks until a message returns on this socket from a remote host.
+                Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
+                string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
 
-                    if (returnData == "")
-                        return null;
-                    else
-                        return returnData;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    return null;
-                }
+                return returnData;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return null;
             }
         }
     }

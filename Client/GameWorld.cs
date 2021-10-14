@@ -37,6 +37,7 @@ namespace SpaceRTS
         private Lobby lobby;
         private Player player;
 
+
         private List<GameObject> gameObjects = new List<GameObject>();
         public List<GameObject> GameObjects
         {
@@ -53,16 +54,20 @@ namespace SpaceRTS
 
         private Client client = new Client();
         private string serverMessage;
-        private List<string> playerInfomationList = new List<string>();
+        private List<List<string>> playerInfomationList = new List<List<string>>();
         private string playerPosition;
         private Color color;
         private Thread sendThread;
-
         private Thread reciveThread;
+
+        private readonly object recivelock = new object();
+        private readonly object sendlock = new object();
+        private string serverMessageIsTheSame;
 
         public float DeltaTime { get; set; }
 
         public GameWorld()
+
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -81,6 +86,65 @@ namespace SpaceRTS
             go.AddComponent(player);
             go.AddComponent(new SpriteRenderer());
             gameObjects.Add(go);
+            
+            //Tekst
+            GameObject goText = new GameObject();
+            SpriteRenderer cpSprite = new SpriteRenderer();
+            Text CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Arial96", "MonoParty!", 620, 5, 1f, 0.12f, Color.MonoGameOrange);
+            cpSprite.hasShadow = true;
+            cpSprite.Color2 = Color.Black;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Arial24", "More text here!", 100, 190, 1f, -0.05f, Color.Black);
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Outline test.", 100, 250, 0.5f, 0, Color.White);
+            cpSprite.hasOutline = true;
+            cpSprite.Color2 = Color.Black;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
+            cpSprite.hasShadow = true;
+            gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", ":D", 125, 425, 0.5f, 0, Color.Green);
+            cpSprite.hasOutline = false;
+            cpSprite.hasShadow = true;
+            cpSprite.Spin = true;
+            gameObjects.Add(goText);
+
+
+            //Opponent
+            GameObject oppObj = new GameObject();
+            SpriteRenderer oppSpr = new SpriteRenderer();
+            Opponent oppOpp = new Opponent();
+            oppObj.AddComponent(oppSpr);
+            oppObj.AddComponent(oppOpp);
+            gameObjects.Add(oppObj);
+
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -89,8 +153,8 @@ namespace SpaceRTS
             #endregion
 
             #region Server
-            sendThread = new Thread(() => client.SendData("1234"));
-            reciveThread = new Thread(() => serverMessage = client.ReceiveData());
+            sendThread = new Thread(() => SendThread());
+            reciveThread = new Thread(() => ReceiveThread());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
@@ -98,6 +162,28 @@ namespace SpaceRTS
             #endregion
 
             base.Initialize();
+        }
+
+        public void ReceiveThread()
+        {
+            while (true)
+            {
+                lock (recivelock)
+                {
+                    serverMessage = client.ReceiveData();
+                }
+            }
+        }
+
+        public void SendThread()
+        {
+            while (true)
+            {
+                lock (sendlock)
+                {
+                    client.SendData(new Vector2(2, 3).ToString());
+                }
+            }
         }
 
         protected override void LoadContent()
@@ -119,23 +205,36 @@ namespace SpaceRTS
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
 
-            foreach (GameObject  gameObject in gameObjects)
+            foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Update(gameTime);
             }
 
-            if (serverMessage != null)
-            {
-                playerInfomationList.AddRange(serverMessage.Split(','));
+            string superservermessage;
 
-                for (int i = 0; i < playerInfomationList.Count; i++)
-                {
-                    playerInfomationList[i].Split('c').ToList();
-                    playerInfomationList[0][0].ToString();
-                }
+            lock (recivelock)
+            {
+                superservermessage = serverMessage;
             }
 
-            // TODO: Add your update logic here
+            if (superservermessage != null && superservermessage != serverMessageIsTheSame)
+            {
+                string[] array = superservermessage.Split(',');
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (i + 1 > playerInfomationList.Count)
+                    {
+                        playerInfomationList.Add(array[i].Split('_').ToList());
+                    }
+                    else
+                        playerInfomationList[i] = array[i].Split('_').ToList();
+                }
+
+                string som = playerInfomationList[0][0].ToString();
+
+                serverMessageIsTheSame = superservermessage;
+            }
 
             base.Update(gameTime);
         }
@@ -144,7 +243,6 @@ namespace SpaceRTS
         {
             GraphicsDevice.Clear(Color.DarkGray);
             _spriteBatch.Begin();
-
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
