@@ -149,8 +149,6 @@ namespace SpaceRTS
             oppObj.AddComponent(oppOpp);
             opponents.Add(oppObj);
 
-            
-
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Awake();
@@ -188,7 +186,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                client.SendData(new Vector2(1000, 1000).ToString());
+                client.SendData(playerGo.transform.ReturnPosition(playerGo).ToString());
             }
         }
 
