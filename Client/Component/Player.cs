@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NotAGame.Component
 {
-    class Player : Component
+    internal class Player : Component
     {
         private float speed;
         private Vector2 startPosition;
@@ -28,9 +28,8 @@ namespace NotAGame.Component
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
             sr.Scale = 1;
-            
-            //sr.GameObject.transform.Position;
 
+            //sr.GameObject.transform.Position;
         }
 
         public void Move(Vector2 velocity)
