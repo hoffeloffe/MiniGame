@@ -59,7 +59,7 @@ namespace Server
                         for (int i = 0; i < PlayerList.Count; i++)
                         {
                             if (PlayerList[i].position != null || PlayerList[i].position != "")
-                                playerPosition += i + "_" + PlayerList[i].position + ",";
+                                playerPosition += i + "_" + PlayerList[i].position + "q";
                         }
                         playerPosition = playerPosition.Remove(playerPosition.Length - 1);
 

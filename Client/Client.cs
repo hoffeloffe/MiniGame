@@ -34,6 +34,22 @@ namespace NotAGame
                 }
             }
         }
+        public void SendDataOnce(string message)
+        {
+            udpClient.Connect(serverip, serverPort);
+            try
+            {
+                // Sends a message to the host to which you have connected.
+                Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+
+                udpClient.Send(sendBytes, sendBytes.Length);
+                Thread.Sleep(100);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
 
         public string ReceiveData()
         {

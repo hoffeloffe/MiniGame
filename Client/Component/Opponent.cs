@@ -32,7 +32,7 @@ namespace NotAGame.Component
         public override void Start()
         {
             sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            sr.SetSpriteName("Sprites/dog");
+            sr.SetSpriteName("Sprites/dog_stand");
         }
         public override void Update(GameTime gametime)
         {

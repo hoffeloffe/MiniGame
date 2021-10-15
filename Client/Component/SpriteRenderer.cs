@@ -12,6 +12,7 @@ namespace NotAGame.Component
         public Texture2D Sprite { get; set; } = GameWorld.Instance.Content.Load<Texture2D>("Sprites/missing");
         public Vector2 Origin { get; set; }
         public float Scale { get; set; } = 1f;
+        public Random rnd = new Random();
         public Color Color { get; set; } = Color.White;
         public string Text { get; set; } = "Undefined";
         public float Rotation { get; set; }
@@ -30,11 +31,12 @@ namespace NotAGame.Component
         public void SetSpriteName(string spriteName)
         {
             Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
+            //Color = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color.White, 0f, Origin, Scale, SpriteEffects.None, Layerdepth);
+            spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color, 0f, Origin, Scale, SpriteEffects.None, Layerdepth);
         }
 
         public override void DrawString(SpriteBatch spriteBatch)
@@ -52,6 +54,7 @@ namespace NotAGame.Component
 
         public override void Update(GameTime gametime)
         {
+            //Color = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             if (Spin == true)
             {
                 //Continuously rotates the sprite

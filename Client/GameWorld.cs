@@ -9,6 +9,7 @@ using System.Linq;
 using NotAGame.Component;
 using System.Threading;
 using NotAGame.Command_Pattern;
+using System;
 
 namespace SpaceRTS
 {
@@ -30,11 +31,12 @@ namespace SpaceRTS
         }
 
         #endregion Singleton
-
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
         private Player player;
+        private int masterCounter;
+        string som;
         public List<GameObject> opponents = new List<GameObject>();
 
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -138,16 +140,16 @@ namespace SpaceRTS
             cpSprite.hasShadow = true;
             cpSprite.Spin = true;
             gameObjects.Add(goText);
+            //--------------
+            goText = new GameObject();
+            cpSprite = new SpriteRenderer();
+            CpText = new Text();
+            goText.AddComponent(cpSprite);
+            goText.AddComponent(CpText);
+            CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
+            cpSprite.hasShadow = true;
+            gameObjects.Add(goText);
             #endregion
-
-
-            //Opponent
-            GameObject oppObj = new GameObject();
-            SpriteRenderer oppSpr = new SpriteRenderer();
-            Opponent oppOpp = new Opponent();
-            oppObj.AddComponent(oppSpr);
-            oppObj.AddComponent(oppOpp);
-            opponents.Add(oppObj);
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -186,7 +188,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                client.SendData(playerGo.transform.ReturnPosition(playerGo).ToString());
+                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
             }
         }
 
@@ -209,7 +211,6 @@ namespace SpaceRTS
             {
                 Exit();
             }
-
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
 
@@ -224,7 +225,7 @@ namespace SpaceRTS
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame)
             {
-                string[] array = superservermessage.Split(',');
+                string[] array = superservermessage.Split('q');
 
                 for (int i = 0; i < array.Length; i++)
                 {
@@ -235,20 +236,42 @@ namespace SpaceRTS
                     else
                         playerInfomationList[i] = array[i].Split('_').ToList();
                 }
-
-                string som = playerInfomationList[0][1].ToString();
-                string cleanString = som.Replace("{X:", "");
-                cleanString = cleanString.Replace("Y:", "");
-                cleanString = cleanString.Replace("}", "");  
-                string[] xyVals = cleanString.Split(' ');      
-                float XPos = float.Parse(xyVals[0]);
-                float YPos = float.Parse(xyVals[1]);
-                Debug.WriteLine(som + " anyway, X: " + XPos + ", og Y: " + YPos);
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (opponents.Count < playerInfomationList.Count)
+                    {
+                        Random rnd = new Random();
+                        Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                        GameObject oppObj = new GameObject();
+                        SpriteRenderer oppSpr = new SpriteRenderer();
+                        Opponent oppOpp = new Opponent();
+                        oppSpr.Color = randomColor;
+                        oppObj.AddComponent(oppSpr);
+                        oppObj.AddComponent(oppOpp);
+                        opponents.Add(oppObj);
+                        oppObj.Awake();
+                        oppObj.Start();
+                    }
+                    else if (opponents.Count > playerInfomationList.Count)
+                    {
+                        Debug.WriteLine("ERROR Code 28713");
+                    }
+                }
 
                 for (int i = 0; i < opponents.Count; i++)
                 {
+                    string som = playerInfomationList[i][1].ToString();
+                    string cleanString = som.Replace("{X:", "");
+                    cleanString = cleanString.Replace("Y:", "");
+                    cleanString = cleanString.Replace("}", "");
+                    string[] xyVals = cleanString.Split(' ');
+                    float XPos = float.Parse(xyVals[0]);
+                    float YPos = float.Parse(xyVals[1]);
+                    string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
+                    Debug.WriteLine(client0Message);
                     opponents[i].transform.Position = new Vector2(XPos, YPos);
                 }
+                Debug.WriteLine("///////////////");
 
                 serverMessageIsTheSame = superservermessage;
             }
