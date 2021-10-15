@@ -219,8 +219,8 @@ namespace SpaceRTS
                 gameObject.Update(gameTime);
             }
 
+            #region Server Beskeder
             string superservermessage;
-
             superservermessage = serverMessage;
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame)
@@ -236,6 +236,7 @@ namespace SpaceRTS
                     else
                         playerInfomationList[i] = array[i].Split('_').ToList();
                 }
+                #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
                 for (int i = 0; i < array.Length; i++)
                 {
                     if (opponents.Count < playerInfomationList.Count)
@@ -257,7 +258,8 @@ namespace SpaceRTS
                         Debug.WriteLine("ERROR Code 28713");
                     }
                 }
-
+                #endregion
+                #region Send position to each Opponent
                 for (int i = 0; i < opponents.Count; i++)
                 {
                     string som = playerInfomationList[i][1].ToString();
@@ -271,15 +273,11 @@ namespace SpaceRTS
                     Debug.WriteLine(client0Message);
                     opponents[i].transform.Position = new Vector2(XPos, YPos);
                 }
-                Debug.WriteLine("///////////////");
+                #endregion
 
                 serverMessageIsTheSame = superservermessage;
             }
-            foreach (GameObject opponent in opponents)
-            {
-                opponent.Update(gameTime);
-            }
-
+            #endregion
 
             base.Update(gameTime);
         }

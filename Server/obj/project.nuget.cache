@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "WxCC1lXO8wJIWFZ0uClr6WdpNd4wD/4AoD6oLQfBKqVWQdgGdBr6gHIs8/oY0ditDQfogmve63eQp1HqTU+O9g==",
+  "dgSpecHash": "qYtzsFsPe4feh3a5GdFP+b1y45gwNx5l5ehaZLeLpaYzaFn2yV08cJ15/Cis/mF892LKaqZrigD49lFaBTaNpw==",
   "success": true,
-  "projectFilePath": "D:\\App Files\\Code\\GitHub\\fictional-journey\\Server\\Server.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Shadetrap\\Documents\\GitHub\\fictional-journey\\Server\\Server.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Shadetrap\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.18\\microsoft.netcore.app.host.win-x64.3.1.18.nupkg.sha512"
+  ],
   "logs": []
 }
