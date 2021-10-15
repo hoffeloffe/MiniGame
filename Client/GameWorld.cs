@@ -168,7 +168,7 @@ namespace SpaceRTS
 
             #region Server
 
-            sendThread = new Thread(() => SendThread());
+            sendThread = new Thread(() => client.SendData());
             reciveThread = new Thread(() => ReceiveThread());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
@@ -185,14 +185,6 @@ namespace SpaceRTS
             while (true)
             {
                 serverMessage = client.ReceiveData();
-            }
-        }
-
-        public void SendThread()
-        {
-            while (true)
-            {
-                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" +  "messageTest" + "@" + "1");
             }
         }
 
@@ -283,6 +275,7 @@ namespace SpaceRTS
             }
             #endregion
 
+            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1");
             base.Update(gameTime);
         }
 

@@ -19,18 +19,19 @@ namespace Server
         public string username;
         public string color;
 
-        public PlayerInfo(string ip, string port, string position, string message, float totalpoints, float minigamePoints, bool done, bool failed, string username, string color)
+        //, string message, float totalpoints, float minigamePoints, bool done, bool failed, string username, string color
+        public PlayerInfo(string ip, string port, string position)
         {
             this.ip = ip;
             this.port = port;
             this.position = position;
-            this.message = message;
-            this.totalPoints = totalpoints;
-            this.minigamePoints = minigamePoints;
-            this.done = done;
-            this.failed = failed;
-            this.username = username;
-            this.color = color;
+            //this.message = message;
+            //this.totalPoints = totalpoints;
+            //this.minigamePoints = minigamePoints;
+            //this.done = done;
+            //this.failed = failed;
+            //this.username = username;
+            //this.color = color;
 
             Random rnd = new Random();
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));

@@ -38,21 +38,26 @@ namespace Server
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
-                            item.position = returnData.ToString();
+                            if ( item.ip == RemoteIpEndPoint.Address.ToString())
+                            {
+                                item.position = returnData.ToString();
+                            }
                         }
                         if (!PlayerList.Any(playerInfo => playerInfo.ip == RemoteIpEndPoint.Address.ToString()))
                         {
-                            string[] array = returnData.ToString().Split('@');
+                            //string[] array = returnData.ToString().Split('@');
 
-                            PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), array[0].ToString(), array[1].ToString(), float.Parse(array[2].ToString()), float.Parse(array[3].ToString()), bool.Parse(array[4].ToString()), bool.Parse(array[5].ToString()), array[6].ToString(), array[7].ToString()));
+                            PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), returnData));
+                            //PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), array[0].ToString(), array[1].ToString(), float.Parse(array[2].ToString()), float.Parse(array[3].ToString()), bool.Parse(array[4].ToString()), bool.Parse(array[5].ToString()), array[6].ToString(), array[7].ToString()));
                             Console.WriteLine("Ip joined " + RemoteIpEndPoint.Address.ToString() + " on their port number " + RemoteIpEndPoint.Port.ToString());
                         }
                     }
                     else
                     {
-                        string[] array = returnData.ToString().Split('@');
-                        PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), array[0].ToString(), array[1].ToString(), float.Parse(array[2].ToString()), float.Parse(array[3].ToString()), bool.Parse(array[4].ToString()), bool.Parse(array[5].ToString()), array[6].ToString(), array[7].ToString()));
+                        //string[] array = returnData.ToString().Split('@');
+                        //PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), array[0].ToString(), array[1].ToString(), float.Parse(array[2].ToString()), float.Parse(array[3].ToString()), bool.Parse(array[4].ToString()), bool.Parse(array[5].ToString()), array[6].ToString(), array[7].ToString()));
 
+                        PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), returnData));
                         Console.WriteLine("Ip joined " + RemoteIpEndPoint.Address.ToString() + " on port " + RemoteIpEndPoint.Port.ToString());
                     }
                     Console.WriteLine("IP:  " + RemoteIpEndPoint.Address.ToString() + " Port: " + RemoteIpEndPoint.Port.ToString() + " Position " + returnData.ToString());
@@ -64,7 +69,8 @@ namespace Server
                         {
                             if (PlayerList[i].position != null || PlayerList[i].position != "")
                             {
-                                playerPosition += i + "@" + PlayerList[i].position + "@" + PlayerList[i].message + "@" + PlayerList[i].totalPoints + "@" + PlayerList[i].minigamePoints + "@" + PlayerList[i].done + "@" + PlayerList[i].failed + "@" + PlayerList[i].username + "@" + PlayerList[i].color + "_";
+                                playerPosition += i + "@" + PlayerList[i].position + "_";
+                                //playerPosition += i + "@" + PlayerList[i].position + "@" + PlayerList[i].message + "@" + PlayerList[i].totalPoints + "@" + PlayerList[i].minigamePoints + "@" + PlayerList[i].done + "@" + PlayerList[i].failed + "@" + PlayerList[i].username + "@" + PlayerList[i].color + "_";
                             }
                         }
                         playerPosition = playerPosition.Remove(playerPosition.Length - 1);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -10,40 +11,44 @@ namespace NotAGame
     public class Client
     {
         // This constructor arbitrarily assigns the local port number.
-        public UdpClient udpClient = new UdpClient(13777);
+        public UdpClient udpClient = new UdpClient(19787);
 
         private string serverip = "127.0.0.1";
         private int serverPort = 12000;
+        public ConcurrentQueue<string> cq = new ConcurrentQueue<string>();
 
-        public void SendData(string message)
+        public void SendData()
         {
             udpClient.Connect(serverip, serverPort);
             while (true)
             {
-                try
+                if (!cq.IsEmpty)
                 {
-                    // Sends a message to the host to which you have connected.
-                    Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+                    try
+                    {
+                        // Sends a message to the host to which you have connected.
+                        string message;
+                        cq.TryDequeue(out message);
+                        Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
-                    udpClient.Send(sendBytes, sendBytes.Length);
-                    Thread.Sleep(50);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
+                        udpClient.Send(sendBytes, sendBytes.Length);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
                 }
             }
         }
 
         public void SendDataOnce(string message)
         {
-            udpClient.Connect(serverip, serverPort);
             try
             {
                 // Sends a message to the host to which you have connected.
                 Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
-                udpClient.Send(sendBytes, sendBytes.Length);
+                udpClient.Send(sendBytes, sendBytes.Length, serverip, serverPort);
                 Thread.Sleep(100);
             }
             catch (Exception e)
