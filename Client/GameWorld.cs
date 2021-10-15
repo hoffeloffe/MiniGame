@@ -16,6 +16,7 @@ namespace SpaceRTS
     public class GameWorld : Game
     {
         #region Singleton
+
         private static GameWorld instance;
 
         public static GameWorld Instance
@@ -31,12 +32,13 @@ namespace SpaceRTS
         }
 
         #endregion Singleton
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
         private Player player;
         private int masterCounter;
-        string som;
+        private string som;
         public List<GameObject> opponents = new List<GameObject>();
 
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -53,7 +55,8 @@ namespace SpaceRTS
                 gameObjects = value;
             }
         }
-        GameObject playerGo;
+
+        private GameObject playerGo;
 
         private Client client = new Client();
         private string serverMessage;
@@ -84,7 +87,6 @@ namespace SpaceRTS
             lobby = new Lobby();
 
             #region Component
-            
 
             playerGo = new GameObject();
             player = new Player();
@@ -93,6 +95,7 @@ namespace SpaceRTS
             gameObjects.Add(playerGo);
 
             #region Tekst
+
             GameObject goText = new GameObject();
             SpriteRenderer cpSprite = new SpriteRenderer();
             Text CpText = new Text();
@@ -149,7 +152,8 @@ namespace SpaceRTS
             CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
             cpSprite.hasShadow = true;
             gameObjects.Add(goText);
-            #endregion
+
+            #endregion Tekst
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -279,7 +283,6 @@ namespace SpaceRTS
             {
                 opponent.Update(gameTime);
             }
-
 
             base.Update(gameTime);
         }

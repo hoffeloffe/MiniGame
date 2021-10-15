@@ -10,7 +10,7 @@ namespace NotAGame
     public class Client
     {
         // This constructor arbitrarily assigns the local port number.
-        public UdpClient udpClient = new UdpClient(13001);
+        public UdpClient udpClient = new UdpClient(13004);
 
         private string serverip = "127.0.0.1";
         private int serverPort = 12000;
@@ -26,7 +26,7 @@ namespace NotAGame
                     Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
                     udpClient.Send(sendBytes, sendBytes.Length);
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
                 }
                 catch (Exception e)
                 {
@@ -34,6 +34,7 @@ namespace NotAGame
                 }
             }
         }
+
         public void SendDataOnce(string message)
         {
             udpClient.Connect(serverip, serverPort);
