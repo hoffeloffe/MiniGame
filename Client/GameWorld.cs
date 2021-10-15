@@ -229,16 +229,16 @@ namespace SpaceRTS
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame)
             {
-                string[] array = superservermessage.Split('q');
+                string[] array = superservermessage.Split('_');
 
                 for (int i = 0; i < array.Length; i++)
                 {
                     if (i + 1 > playerInfomationList.Count)
                     {
-                        playerInfomationList.Add(array[i].Split('_').ToList());
+                        playerInfomationList.Add(array[i].Split('@').ToList());
                     }
                     else
-                        playerInfomationList[i] = array[i].Split('_').ToList();
+                        playerInfomationList[i] = array[i].Split('@').ToList();
                 }
                 for (int i = 0; i < array.Length; i++)
                 {
