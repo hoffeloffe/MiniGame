@@ -26,7 +26,7 @@ namespace NotAGame
                     Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
                     udpClient.Send(sendBytes, sendBytes.Length);
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
                 }
                 catch (Exception e)
                 {
@@ -34,6 +34,7 @@ namespace NotAGame
                 }
             }
         }
+
         public void SendDataOnce(string message)
         {
             udpClient.Connect(serverip, serverPort);

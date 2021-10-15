@@ -40,7 +40,7 @@ namespace Server
                         {
                             item.position = returnData.ToString();
                         }
-                        if (!PlayerList.Any(playerInfo => playerInfo.ip == RemoteIpEndPoint.Address.ToString()))
+                        if (!PlayerList.Any(playerInfo => playerInfo.port == RemoteIpEndPoint.Port.ToString()))
                         {
                             PlayerList.Add(new PlayerInfo(returnData.ToString(), RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString()));
                             Console.WriteLine("Ip joined " + RemoteIpEndPoint.Address.ToString() + " on their port number " + RemoteIpEndPoint.Port.ToString());
@@ -59,7 +59,9 @@ namespace Server
                         for (int i = 0; i < PlayerList.Count; i++)
                         {
                             if (PlayerList[i].position != null || PlayerList[i].position != "")
+                            {
                                 playerPosition += i + "_" + PlayerList[i].position + "q";
+                            }
                         }
                         playerPosition = playerPosition.Remove(playerPosition.Length - 1);
 

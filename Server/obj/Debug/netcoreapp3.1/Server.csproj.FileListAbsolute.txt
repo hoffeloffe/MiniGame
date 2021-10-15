@@ -37,3 +37,4 @@ D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server
 D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.pdb
 D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
 D:\App Files\Code\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
+C:\Users\Hoffe\Documents\GitHub\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csproj.AssemblyReference.cache
