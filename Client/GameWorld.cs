@@ -86,7 +86,7 @@ namespace SpaceRTS
         {
             lobby = new Lobby();
 
-            #region Component
+            #region GameObjects
 
             playerGo = new GameObject();
             player = new Player();
@@ -192,7 +192,7 @@ namespace SpaceRTS
         {
             while (true)
             {
-                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
+                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" +  "messageTest" + "@" + "1");
             }
         }
 
