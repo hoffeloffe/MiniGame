@@ -16,6 +16,7 @@ namespace SpaceRTS
     public class GameWorld : Game
     {
         #region Singleton
+
         private static GameWorld instance;
 
         public static GameWorld Instance
@@ -36,7 +37,7 @@ namespace SpaceRTS
         private Lobby lobby;
         private Player player;
         private int masterCounter;
-        string som;
+        private string som;
         public List<GameObject> opponents = new List<GameObject>();
 
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -53,12 +54,14 @@ namespace SpaceRTS
                 gameObjects = value;
             }
         }
-        GameObject playerGo;
+
+        private GameObject playerGo;
         private List<Player> players = new List<Player>();
 
         public static bool changeGame = false;
         private MiniGamesManager gameManager;
         public static Texture2D Emil;
+
 
         private Client client = new Client();
         private string serverMessage;
@@ -97,6 +100,7 @@ namespace SpaceRTS
             
 
             #region Tekst
+
             GameObject goText = new GameObject();
             SpriteRenderer cpSprite = new SpriteRenderer();
             Text CpText = new Text();
@@ -153,7 +157,8 @@ namespace SpaceRTS
             CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
             cpSprite.hasShadow = true;
             gameObjects.Add(goText);
-            #endregion
+
+            #endregion Tekst
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -168,7 +173,7 @@ namespace SpaceRTS
 
             #region Server
 
-            sendThread = new Thread(() => SendThread());
+            sendThread = new Thread(() => client.SendData());
             reciveThread = new Thread(() => ReceiveThread());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
@@ -179,6 +184,7 @@ namespace SpaceRTS
 
             base.Initialize();
         }
+
 
         protected override void LoadContent()
         {
@@ -210,25 +216,26 @@ namespace SpaceRTS
             }
 
             #region Client/Server
+            #region Server Beskeder
             string superservermessage;
-
             superservermessage = serverMessage;
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame)
             {
-                string[] array = superservermessage.Split('q');
+                string[] array = superservermessage.Split('_');
 
                 for (int i = 0; i < array.Length; i++)
                 {
                     if (i + 1 > playerInfomationList.Count)
                     {
-                        playerInfomationList.Add(array[i].Split('_').ToList());
+                        playerInfomationList.Add(array[i].Split('@').ToList());
                     }
                     else
-                        playerInfomationList[i] = array[i].Split('_').ToList();
+                        playerInfomationList[i] = array[i].Split('@').ToList();
                 }
                 #endregion
 
+                #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
                 for (int i = 0; i < array.Length; i++)
                 {
                     if (opponents.Count < playerInfomationList.Count)
@@ -250,7 +257,8 @@ namespace SpaceRTS
                         Debug.WriteLine("ERROR Code 28713");
                     }
                 }
-
+                #endregion
+                #region Send position to each Opponent
                 for (int i = 0; i < opponents.Count; i++)
                 {
                     string som = playerInfomationList[i][1].ToString();
@@ -264,16 +272,13 @@ namespace SpaceRTS
                     Debug.WriteLine(client0Message);
                     opponents[i].transform.Position = new Vector2(XPos, YPos);
                 }
-                Debug.WriteLine("///////////////");
+                #endregion
 
                 serverMessageIsTheSame = superservermessage;
             }
-            foreach (GameObject opponent in opponents)
-            {
-                opponent.Update(gameTime);
-            }
+            #endregion
 
-
+            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1");
             base.Update(gameTime);
         }
 
