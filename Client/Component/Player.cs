@@ -9,14 +9,14 @@ namespace NotAGame.Component
 {
     internal class Player : Component
     {
-        private float speed;
-        private Vector2 updatesPosition;
 
+
+        private float speed;
 
         public Player()
         {
             InputHandler.Instance.player = this;
-            this.speed = 500;
+            this.speed = 600;
         }
 
         public override void Awake()
@@ -29,8 +29,26 @@ namespace NotAGame.Component
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
             sr.Scale = 1;
-            sr.Layerdepth = 1;
+            sr.Layerdepth = 0;
             
+        }
+
+        public override string ToString()
+        {
+            return "Player";
+        }
+
+        public void ChangeInput()
+        {
+            switch (GameWorld.changeGame)
+            {
+                case false:
+                    GameWorld.changeGame = true;
+                    break;
+                case true:
+                    GameWorld.changeGame = false;
+                    break;
+            }
         }
 
         public void Move(Vector2 velocity)
@@ -41,11 +59,6 @@ namespace NotAGame.Component
             }
             velocity *= speed;
             GameObject.transform.Translate(velocity * GameWorld.Instance.DeltaTime);
-        }
-
-        public override string ToString()
-        {
-            return "Player";
         }
     }
 }

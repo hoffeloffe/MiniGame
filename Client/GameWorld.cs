@@ -29,8 +29,8 @@ namespace SpaceRTS
                 return instance;
             }
         }
-
         #endregion Singleton
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
@@ -54,11 +54,15 @@ namespace SpaceRTS
             }
         }
         GameObject playerGo;
+        private List<Player> players = new List<Player>();
+
+        public static bool changeGame = false;
+        private MiniGamesManager gameManager;
+        public static Texture2D Emil;
 
         private Client client = new Client();
         private string serverMessage;
         private List<List<string>> playerInfomationList = new List<List<string>>();
-        private string playerPosition;
         private Color color;
         private Thread sendThread;
         private Thread reciveThread;
@@ -81,16 +85,16 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-            lobby = new Lobby();
+            gameManager = new MiniGamesManager();
 
             #region Component
             
-
             playerGo = new GameObject();
             player = new Player();
             playerGo.AddComponent(player);
             playerGo.AddComponent(new SpriteRenderer());
             gameObjects.Add(playerGo);
+            
 
             #region Tekst
             GameObject goText = new GameObject();
@@ -176,25 +180,10 @@ namespace SpaceRTS
             base.Initialize();
         }
 
-        public void ReceiveThread()
-        {
-            while (true)
-            {
-                serverMessage = client.ReceiveData();
-            }
-        }
-
-        public void SendThread()
-        {
-            while (true)
-            {
-                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
-            }
-        }
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Emil = Content.Load<Texture2D>("Emil");
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
@@ -213,12 +202,14 @@ namespace SpaceRTS
             }
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
+            gameManager.ChangeGame();
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Update(gameTime);
             }
 
+            #region Client/Server
             string superservermessage;
 
             superservermessage = serverMessage;
@@ -236,6 +227,8 @@ namespace SpaceRTS
                     else
                         playerInfomationList[i] = array[i].Split('_').ToList();
                 }
+                #endregion
+
                 for (int i = 0; i < array.Length; i++)
                 {
                     if (opponents.Count < playerInfomationList.Count)
@@ -287,7 +280,7 @@ namespace SpaceRTS
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkGray);
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
@@ -297,8 +290,28 @@ namespace SpaceRTS
                 opponent.Draw(_spriteBatch);
             }
 
+            gameManager.DrawNextGame(_spriteBatch);
+
             base.Draw(gameTime);
             _spriteBatch.End();
         }
+
+        #region Thread Method
+        public void ReceiveThread()
+        {
+            while (true)
+            {
+                serverMessage = client.ReceiveData();
+            }
+        }
+
+        public void SendThread()
+        {
+            while (true)
+            {
+                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
+            }
+        }
+        #endregion
     }
 }

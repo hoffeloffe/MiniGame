@@ -10,9 +10,9 @@ namespace NotAGame
     public class Client
     {
         // This constructor arbitrarily assigns the local port number.
-        public UdpClient udpClient = new UdpClient(13001);
+        public UdpClient udpClient = new UdpClient(11004);
 
-        private string serverip = "127.0.0.1";
+        private string serverip = "192.168.87.195";
         private int serverPort = 12000;
 
         public void SendData(string message)

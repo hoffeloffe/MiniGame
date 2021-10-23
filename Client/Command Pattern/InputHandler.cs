@@ -24,6 +24,8 @@ namespace NotAGame.Command_Pattern
         }
         #endregion
 
+        private bool noHoldDown;
+        
         public Dictionary<Keys, ICommand> keybindings = new Dictionary<Keys, ICommand>();
         public Player player { get; set; }
 
@@ -33,6 +35,8 @@ namespace NotAGame.Command_Pattern
             keybindings.Add(Keys.D, new MoveCommand(new Vector2(1, 0)));
             keybindings.Add(Keys.W, new MoveCommand(new Vector2(0, -1)));
             keybindings.Add(Keys.S, new MoveCommand(new Vector2(0, 1)));
+
+            keybindings.Add(Keys.N, new MasterInputs());
         }
 
         public void Excute(Player player)
@@ -41,10 +45,19 @@ namespace NotAGame.Command_Pattern
 
             foreach (Keys k in keybindings.Keys)
             {
-                if (key.IsKeyDown(k))
+                if (key.IsKeyDown(k) && noHoldDown == true)
                 {
                     keybindings[k].Excute(player);
+                    if (key.IsKeyDown(Keys.N))
+                    {
+                        noHoldDown = false;
+                    }
                 }
+                else if (key.IsKeyUp(Keys.N))
+                {
+                    noHoldDown = true;
+                }
+                
             }
         }
 

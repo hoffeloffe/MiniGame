@@ -12,7 +12,6 @@ namespace SpaceRTS
     {
         private int row = 30;
         private int col = 17;
-        private int gridSize = 65;
         private List<GameObject> grid;
 
         public Lobby()
@@ -42,7 +41,3 @@ namespace SpaceRTS
         }
     }
 }
-
-//SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-//sr.SetSpriteName("Tile");
-//sr.Scale = 1;
