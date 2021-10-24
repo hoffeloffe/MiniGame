@@ -36,8 +36,9 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
+        //private GrowingArray playersArray = new GrowingArray();
+        private List<int> playersId = new List<int>();
         private Player player;
-        private int masterCounter;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
 
@@ -86,7 +87,7 @@ namespace SpaceRTS
         {
             lobby = new Lobby();
 
-            #region GameObjects
+            #region GameObjects - Player, texts, add to gameObjects
 
             playerGo = new GameObject();
             player = new Player();
@@ -166,7 +167,7 @@ namespace SpaceRTS
 
             #endregion Component
 
-            #region Server
+            #region Server Thread
 
             sendThread = new Thread(() => client.SendData());
             reciveThread = new Thread(() => ReceiveThread());
@@ -214,28 +215,48 @@ namespace SpaceRTS
             {
                 gameObject.Update(gameTime);
             }
+            int opponentCounter = 0;
+            foreach (GameObject opponent in opponents)
+            {
+                opponent.Update(gameTime);
+                opponentCounter++;
+            }
+            Debug.WriteLine("Counter: " + opponentCounter);
 
             #region Server Beskeder
             string superservermessage;
             superservermessage = serverMessage;
 
-            if (superservermessage != null && superservermessage != serverMessageIsTheSame)
+            if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
             {
-                string[] array = superservermessage.Split('_');
-
-                for (int i = 0; i < array.Length; i++)
+                string[] array = superservermessage.Split('_'); //split into an array at the symbols "_"
+                if (array.Length == 2)
                 {
-                    if (i + 1 > playerInfomationList.Count)
+
+                }
+                for (int i = 0; i < array.Length; i++) //for every 
+                {
+                    if (i + 1 > playerInfomationList.Count) //if haven't gotten through each of the max number in the array
                     {
                         playerInfomationList.Add(array[i].Split('@').ToList());
                     }
                     else
                         playerInfomationList[i] = array[i].Split('@').ToList();
                 }
-                #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                for (int i = 0; i < array.Length; i++)
+                //Done making the playerInfomationList
+                for (int i = 0; i < playerInfomationList.Count; i++)
                 {
-                    if (opponents.Count < playerInfomationList.Count)
+                    //foreach (string[] item in collection)
+                    //{
+
+                    //}
+                }
+                #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
+                
+
+                if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                {
+                    while (opponents.Count < playerInfomationList.Count)
                     {
                         Random rnd = new Random();
                         Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
@@ -245,29 +266,42 @@ namespace SpaceRTS
                         oppSpr.Color = randomColor;
                         oppObj.AddComponent(oppSpr);
                         oppObj.AddComponent(oppOpp);
+                        //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
                         opponents.Add(oppObj);
+                        playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
                         oppObj.Awake();
                         oppObj.Start();
                     }
-                    else if (opponents.Count > playerInfomationList.Count)
-                    {
-                        Debug.WriteLine("ERROR Code 28713");
-                    }
                 }
-                #endregion
-                #region Send position to each Opponent
-                for (int i = 0; i < opponents.Count; i++)
+                if (opponents.Count > playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
-                    string som = playerInfomationList[i][1].ToString();
+                    Debug.WriteLine("Oops, somebody disconnected");
+                }
+                foreach (int id in playersId)
+                {
+                    int lululu = id;
+                    string som = playerInfomationList[id][1].ToString();
                     string cleanString = som.Replace("{X:", "");
                     cleanString = cleanString.Replace("Y:", "");
                     cleanString = cleanString.Replace("}", "");
+                    cleanString = cleanString.Replace(".", ",");
                     string[] xyVals = cleanString.Split(' ');
                     float XPos = float.Parse(xyVals[0]);
                     float YPos = float.Parse(xyVals[1]);
                     string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
                     Debug.WriteLine(client0Message);
-                    opponents[i].transform.Position = new Vector2(XPos, YPos);
+                    opponents[id].transform.Position = new Vector2(XPos, YPos);
+                    
+                }
+
+                #endregion
+                #region Send position to each Opponent
+                for (int i = 0; i < playersId.Count; i++)
+                {
+                    
+                    int test = playersId.Count;
+                    //raw playerInformationList string data: 0 = id, 1 = position, 2 = 
+                    
                 }
                 #endregion
 

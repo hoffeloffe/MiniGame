@@ -65,6 +65,10 @@ namespace Server
                     string playerPosition = "";
                     foreach (PlayerInfo item in PlayerList)
                     {
+                        if (PlayerList.Count == 2)
+                        {
+
+                        }
                         for (int i = 0; i < PlayerList.Count; i++)
                         {
                             if (PlayerList[i].position != null || PlayerList[i].position != "")
