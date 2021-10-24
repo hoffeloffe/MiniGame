@@ -10,13 +10,13 @@ namespace NotAGame
 {
     class MiniGamesManager
     {
-        private int currentGame = 0;
+        private int currentGame;
         MiniGameTest miniGame = new MiniGameTest();
         private bool noHoldDown = false;
 
         public MiniGamesManager()
         {
-
+            currentGame = 0;
         }
 
         public void ChangeGame()
@@ -25,31 +25,34 @@ namespace NotAGame
 
             if (key.IsKeyDown(Keys.M) && noHoldDown == false)
             {
-                ++currentGame;
+                currentGame += 1;
                 noHoldDown = true;
             }
         }
 
         public void DrawNextGame(SpriteBatch spriteBatch)
         {
-            
+            switch (currentGame)
+            {
+                case 1:
+                    miniGame.DrawEmil(spriteBatch);
+                    foreach (GameObject game in GameWorld.Instance.GameObjects)
+                    {
+                        if (game.Tag == "Tile")
+                        {
+                            GameWorld.Instance.UnloadGame(game);
+                        }
+                    }
+                    break;
+                case 2:
+                    //Lobby lobby = new Lobby();
+                    break;
+            }
             if (currentGame < 5)
             {
-                switch (currentGame)
-                {
-                    case 1:
-                        miniGame.DrawEmil(spriteBatch);
-                        break;
-                    case 2:
-                        Lobby lobby = new Lobby();
-                        break;
-                }
                 noHoldDown = false;
             }
-            else
-            {
-                currentGame = 0;
-            }
+           
         }
 
     }

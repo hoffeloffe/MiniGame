@@ -34,7 +34,6 @@ namespace SpaceRTS
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Lobby lobby;
         private Player player;
         private int masterCounter;
         private string som;
@@ -299,6 +298,14 @@ namespace SpaceRTS
 
             base.Draw(gameTime);
             _spriteBatch.End();
+        }
+
+        public void UnloadGame(GameObject go)
+        {
+            if (go.Tag == "Tiles")
+            {
+                gameObjects.Remove(go);
+            }
         }
 
         #region Thread Method
