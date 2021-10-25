@@ -30,13 +30,14 @@ namespace SpaceRTS
                 return instance;
             }
         }
+
         #endregion Singleton
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
-        Random rnd = new Random();
-        Color yourColor;
+        private Random rnd = new Random();
+        private Color yourColor;
         private List<int> playersId = new List<int>();
         private string name = "NoName";
         private List<string> names = new List<string>() { "Jeff", "John", "Joe", "Jack", "Jim", "Peter", "Paul", "Ticky", "Tennis", "Egg Salad", "Dingus", "Fred", "Mango", "Cupcake", "Snowball", "Dragonborn" };
@@ -65,7 +66,6 @@ namespace SpaceRTS
         public static bool changeGame = false;
         private MiniGamesManager gameManager;
         public static Texture2D Emil;
-
 
         private Client client = new Client();
         private string serverMessage;
@@ -98,13 +98,13 @@ namespace SpaceRTS
             // #region GameObjects - Player, texts, add to gameObjects
 
             #region Component
-            
+
             playerGo = new GameObject();
             player = new Player();
             playerGo.AddComponent(player);
             playerGo.AddComponent(new SpriteRenderer());
             gameObjects.Add(playerGo);
-            
+
             yourColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             Random r = new Random();
             int index = r.Next(names.Count);
@@ -196,7 +196,6 @@ namespace SpaceRTS
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -234,28 +233,27 @@ namespace SpaceRTS
             Debug.WriteLine("Counter: " + opponentCounter);
 
             #region Client/Server
+
             #region Server Beskeder
+
             string superservermessage;
             superservermessage = serverMessage;
 
             if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
             {
-                string[] array = superservermessage.Split('_'); //split into an array at the symbols "_"
-                if (array.Length == 2)
-                {
-
-                }
-                for (int i = 0; i < array.Length; i++) //for every 
-                {
-                    if (i + 1 > playerInfomationList.Count) //if haven't gotten through each of the max number in the array
-                    {
-                        playerInfomationList.Add(array[i].Split('@').ToList());
-                    }
-                    else
-                        playerInfomationList[i] = array[i].Split('@').ToList();
-                }
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                
+
+                if (superservermessage.StartsWith("PO"))
+                {
+                    superservermessage.Split("_").ToArray();
+                    Vector2 playerPosition = superservermessage[0];
+                }
+
+                if (superservermessage.StartsWith("ID"))
+                {
+                    superservermessage.Remove(0, 2);
+                    if (superservermessage != playersId)
+                }
 
                 if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
@@ -290,12 +288,14 @@ namespace SpaceRTS
                     UpdateName(id);
                 }
 
-                #endregion Create Opponent GameObjects
+                #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
                 serverMessageIsTheSame = superservermessage;
             }
-            #endregion Client/Server
+
             #endregion Server Beskeder
+
+            #endregion Client/Server
 
             // position + message + totalPoints +  minigamePoints + done + failed username + color;
             //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
@@ -331,6 +331,7 @@ namespace SpaceRTS
         }
 
         #region Thread Method
+
         public void ReceiveThread()
         {
             while (true)
@@ -346,7 +347,9 @@ namespace SpaceRTS
                 client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
             }
         }
+
         #endregion Thread Method
+
         public void UpdatePos(int id)
         {
             string som = playerInfomationList[id][1].ToString();
@@ -361,6 +364,7 @@ namespace SpaceRTS
             Debug.WriteLine(client0Message);
             opponents[id].transform.Position = new Vector2(XPos, YPos);
         }
+
         public void UpdateColor(int id)
         {
             string som = playerInfomationList[id][8].ToString();
@@ -381,6 +385,7 @@ namespace SpaceRTS
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
         }
+
         public void UpdateName(int id)
         {
             string som = playerInfomationList[id][8].ToString();

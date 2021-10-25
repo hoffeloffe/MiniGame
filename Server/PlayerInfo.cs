@@ -8,31 +8,25 @@ namespace Server
 {
     public class PlayerInfo
     {
-        public string position;
-        public string ip;
-        public string port;
-        public string message;
-        public float totalPoints;
-        public float minigamePoints;
-        public bool done;
-        public bool failed;
-        public string username;
-        public string color;
+        public int id { get; set; }
+        public string position { get; set; }
+        public string ip { get; set; }
+        public string port { get; set; }
+        public string message { get; set; }
+        public float totalPoints { get; set; }
+        public float minigamePoints { get; set; }
+        public bool done { get; set; }
+        public bool failed { get; set; }
+        public string username { get; set; }
+        public string color { get; set; }
 
         //, string message, float totalpoints, float minigamePoints, bool done, bool failed, string username, string color
         //i + position + message + totalPoints + minigamePoints + done + "@" failed + username + color;
-        public PlayerInfo(string ip, string port, string position, string message, int totalPoints, int minigamePoints, bool done, bool failed, string username, string color)
+        public PlayerInfo(int id, string ip, string port)
         {
+            this.id = id;
             this.ip = ip;
             this.port = port;
-            this.position = position;
-            this.message = message;
-            this.totalPoints = totalPoints;
-            this.minigamePoints = minigamePoints;
-            this.done = done;
-            this.failed = failed;
-            this.username = username;
-            this.color = color;
 
             Random rnd = new Random();
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
@@ -43,7 +37,6 @@ namespace Server
         public Color playerColor;
     }
 }
-
 
 //this.totalPoints = Convert.ToInt32(totalPoints);
 //this.minigamePoints = Convert.ToInt32(minigamePoints);

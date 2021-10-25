@@ -13,7 +13,7 @@ namespace NotAGame
         // This constructor arbitrarily assigns the local port number.
         public UdpClient udpClient = new UdpClient(19785);
 
-        private string serverip = "84.238.40.2";
+        private string serverip = "10.131.68.93";
         private int serverPort = 12000;
         public ConcurrentQueue<string> cq = new ConcurrentQueue<string>();
 
@@ -49,7 +49,7 @@ namespace NotAGame
                 Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
 
                 udpClient.Send(sendBytes, sendBytes.Length, serverip, serverPort);
-                Thread.Sleep(100);
+                Thread.Sleep(200);
             }
             catch (Exception e)
             {
