@@ -10,12 +10,30 @@ namespace NotAGame
 {
     class MiniGamesManager
     {
-        private int currentGame;
-        MiniGameTest miniGame = new MiniGameTest();
+        #region Singleton
+        private static MiniGamesManager instance;
+        public static MiniGamesManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MiniGamesManager();
+                }
+                return instance;
+            }
+        }
+        #endregion Singleton
+        public int currentGame;
+        MiniGameTest miniGame;
+        Lobby lobby;
+
         private bool noHoldDown = false;
 
         public MiniGamesManager()
         {
+            lobby = new Lobby();
+            miniGame = new MiniGameTest();
             currentGame = 0;
         }
 
@@ -36,20 +54,14 @@ namespace NotAGame
             {
                 case 1:
                     miniGame.DrawEmil(spriteBatch);
-                    foreach (GameObject game in GameWorld.Instance.GameObjects)
-                    {
-                        if (game.Tag == "Tile")
-                        {
-                            GameWorld.Instance.UnloadGame(game);
-                        }
-                    }
                     break;
                 case 2:
-                    //Lobby lobby = new Lobby();
+                    lobby.LobbyMaker();
                     break;
             }
-            if (currentGame < 5)
+            if (currentGame > 5)
             {
+                currentGame = 0;
                 noHoldDown = false;
             }
            

@@ -43,6 +43,7 @@ namespace NotAGame.Component
             switch (GameWorld.changeGame)
             {
                 case false:
+                    MiniGamesManager.Instance.currentGame++;
                     GameWorld.changeGame = true;
                     break;
                 case true:

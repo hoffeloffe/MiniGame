@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NotAGame.Component;
 using SpaceRTS;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,17 @@ namespace NotAGame.MiniGames
 
         public void DrawEmil(SpriteBatch spriteBatch)
         {
-                spriteBatch.Draw(GameWorld.Emil, new Vector2(500, 970), null, Color.White, 01f, Vector2.Zero, 1, SpriteEffects.None, 0);
+            GameObject emilGO = new GameObject();
+            SpriteRenderer sr = new SpriteRenderer();
+            emilGO.AddComponent(sr);
+            emilGO.AddComponent(new MiniGame());
+
+            sr.Scale = 1;
+            sr.SetSpriteName("Emil");
+            sr.Layerdepth = 0;
+            emilGO.transform.Position = new Vector2(500, 970);
+            GameWorld.Instance.Games.Add(emilGO);
+            
         }
     }
 }

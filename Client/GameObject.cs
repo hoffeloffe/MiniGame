@@ -12,7 +12,6 @@ namespace SpaceRTS
     public class GameObject
     {
         #region fields
-
         protected Texture2D sprite;
         protected Vector2 position;
         protected Color color;

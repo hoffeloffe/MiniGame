@@ -39,8 +39,7 @@ namespace SpaceRTS
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
 
-        private List<GameObject> gameObjects = new List<GameObject>();
-
+        private List<GameObject> gameObjects;
         public List<GameObject> GameObjects
         {
             get
@@ -57,11 +56,12 @@ namespace SpaceRTS
         private GameObject playerGo;
         private List<Player> players = new List<Player>();
 
+        #region Mini games manager fields
         public static bool changeGame = false;
-        private MiniGamesManager gameManager;
         public static Texture2D Emil;
+        #endregion
 
-
+        #region server/client fields
         private Client client = new Client();
         private string serverMessage;
         private List<List<string>> playerInfomationList = new List<List<string>>();
@@ -72,6 +72,7 @@ namespace SpaceRTS
         private readonly object recivelock = new object();
         private readonly object sendlock = new object();
         private string serverMessageIsTheSame;
+        #endregion
 
         public float DeltaTime { get; set; }
 
@@ -87,10 +88,8 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
-            gameManager = new MiniGamesManager();
-
             #region Component
-            
+            gameObjects = new List<GameObject>();
             playerGo = new GameObject();
             player = new Player();
             playerGo.AddComponent(player);
@@ -167,8 +166,7 @@ namespace SpaceRTS
             {
                 opponent.Awake();
             }
-
-            #endregion Component
+            #endregion Componenent
 
             #region Server
 
@@ -207,7 +205,7 @@ namespace SpaceRTS
             }
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
-            gameManager.ChangeGame();
+            MiniGamesManager.Instance.ChangeGame();
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -294,14 +292,31 @@ namespace SpaceRTS
                 opponent.Draw(_spriteBatch);
             }
 
-            gameManager.DrawNextGame(_spriteBatch);
+            MiniGamesManager.Instance.DrawNextGame(_spriteBatch);
+
 
             base.Draw(gameTime);
             _spriteBatch.End();
         }
 
+        List<GameObject> games = new List<GameObject>();
+        public List<GameObject> Games 
+        {
+            get
+            {
+                return games;
+            }
+
+            set
+            {
+                games = value;
+            }
+        }
+
+
         public void UnloadGame(GameObject go)
         {
+
             if (go.Tag == "Tiles")
             {
                 gameObjects.Remove(go);
