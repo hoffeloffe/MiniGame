@@ -36,6 +36,8 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Lobby lobby;
+        Random rnd = new Random();
+        Color yourColor;
         //private GrowingArray playersArray = new GrowingArray();
         private List<int> playersId = new List<int>();
         private Player player;
@@ -94,6 +96,7 @@ namespace SpaceRTS
             playerGo.AddComponent(player);
             playerGo.AddComponent(new SpriteRenderer());
             gameObjects.Add(playerGo);
+            yourColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
             #region Tekst
 
@@ -258,7 +261,7 @@ namespace SpaceRTS
                 {
                     while (opponents.Count < playerInfomationList.Count)
                     {
-                        Random rnd = new Random();
+                        rnd = new Random();
                         Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                         GameObject oppObj = new GameObject();
                         SpriteRenderer oppSpr = new SpriteRenderer();
@@ -279,19 +282,7 @@ namespace SpaceRTS
                 }
                 foreach (int id in playersId)
                 {
-                    int lululu = id;
-                    string som = playerInfomationList[id][1].ToString();
-                    string cleanString = som.Replace("{X:", "");
-                    cleanString = cleanString.Replace("Y:", "");
-                    cleanString = cleanString.Replace("}", "");
-                    cleanString = cleanString.Replace(".", ",");
-                    string[] xyVals = cleanString.Split(' ');
-                    float XPos = float.Parse(xyVals[0]);
-                    float YPos = float.Parse(xyVals[1]);
-                    string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
-                    Debug.WriteLine(client0Message);
-                    opponents[id].transform.Position = new Vector2(XPos, YPos);
-                    
+                    UpdateName(id);
                 }
 
                 #endregion
@@ -308,8 +299,9 @@ namespace SpaceRTS
                 serverMessageIsTheSame = superservermessage;
             }
             #endregion
-
-            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1");
+            // position + message + totalPoints +  minigamePoints + done + failed username + color;
+            //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
+            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + "Bob" + "@" + yourColor);
             base.Update(gameTime);
         }
 
@@ -328,6 +320,37 @@ namespace SpaceRTS
 
             base.Draw(gameTime);
             _spriteBatch.End();
+        }
+        public void UpdateName(int id)
+        {
+            string som = playerInfomationList[id][1].ToString();
+            string cleanString = som.Replace("{X:", "");
+            cleanString = cleanString.Replace("Y:", "");
+            cleanString = cleanString.Replace("}", "");
+            cleanString = cleanString.Replace(".", ",");
+            string[] xyVals = cleanString.Split(' ');
+            float XPos = float.Parse(xyVals[0]);
+            float YPos = float.Parse(xyVals[1]);
+            string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
+            Debug.WriteLine(client0Message);
+            opponents[id].transform.Position = new Vector2(XPos, YPos);
+        }
+        public void UpdateColor(int id)
+        {
+            string som = playerInfomationList[id][8].ToString();
+            string cleanString = som.Replace("{R:", "");
+            cleanString = cleanString.Replace("G:", "");
+            cleanString = cleanString.Replace("B:", "");
+            cleanString = cleanString.Replace("A:255}", "");
+            cleanString = cleanString.Replace(".", ",");
+            string[] xyVals = cleanString.Split(' ');
+            float R = Convert.ToInt32(xyVals[0]);
+            float G = Convert.ToInt32(xyVals[1]);
+            float B = Convert.ToInt32(xyVals[1]);
+            //string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
+            //Debug.WriteLine(client0Message);
+            SpriteRenderer sr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+            sr.Color = new Color(R, G, B);
         }
     }
 }
