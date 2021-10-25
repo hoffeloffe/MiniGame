@@ -52,3 +52,17 @@ C:\Users\Hoffe\Documents\GitHub\fictional-journey2\Server\obj\Debug\netcoreapp3.
 C:\Users\Hoffe\Documents\GitHub\fictional-journey2\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\Hoffe\Documents\GitHub\fictional-journey2\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\Hoffe\Documents\GitHub\fictional-journey2\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csproj.AssemblyReference.cache
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.dll
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.pdb
+C:\Users\mikke\Documents\Program Files\GitHub\Institute\Dan\fictional-journey\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache

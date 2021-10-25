@@ -20,6 +20,7 @@ namespace SpaceRTS
         protected float rotation;
         protected int offsetX;
         protected int offsetY;
+        protected int id;
 
         #endregion fields
 
@@ -27,6 +28,7 @@ namespace SpaceRTS
 
         private Dictionary<string, Component> components = new Dictionary<string, Component>();
         public string Tag { get; set; }
+        public int Id { get; set; }
         public Transform transform { get; set; }
 
         public GameObject()
