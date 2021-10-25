@@ -191,7 +191,7 @@ namespace SpaceRTS
             sendThread.Start();
             reciveThread.Start();
 
-            #endregion Server
+            #endregion Server Thread
 
             base.Initialize();
         }
@@ -290,20 +290,13 @@ namespace SpaceRTS
                     UpdateName(id);
                 }
 
-                #endregion
-                #region Send position to each Opponent
-                for (int i = 0; i < playersId.Count; i++)
-                {
-                    
-                    int test = playersId.Count;
-                    //raw playerInformationList string data: 0 = id, 1 = position, 2 = 
-                    
-                }
-                #endregion
+                #endregion Create Opponent GameObjects
 
                 serverMessageIsTheSame = superservermessage;
             }
-            #endregion
+            #endregion Client/Server
+            #endregion Server Beskeder
+
             // position + message + totalPoints +  minigamePoints + done + failed username + color;
             //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
             client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + name + "@" + yourColor);
@@ -353,7 +346,7 @@ namespace SpaceRTS
                 client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
             }
         }
-        #endregion
+        #endregion Thread Method
         public void UpdatePos(int id)
         {
             string som = playerInfomationList[id][1].ToString();
