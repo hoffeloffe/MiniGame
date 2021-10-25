@@ -34,8 +34,13 @@ namespace SpaceRTS
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Lobby lobby;
+        Random rnd = new Random();
+        Color yourColor;
+        private List<int> playersId = new List<int>();
+        private string name = "NoName";
+        private List<string> names = new List<string>() { "Jeff", "John", "Joe", "Jack", "Jim", "Peter", "Paul", "Ticky", "Tennis", "Egg Salad", "Dingus", "Fred", "Mango", "Cupcake", "Snowball", "Dragonborn" };
         private Player player;
-        private int masterCounter;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
 
@@ -88,6 +93,9 @@ namespace SpaceRTS
         protected override void Initialize()
         {
             gameManager = new MiniGamesManager();
+            lobby = new Lobby();
+
+            // #region GameObjects - Player, texts, add to gameObjects
 
             #region Component
             
@@ -97,6 +105,10 @@ namespace SpaceRTS
             playerGo.AddComponent(new SpriteRenderer());
             gameObjects.Add(playerGo);
             
+            yourColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            Random r = new Random();
+            int index = r.Next(names.Count);
+            name = names[index];
 
             #region Tekst
 
@@ -170,7 +182,7 @@ namespace SpaceRTS
 
             #endregion Component
 
-            #region Server
+            #region Server Thread
 
             sendThread = new Thread(() => client.SendData());
             reciveThread = new Thread(() => ReceiveThread());
@@ -213,71 +225,88 @@ namespace SpaceRTS
             {
                 gameObject.Update(gameTime);
             }
+            int opponentCounter = 0;
+            foreach (GameObject opponent in opponents)
+            {
+                opponent.Update(gameTime);
+                opponentCounter++;
+            }
+            Debug.WriteLine("Counter: " + opponentCounter);
 
             #region Client/Server
             #region Server Beskeder
             string superservermessage;
             superservermessage = serverMessage;
 
-            if (superservermessage != null && superservermessage != serverMessageIsTheSame)
+            if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
             {
-                string[] array = superservermessage.Split('_');
-
-                for (int i = 0; i < array.Length; i++)
+                string[] array = superservermessage.Split('_'); //split into an array at the symbols "_"
+                if (array.Length == 2)
                 {
-                    if (i + 1 > playerInfomationList.Count)
+
+                }
+                for (int i = 0; i < array.Length; i++) //for every 
+                {
+                    if (i + 1 > playerInfomationList.Count) //if haven't gotten through each of the max number in the array
                     {
                         playerInfomationList.Add(array[i].Split('@').ToList());
                     }
                     else
                         playerInfomationList[i] = array[i].Split('@').ToList();
                 }
-                #endregion
-
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                for (int i = 0; i < array.Length; i++)
+                
+
+                if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
-                    if (opponents.Count < playerInfomationList.Count)
+                    while (opponents.Count < playerInfomationList.Count)
                     {
-                        Random rnd = new Random();
-                        Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                        rnd = new Random();
+                        //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                         GameObject oppObj = new GameObject();
                         SpriteRenderer oppSpr = new SpriteRenderer();
                         Opponent oppOpp = new Opponent();
-                        oppSpr.Color = randomColor;
+                        //oppSpr.Color = randomColor;
                         oppObj.AddComponent(oppSpr);
                         oppObj.AddComponent(oppOpp);
+                        //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
                         opponents.Add(oppObj);
+                        playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
+                        oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
+                        oppSpr.hasLabel = true;
+                        oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
                         oppObj.Awake();
                         oppObj.Start();
                     }
-                    else if (opponents.Count > playerInfomationList.Count)
-                    {
-                        Debug.WriteLine("ERROR Code 28713");
-                    }
                 }
+                if (opponents.Count > playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                {
+                    Debug.WriteLine("Oops, somebody disconnected");
+                }
+                foreach (int id in playersId)
+                {
+                    UpdatePos(id);
+                    UpdateColor(id);
+                    UpdateName(id);
+                }
+
                 #endregion
                 #region Send position to each Opponent
-                for (int i = 0; i < opponents.Count; i++)
+                for (int i = 0; i < playersId.Count; i++)
                 {
-                    string som = playerInfomationList[i][1].ToString();
-                    string cleanString = som.Replace("{X:", "");
-                    cleanString = cleanString.Replace("Y:", "");
-                    cleanString = cleanString.Replace("}", "");
-                    string[] xyVals = cleanString.Split(' ');
-                    float XPos = float.Parse(xyVals[0]);
-                    float YPos = float.Parse(xyVals[1]);
-                    string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
-                    Debug.WriteLine(client0Message);
-                    opponents[i].transform.Position = new Vector2(XPos, YPos);
+                    
+                    int test = playersId.Count;
+                    //raw playerInformationList string data: 0 = id, 1 = position, 2 = 
+                    
                 }
                 #endregion
 
                 serverMessageIsTheSame = superservermessage;
             }
             #endregion
-
-            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1");
+            // position + message + totalPoints +  minigamePoints + done + failed username + color;
+            //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
+            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + name + "@" + yourColor);
             base.Update(gameTime);
         }
 
@@ -325,5 +354,47 @@ namespace SpaceRTS
             }
         }
         #endregion
+        public void UpdatePos(int id)
+        {
+            string som = playerInfomationList[id][1].ToString();
+            string cleanString = som.Replace("{X:", "");
+            cleanString = cleanString.Replace("Y:", "");
+            cleanString = cleanString.Replace("}", "");
+            cleanString = cleanString.Replace(".", ",");
+            string[] xyVals = cleanString.Split(' ');
+            float XPos = float.Parse(xyVals[0]);
+            float YPos = float.Parse(xyVals[1]);
+            string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
+            Debug.WriteLine(client0Message);
+            opponents[id].transform.Position = new Vector2(XPos, YPos);
+        }
+        public void UpdateColor(int id)
+        {
+            string som = playerInfomationList[id][8].ToString();
+            string cleanString = som.Replace("{R:", "");
+            cleanString = cleanString.Replace("G:", "");
+            cleanString = cleanString.Replace("B:", "");
+            cleanString = cleanString.Replace("A:255}", "");
+            cleanString = cleanString.Replace(".", ",");
+            string[] xyVals = cleanString.Split(' ');
+            int R = Convert.ToInt32(xyVals[0]);
+            int G = Convert.ToInt32(xyVals[1]);
+            int B = Convert.ToInt32(xyVals[2]);
+            //string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
+            //Debug.WriteLine(client0Message);
+            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+            Color newColor = new Color(R, G, B);
+            srr.Color = newColor;
+            //srr.Color = new Color(R, G, B);
+            Debug.WriteLine(srr.Color);
+        }
+        public void UpdateName(int id)
+        {
+            string som = playerInfomationList[id][8].ToString();
+            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+            srr.Text = playerInfomationList[id][0] + " " + playerInfomationList[id][7];
+            //srr.Color = new Color(R, G, B);
+            Debug.WriteLine(srr.Color);
+        }
     }
 }

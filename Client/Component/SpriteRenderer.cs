@@ -14,20 +14,20 @@ namespace NotAGame.Component
         public float Scale { get; set; } = 1f;
         public Random rnd = new Random();
         public Color Color { get; set; } = Color.White;
-        public string Text { get; set; } = "Undefined";
         public float Rotation { get; set; }
         public bool Spin { get; set; } = false;
         public float Layerdepth { get; set; }
 
-        //Font Properties
+        #region Text/Font Properties
         public SpriteFont Font { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/Arial");
-
         public SpriteFont FontOut { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/HandsOut");
+        public string Text { get; set; } = "Undefined";
         public Color Color2 { get; set; } = Color.Black;
         public bool hasOutline { get; set; } = false;
         public bool hasShadow { get; set; } = false;
+        public bool hasLabel { get; set; } = false;
+        #endregion
 
-        //public Vector2 Position{ get; set; }
         public void SetSpriteName(string spriteName)
         {
             Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
@@ -37,15 +37,20 @@ namespace NotAGame.Component
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color, 0f, Origin, Scale, SpriteEffects.None, Layerdepth);
+
+            if (hasLabel)//Draw text above the sprite.
+            {
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 15, GameObject.transform.Position.Y + -40f), Color.White, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+            }
         }
 
         public override void DrawString(SpriteBatch spriteBatch)
         {
-            if (hasOutline)
+            if (hasOutline) //outdated
             {
                 spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, Scale, SpriteEffects.None, 1f);
             }
-            if (hasShadow)
+            if (hasShadow) //Draws a black font with offset before the main font.
             {
                 spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, Scale, SpriteEffects.None, 1f);
             }
