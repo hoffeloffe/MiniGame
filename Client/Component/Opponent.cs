@@ -33,6 +33,7 @@ namespace NotAGame.Component
         {
             sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Sprites/dog_stand");
+            sr.Color = new Color(0, 0, 0);
         }
         public override void Update(GameTime gametime)
         {

@@ -262,11 +262,11 @@ namespace SpaceRTS
                     while (opponents.Count < playerInfomationList.Count)
                     {
                         rnd = new Random();
-                        Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                        //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                         GameObject oppObj = new GameObject();
                         SpriteRenderer oppSpr = new SpriteRenderer();
                         Opponent oppOpp = new Opponent();
-                        oppSpr.Color = randomColor;
+                        //oppSpr.Color = randomColor;
                         oppObj.AddComponent(oppSpr);
                         oppObj.AddComponent(oppOpp);
                         //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
@@ -283,6 +283,7 @@ namespace SpaceRTS
                 foreach (int id in playersId)
                 {
                     UpdateName(id);
+                    UpdateColor(id);
                 }
 
                 #endregion
@@ -344,13 +345,16 @@ namespace SpaceRTS
             cleanString = cleanString.Replace("A:255}", "");
             cleanString = cleanString.Replace(".", ",");
             string[] xyVals = cleanString.Split(' ');
-            float R = Convert.ToInt32(xyVals[0]);
-            float G = Convert.ToInt32(xyVals[1]);
-            float B = Convert.ToInt32(xyVals[1]);
+            int R = Convert.ToInt32(xyVals[0]);
+            int G = Convert.ToInt32(xyVals[1]);
+            int B = Convert.ToInt32(xyVals[2]);
             //string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
             //Debug.WriteLine(client0Message);
-            SpriteRenderer sr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
-            sr.Color = new Color(R, G, B);
+            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+            Color newColor = new Color(R, G, B);
+            srr.Color = newColor;
+            //srr.Color = new Color(R, G, B);
+            Debug.WriteLine(srr.Color);
         }
     }
 }
