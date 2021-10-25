@@ -38,8 +38,9 @@ namespace SpaceRTS
         private Lobby lobby;
         Random rnd = new Random();
         Color yourColor;
-        //private GrowingArray playersArray = new GrowingArray();
         private List<int> playersId = new List<int>();
+        private string name = "NoName";
+        private List<string> names = new List<string>() { "Jeff", "John", "Joe", "Jack", "Jim", "Peter", "Paul", "Ticky", "Tennis", "Egg Salad", "Dingus", "Fred", "Mango", "Cupcake", "Snowball", "Dragonborn" };
         private Player player;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
@@ -97,6 +98,9 @@ namespace SpaceRTS
             playerGo.AddComponent(new SpriteRenderer());
             gameObjects.Add(playerGo);
             yourColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            Random r = new Random();
+            int index = r.Next(names.Count);
+            name = names[index];
 
             #region Tekst
 
@@ -272,6 +276,9 @@ namespace SpaceRTS
                         //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
                         opponents.Add(oppObj);
                         playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
+                        oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
+                        oppSpr.hasLabel = true;
+                        oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
                         oppObj.Awake();
                         oppObj.Start();
                     }
@@ -282,8 +289,9 @@ namespace SpaceRTS
                 }
                 foreach (int id in playersId)
                 {
-                    UpdateName(id);
+                    UpdatePos(id);
                     UpdateColor(id);
+                    UpdateName(id);
                 }
 
                 #endregion
@@ -302,7 +310,7 @@ namespace SpaceRTS
             #endregion
             // position + message + totalPoints +  minigamePoints + done + failed username + color;
             //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
-            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + "Bob" + "@" + yourColor);
+            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + name + "@" + yourColor);
             base.Update(gameTime);
         }
 
@@ -322,7 +330,7 @@ namespace SpaceRTS
             base.Draw(gameTime);
             _spriteBatch.End();
         }
-        public void UpdateName(int id)
+        public void UpdatePos(int id)
         {
             string som = playerInfomationList[id][1].ToString();
             string cleanString = som.Replace("{X:", "");
@@ -353,6 +361,14 @@ namespace SpaceRTS
             SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
             Color newColor = new Color(R, G, B);
             srr.Color = newColor;
+            //srr.Color = new Color(R, G, B);
+            Debug.WriteLine(srr.Color);
+        }
+        public void UpdateName(int id)
+        {
+            string som = playerInfomationList[id][8].ToString();
+            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+            srr.Text = playerInfomationList[id][0] + " " + playerInfomationList[id][7];
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
         }
