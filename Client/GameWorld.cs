@@ -256,27 +256,35 @@ namespace SpaceRTS
                 if (superservermessage.StartsWith("PO"))
                 {
                     superservermessage = superservermessage.Remove(0, 2);
-                    string[] abc = superservermessage.Split("_");
-                    string ID = abc[1].ToString();
-                    string Position = abc[0].ToString();
+                    string[] serverMsgArray = superservermessage.Split("_");
+                    string ID = serverMsgArray[1].ToString();
+                    string Position = serverMsgArray[0].ToString();
 
                     if (playerInfomationList.Count == 0)
                     {
                         playerInfomationList.Add(new string[] { ID, Position });
                         CreateOpponentObj();
                     }
-                    UpdatePos(Convert.ToInt32(ID), Position);
-                    //foreach (var item in playerInfomationList)
-                    //{
+                    else
+                    {
+                        for (int i = 0; i < playerInfomationList.Count; i++)
+                        {
+                            if (!playerInfomationList[i].Contains(serverMsgArray[1]))
+                            {
+                                playerInfomationList.Add(new string[] { ID, Position });
+                                CreateOpponentObj();
+                            }
+                            else
+                                playerInfomationList[Int32.Parse(ID)][1] = Position;
+                        }
+                        foreach (var item in playerInfomationList)
+                        {
 
-                    //    if (!item.Contains(superservermessage[1].ToString()))
-                    //    {
-                    //        playerInfomationList.Add(new string[] { ID, Position });
-                    //        CreateOpponentObj();
-                    //    }
-                    //    else
-                    //        playerInfomationList[Int32.Parse(ID)][1] = Position;
-                    //}
+                            
+                        }
+                    }
+                    UpdatePos(Convert.ToInt32(ID), Position);
+                    
                     serverMessageIsTheSame = "PO" + superservermessage;
                 }
                 
