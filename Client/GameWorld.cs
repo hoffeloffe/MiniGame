@@ -74,6 +74,7 @@ namespace SpaceRTS
         private Client client = new Client();
         private string serverMessage;
         private List<string[]> playerInfomationList = new List<string[]>();
+        private int plInfoListCountIsTheSame = 0;
         private Color color;
         private Thread sendThread;
         private Thread reciveThread;
@@ -265,7 +266,7 @@ namespace SpaceRTS
                         playerInfomationList.Add(new string[] { ID, Position });
                         CreateOpponentObj();
                     }
-                    else
+                    if (playerInfomationList.Count != plInfoListCountIsTheSame)
                     {
                         bool foundID = false;
                         for (int i = 0; i < playerInfomationList.Count; i++)
@@ -289,6 +290,7 @@ namespace SpaceRTS
                             CreateOpponentObj();
                         }
                     }
+                    
                     UpdatePos(Convert.ToInt32(ID), Position);
                     
                     serverMessageIsTheSame = "PO" + superservermessage;
@@ -414,7 +416,7 @@ namespace SpaceRTS
 
                 #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
-
+                plInfoListCountIsTheSame++;
             }
 
             #endregion Server Beskeder
