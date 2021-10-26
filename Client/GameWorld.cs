@@ -44,6 +44,7 @@ namespace SpaceRTS
         private Player player;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
+        private int OpponentGOBJCounter = 0;
         public int playerID;
         public int totalPoints = 0;
         public int changeInTotalPoints = 0;
@@ -229,13 +230,11 @@ namespace SpaceRTS
             {
                 gameObject.Update(gameTime);
             }
-            int opponentCounter = 0;
+            
             foreach (GameObject opponent in opponents)
             {
                 opponent.Update(gameTime);
-                opponentCounter++;
             }
-            Debug.WriteLine("Counter: " + opponentCounter);
 
             #region Client/Server
 
@@ -486,10 +485,9 @@ namespace SpaceRTS
             string[] xyVals = cleanString.Split(' ');
             float XPos = float.Parse(xyVals[0]);
             float YPos = float.Parse(xyVals[1]);
-            string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
-            Debug.WriteLine(client0Message);
             opponents[id].transform.Position = new Vector2(XPos, YPos);
             playerInfomationList[id][1] = value;
+            Debug.WriteLine("OppList id " + id + ": upd. position X: " + XPos + ", Y: " + YPos + " = " + opponents[id].transform.Position + ", InfoValue: " + playerInfomationList[id][1]);
         }
 
         public void UpdateColor(int id)
@@ -534,11 +532,13 @@ namespace SpaceRTS
             //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
             opponents.Add(oppObj);
             //playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
-            oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
-            oppSpr.hasLabel = true;
-            oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
+            //oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
+            //oppSpr.hasLabel = true;
+            //oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
             oppObj.Awake();
             oppObj.Start();
+
+            Debug.WriteLine("= " + opponents.Count + " total Opponent Objects, 1 new.");
         }
     }
 }

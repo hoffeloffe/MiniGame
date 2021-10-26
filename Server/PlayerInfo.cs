@@ -21,17 +21,17 @@ namespace Server
         public string color { get; set; }
 
         //, string message, float totalpoints, float minigamePoints, bool done, bool failed, string username, string color
-        //i + position + message + totalPoints + minigamePoints + done + "@" failed + username + color;
+        //i + position + message + totalRPoints + minigamePoints + done + "@" failed + username + color;
         public PlayerInfo(int id, string ip, string port)
         {
             this.id = id;
             this.ip = ip;
             this.port = port;
 
-            Random rnd = new Random();
-            Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-            Console.WriteLine(randomColor);
-            randomColor = playerColor;
+            //Random rnd = new Random();
+            //Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            //Console.WriteLine(randomColor);
+            //randomColor = playerColor;
         }
 
         public Color playerColor;
