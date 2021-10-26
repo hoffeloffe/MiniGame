@@ -239,7 +239,11 @@ namespace SpaceRTS
             #region Client/Server
 
             #region Server Beskeder
-
+            if (playerGo.transform.Position != changeInPosition)
+            {
+                client.cq.Enqueue("PO" + playerGo.transform.Position);
+                changeInPosition = playerGo.transform.Position;
+            }
             string superservermessage;
             superservermessage = serverMessage;
 
@@ -247,36 +251,54 @@ namespace SpaceRTS
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
-                if (playerGo.transform.Position != changeInPosition)
-                {
-                    client.cq.Enqueue("PO" + playerGo.transform.Position);
-                    changeInPosition = playerGo.transform.Position;
-                }
+                
 
                 if (superservermessage.StartsWith("PO"))
                 {
-                    superservermessage.Remove(0, 2);
-                    superservermessage.Split("_");
-                    foreach (var item in playerInfomationList)
-                    {
-                        string ID = superservermessage[1].ToString();
-                        string Position = superservermessage[0].ToString();
+                    superservermessage = superservermessage.Remove(0, 2);
+                    string[] abc = superservermessage.Split("_");
+                    string ID = abc[1].ToString();
+                    string Position = abc[0].ToString();
 
-                        if (!item.Contains(superservermessage[1].ToString()))
-                        {
-                            playerInfomationList.Add(new string[] { ID, Position });
-                        }
-                        else
-                            playerInfomationList[Int32.Parse(ID)][1] = Position;
+                    if (playerInfomationList.Count == 0)
+                    {
+                        playerInfomationList.Add(new string[] { ID, Position });
+                        CreateOpponentObj();
                     }
+                    UpdatePos(Convert.ToInt32(ID), Position);
+                    //foreach (var item in playerInfomationList)
+                    //{
+
+                    //    if (!item.Contains(superservermessage[1].ToString()))
+                    //    {
+                    //        playerInfomationList.Add(new string[] { ID, Position });
+                    //        CreateOpponentObj();
+                    //    }
+                    //    else
+                    //        playerInfomationList[Int32.Parse(ID)][1] = Position;
+                    //}
+                    serverMessageIsTheSame = "PO" + superservermessage;
                 }
+                
 
                 if (superservermessage.StartsWith("ID"))
                 {
                     //Din ID
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                     playerID = Convert.ToInt32(superservermessage);
-                    CreateOpponentObj();
+                    foreach (var item in playerInfomationList)
+                    {
+                        string ID = superservermessage[1].ToString();
+
+                        if (!item.Contains(superservermessage[1].ToString()))
+                        {
+                            playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
+                            CreateOpponentObj();
+                        }
+                        else
+                            Debug.WriteLine("I already know this player's ID, why did you send me it again?");
+                    }
+                    serverMessageIsTheSame = "ID" + superservermessage;
                 }
 
                 //Send Dine Totale Points til serveren.
@@ -289,58 +311,58 @@ namespace SpaceRTS
                 //Modtag Alles Totale Points
                 if (superservermessage.StartsWith("TP"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Send Dine Minigame points til serveren.
                 if (superservermessage.StartsWith("MP"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Modtage alles Minigame points til serveren.
                 if (superservermessage.StartsWith("MP"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
 
                 //Send Done
                 if (superservermessage.StartsWith("DO"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Modtage Done
                 if (superservermessage.StartsWith("DO"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Send Fail
                 if (superservermessage.StartsWith("FA"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Modtage Fails
                 if (superservermessage.StartsWith("FA"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Send Username
                 if (superservermessage.StartsWith("US"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Modtage Username
                 if (superservermessage.StartsWith("US"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Send Color
                 if (superservermessage.StartsWith("CO"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
                 //Modtage Color
                 if (superservermessage.StartsWith("CO"))
                 {
-                    superservermessage.Remove(0, 2);
+                    superservermessage = superservermessage.Remove(0, 2);
                 }
 
                 if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
@@ -371,14 +393,14 @@ namespace SpaceRTS
                 }
                 foreach (int id in playersId)
                 {
-                    UpdatePos(id);
+                    //UpdatePos(id);
                     UpdateColor(id);
                     UpdateName(id);
                 }
 
                 #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
-                serverMessageIsTheSame = superservermessage;
+
             }
 
             #endregion Server Beskeder
@@ -387,7 +409,7 @@ namespace SpaceRTS
 
             // position + message + totalPoints +  minigamePoints + done + failed username + color;
             //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
-            client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + name + "@" + yourColor);
+            //client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + name + "@" + yourColor);
             base.Update(gameTime);
         }
 
@@ -438,7 +460,7 @@ namespace SpaceRTS
 
         #endregion Thread Method
 
-        public void UpdatePos(int id)
+        public void UpdatePos(int id, string value)
         {
             string som = playerInfomationList[id][1].ToString();
             string cleanString = som.Replace("{X:", "");
@@ -451,6 +473,7 @@ namespace SpaceRTS
             string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
             Debug.WriteLine(client0Message);
             opponents[id].transform.Position = new Vector2(XPos, YPos);
+            playerInfomationList[id][1] = value;
         }
 
         public void UpdateColor(int id)
@@ -494,7 +517,7 @@ namespace SpaceRTS
             oppObj.AddComponent(oppOpp);
             //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
             opponents.Add(oppObj);
-            playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
+            //playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
             oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
             oppSpr.hasLabel = true;
             oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";

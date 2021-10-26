@@ -59,11 +59,13 @@ namespace Server
                     }
                     else
                     {
-                        string[] array = returnData.ToString().Split('@');
                         PlayerList.Add(new PlayerInfo(idmaker, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString()));
 
                         //PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), returnData));
                         Console.WriteLine("Ip joined " + RemoteIpEndPoint.Address.ToString() + " on port " + RemoteIpEndPoint.Port.ToString());
+
+                        Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + 0);
+                        receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port);
                     }
                     Console.WriteLine("IP:  " + RemoteIpEndPoint.Address.ToString() + " Port: " + RemoteIpEndPoint.Port.ToString() + " Position " + returnData.ToString());
 
@@ -76,7 +78,7 @@ namespace Server
                                 if (returnData.ToString().StartsWith("PO"))
                                 {
                                     string playerPostion = returnData.ToString();
-                                    playerPostion.Remove(0, 2);
+                                    playerPostion = playerPostion.Remove(0, 2);
                                     foreach (PlayerInfo itemh in PlayerList)
                                     {
                                         if (itemh.ip == RemoteIpEndPoint.Address.ToString())
@@ -84,7 +86,7 @@ namespace Server
                                             itemh.position = playerPostion;
                                         }
                                     }
-                                    Byte[] sendBytes0 = Encoding.ASCII.GetBytes(PlayerList[i].position + "_" + PlayerList[i].id);
+                                    Byte[] sendBytes0 = Encoding.ASCII.GetBytes("PO" + PlayerList[i].position + "_" + PlayerList[i].id);
                                     receivingUdpClient.Send(sendBytes0, sendBytes0.Length, item.ip, Int32.Parse(item.port));
                                 }
 
