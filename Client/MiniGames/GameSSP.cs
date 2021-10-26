@@ -26,7 +26,7 @@ namespace NotAGame.MiniGames
         private Vector2 mousePosition;
         public GameSSP()
         {
-            DrawTest();
+            DrawGame();
 
         }
 
@@ -63,24 +63,36 @@ namespace NotAGame.MiniGames
 
         }
 
-        public void DrawChoice(SpriteBatch spriteBatch)
+        public void DrawText(SpriteBatch spriteBatch)
         {
+            spriteBatch.DrawString(GameWorld.smallFont, "Rock", new Vector2(285, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(GameWorld.smallFont, "Paper", new Vector2(475, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(GameWorld.smallFont, "Scissor", new Vector2(665, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
             if (choiceRock == true)
             {
-                spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(250, 440), Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(335, 440), Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                choiceScissor = false;
+                choicePaper = false;
             }
             if (choicePaper == true)
             {
-
+                spriteBatch.DrawString(GameWorld.font, "PAPER", new Vector2(310, 440), Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                choiceRock = false;
+                choiceScissor = false;
             }
             if (choiceScissor == true)
             {
+                spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(385, 480), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                choiceRock = false;
+                choicePaper = false;
 
             }
         }
 
-        public void DrawTest()
+        public void DrawGame()
         {
+            #region GO
             GameObject go = new GameObject();
 
             SpriteRenderer sr = new SpriteRenderer();
@@ -88,7 +100,7 @@ namespace NotAGame.MiniGames
             go.AddComponent(new MiniGame());
             sr.SetSpriteName("panel_blue");
             sr.Scale = new Vector2(5, 5);
-            sr.Layerdepth = 0;
+            sr.Layerdepth = 01f;
             go.transform.Position = new Vector2(275 , 250);
             GameWorld.Instance.GameObjects.Add(go);
 
@@ -99,7 +111,7 @@ namespace NotAGame.MiniGames
             go1.AddComponent(new MiniGame());
             sr1.SetSpriteName("panel_blue");
             sr1.Scale = new Vector2(5, 5);
-            sr1.Layerdepth = 0;
+            sr1.Layerdepth = 01f;
             go1.transform.Position = new Vector2(1200, 250);
             GameWorld.Instance.GameObjects.Add(go1);
 
@@ -109,7 +121,7 @@ namespace NotAGame.MiniGames
             rock.AddComponent(sr2);
             sr2.SetSpriteName("buttonLong_blue");
             sr2.Scale = new Vector2(1, 2);
-            sr2.Layerdepth = 0;
+            sr2.Layerdepth = 01f;
             rock.transform.Position = new Vector2(230, 760);
             GameWorld.Instance.GameObjects.Add(rock);
             rectRock = new Rectangle(230, 750, 190, 100);
@@ -119,7 +131,7 @@ namespace NotAGame.MiniGames
             paper.AddComponent(paperSR);
             paperSR.SetSpriteName("buttonLong_blue");
             paperSR.Scale = new Vector2(1, 2);
-            paperSR.Layerdepth = 0;
+            paperSR.Layerdepth = 01f;
             paper.transform.Position = new Vector2(425, 760);
             GameWorld.Instance.GameObjects.Add(paper);
             rectPaper = new Rectangle(425, 760, 190, 100);
@@ -129,7 +141,7 @@ namespace NotAGame.MiniGames
             scissors.AddComponent(scissorsSR);
             scissorsSR.SetSpriteName("buttonLong_blue");
             scissorsSR.Scale = new Vector2(1, 2);
-            scissorsSR.Layerdepth = 0;
+            scissorsSR.Layerdepth = 01f;
             scissors.transform.Position = new Vector2(620, 760);
             GameWorld.Instance.GameObjects.Add(scissors);
             rectScissor = new Rectangle(620, 760, 190, 100);
@@ -140,7 +152,7 @@ namespace NotAGame.MiniGames
             rock2.AddComponent(rockSR2);
             rockSR2.SetSpriteName("buttonLong_blue");
             rockSR2.Scale = new Vector2(1, 2);
-            rockSR2.Layerdepth = 0;
+            rockSR2.Layerdepth = 01f;
             rock2.transform.Position = new Vector2(1155, 760);
             GameWorld.Instance.GameObjects.Add(rock2);
             rectRock2 = new Rectangle(1155, 760, 190, 100);
@@ -150,7 +162,7 @@ namespace NotAGame.MiniGames
             paper2.AddComponent(paperSR2);
             paperSR2.SetSpriteName("buttonLong_blue");
             paperSR2.Scale = new Vector2(1, 2);
-            paperSR2.Layerdepth = 0;
+            paperSR2.Layerdepth = 01f;
             paper2.transform.Position = new Vector2(1350, 760);
             GameWorld.Instance.GameObjects.Add(paper2);
             rectPaper2 = new Rectangle(1350, 760, 190, 100);
@@ -160,10 +172,11 @@ namespace NotAGame.MiniGames
             scissors2.AddComponent(scissorsSR2);
             scissorsSR2.SetSpriteName("buttonLong_blue");
             scissorsSR2.Scale = new Vector2(1, 2);
-            scissorsSR2.Layerdepth = 0;
+            scissorsSR2.Layerdepth = 01f;
             scissors2.transform.Position = new Vector2(1545, 760);
             GameWorld.Instance.GameObjects.Add(scissors2);
             rectScissor2 = new Rectangle(1545, 760, 190, 100);
+#endregion
         }
     }
 }

@@ -50,13 +50,13 @@ namespace NotAGame.Component
         {
             if (hasOutline) //outdated
             {
-                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 1);
+                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 01f);
             }
             if (hasShadow) //Draws a black font with offset before the main font.
             {
-                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 1);
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 01f);
             }
-            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, ScaleText, SpriteEffects.None, 1);
+            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, ScaleText, SpriteEffects.None, 01f);
         }
 
         public override void Update(GameTime gametime)

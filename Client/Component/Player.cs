@@ -29,7 +29,7 @@ namespace NotAGame.Component
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
             sr.Scale = new Vector2(1, 1);
-            sr.Layerdepth = 0;
+            sr.Layerdepth = 01f;
             
         }
 

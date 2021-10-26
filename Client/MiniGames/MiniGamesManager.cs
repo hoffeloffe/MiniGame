@@ -56,7 +56,7 @@ namespace NotAGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            sSP.DrawChoice(spriteBatch);
+            sSP.DrawText(spriteBatch);
         }
 
         public void DrawNextGame(SpriteBatch spriteBatch)

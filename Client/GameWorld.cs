@@ -37,6 +37,7 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         public static Texture2D mouseSprite;
         public static SpriteFont font;
+        public static SpriteFont smallFont;
 
         private Lobby lobby;
         Random rnd = new Random();
@@ -204,6 +205,7 @@ namespace SpaceRTS
             Emil = Content.Load<Texture2D>("Emil");
             mouseSprite = Content.Load<Texture2D>("cursorGauntlet_grey");
             font = Content.Load<SpriteFont>("Fonts/Arial48");
+            smallFont = Content.Load<SpriteFont>("Fonts/Arial24");
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
