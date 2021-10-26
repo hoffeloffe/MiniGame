@@ -44,6 +44,11 @@ namespace SpaceRTS
         private Player player;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
+        public int playerID;
+        public int totalPoints = 0;
+        public int changeInTotalPoints = 0;
+        public Vector2 currentPosition;
+        public Vector2 changeInPosition;
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -243,16 +248,85 @@ namespace SpaceRTS
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
+                if (currentPosition != changeInPosition)
+                {
+                    client.cq.Enqueue("PO" + currentPosition);
+                    currentPosition = changeInPosition;
+                }
                 if (superservermessage.StartsWith("PO"))
                 {
-                    superservermessage.Split("_").ToArray();
-                    Vector2 playerPosition = superservermessage[0];
+                    superservermessage.Remove(0, 2);
                 }
 
                 if (superservermessage.StartsWith("ID"))
                 {
+                    //Din ID
                     superservermessage.Remove(0, 2);
-                    if (superservermessage != playersId)
+                    playerID = Convert.ToInt32(superservermessage);
+                }
+
+                //Send Dine Totale Points til serveren.
+                if (totalPoints != changeInTotalPoints)
+                {
+                    client.cq.Enqueue("TP" + totalPoints);
+                    changeInTotalPoints = totalPoints;
+                }
+
+                //Modtag Alles Totale Points
+                if (superservermessage.StartsWith("TP"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Send Dine Minigame points til serveren.
+                if (superservermessage.StartsWith("MP"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Modtage alles Minigame points til serveren.
+                if (superservermessage.StartsWith("MP"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+
+                //Send Done
+                if (superservermessage.StartsWith("DO"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Modtage Done
+                if (superservermessage.StartsWith("DO"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Send Fail
+                if (superservermessage.StartsWith("FA"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Modtage Fails
+                if (superservermessage.StartsWith("FA"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Send Username
+                if (superservermessage.StartsWith("US"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Modtage Username
+                if (superservermessage.StartsWith("US"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Send Color
+                if (superservermessage.StartsWith("CO"))
+                {
+                    superservermessage.Remove(0, 2);
+                }
+                //Modtage Color
+                if (superservermessage.StartsWith("CO"))
+                {
+                    superservermessage.Remove(0, 2);
                 }
 
                 if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
