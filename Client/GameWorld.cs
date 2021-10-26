@@ -267,20 +267,26 @@ namespace SpaceRTS
                     }
                     else
                     {
+                        bool foundID = false;
                         for (int i = 0; i < playerInfomationList.Count; i++)
                         {
-                            if (!playerInfomationList[i].Contains(serverMsgArray[1]))
+                            if (playerInfomationList[i].Contains(serverMsgArray[1]))
                             {
-                                playerInfomationList.Add(new string[] { ID, Position });
-                                CreateOpponentObj();
+                                int testId = i;
+                                string test = serverMsgArray[1];
+                                foundID = true;
                             }
                             else
-                                playerInfomationList[Int32.Parse(ID)][1] = Position;
+                            {
+                                int testId = i;
+                                string test = serverMsgArray[1];
+                                foundID = false;
+                            }
                         }
-                        foreach (var item in playerInfomationList)
+                        if (foundID == false)
                         {
-
-                            
+                            playerInfomationList.Add(new string[] { ID, Position });
+                            CreateOpponentObj();
                         }
                     }
                     UpdatePos(Convert.ToInt32(ID), Position);
