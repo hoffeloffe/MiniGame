@@ -10,6 +10,7 @@ using NotAGame.Component;
 using System.Threading;
 using NotAGame.Command_Pattern;
 using System;
+using NotAGame.MiniGames;
 
 namespace SpaceRTS
 {
@@ -34,6 +35,8 @@ namespace SpaceRTS
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        public static Texture2D mouseSprite;
+        public static SpriteFont font;
 
         private Lobby lobby;
         Random rnd = new Random();
@@ -182,15 +185,13 @@ namespace SpaceRTS
             }
             #endregion Componenent
 
-            #region Server Thread
-
+            #region Server Threa
             sendThread = new Thread(() => client.SendData());
             reciveThread = new Thread(() => ReceiveThread());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
             reciveThread.Start();
-
             #endregion Server
 
             base.Initialize();
@@ -201,6 +202,8 @@ namespace SpaceRTS
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Emil = Content.Load<Texture2D>("Emil");
+            mouseSprite = Content.Load<Texture2D>("cursorGauntlet_grey");
+            font = Content.Load<SpriteFont>("Fonts/Arial48");
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
@@ -219,7 +222,8 @@ namespace SpaceRTS
             }
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
-            MiniGamesManager.Instance.ChangeGame();
+            MiniGamesManager.Instance.Update();
+
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -265,8 +269,6 @@ namespace SpaceRTS
                     //}
                 }
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                
-
                 if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
                     while (opponents.Count < playerInfomationList.Count)
@@ -332,9 +334,8 @@ namespace SpaceRTS
             {
                 opponent.Draw(_spriteBatch);
             }
-
             MiniGamesManager.Instance.DrawNextGame(_spriteBatch);
-
+            MiniGamesManager.Instance.Draw(_spriteBatch);
 
             base.Draw(gameTime);
             _spriteBatch.End();

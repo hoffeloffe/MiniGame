@@ -16,7 +16,7 @@ namespace NotAGame.Component
         public Player()
         {
             InputHandler.Instance.player = this;
-            this.speed = 600;
+            this.speed = 900;
         }
 
         public override void Awake()
@@ -28,7 +28,7 @@ namespace NotAGame.Component
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
-            sr.Scale = 1;
+            sr.Scale = new Vector2(1, 1);
             sr.Layerdepth = 0;
             
         }

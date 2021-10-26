@@ -26,6 +26,7 @@ namespace NotAGame
         #endregion Singleton
         public int currentGame;
         MiniGameTest miniGame;
+        private static GameSSP sSP;
         Lobby lobby;
 
         private bool noHoldDown = false;
@@ -34,10 +35,12 @@ namespace NotAGame
         {
             lobby = new Lobby();
             miniGame = new MiniGameTest();
+            sSP = new GameSSP();
+
             currentGame = 0;
         }
 
-        public void ChangeGame()
+        public void Update()
         {
             KeyboardState key = Keyboard.GetState();
 
@@ -46,6 +49,14 @@ namespace NotAGame
                 currentGame += 1;
                 noHoldDown = true;
             }
+
+            sSP.Update();
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            sSP.DrawChoice(spriteBatch);
         }
 
         public void DrawNextGame(SpriteBatch spriteBatch)

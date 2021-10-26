@@ -10,14 +10,16 @@ namespace NotAGame.Component
     internal class SpriteRenderer : Component
     {
         public Texture2D Sprite { get; set; } = GameWorld.Instance.Content.Load<Texture2D>("Sprites/missing");
+        public Rectangle Rectangle{ get; set; }
         public Vector2 Origin { get; set; }
-        public float Scale { get; set; } = 1f;
-        public Random rnd = new Random();
+        public Vector2 Scale { get; set; }
         public Color Color { get; set; } = Color.White;
-        public float Rotation { get; set; }
-        public bool Spin { get; set; } = false;
         public float Layerdepth { get; set; }
 
+        public float ScaleText { get; set; } = 01f;
+        public Random rnd = new Random();
+        public float Rotation { get; set; }
+        public bool Spin { get; set; } = false;
         #region Text/Font Properties
         public SpriteFont Font { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/Arial");
         public SpriteFont FontOut { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/HandsOut");
@@ -48,18 +50,17 @@ namespace NotAGame.Component
         {
             if (hasOutline) //outdated
             {
-                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 1);
             }
             if (hasShadow) //Draws a black font with offset before the main font.
             {
-                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 1);
             }
-            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, ScaleText, SpriteEffects.None, 1);
         }
 
         public override void Update(GameTime gametime)
         {
-            //Color = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             if (Spin == true)
             {
                 //Continuously rotates the sprite

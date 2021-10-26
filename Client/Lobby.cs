@@ -36,8 +36,8 @@ namespace SpaceRTS
                     //Draw settings
                     sr.SetSpriteName("Tile");
                     tileObject.transform.Position = new Vector2(x * 65, y * 65);
-                    sr.Scale = 1;
-                    sr.Layerdepth = 2;
+                    sr.Scale = new Vector2(sr.Sprite.Width, sr.Sprite.Height);
+                    sr.Layerdepth = 1;
 
                     GameWorld.Instance.Games.Add(tileObject);
                     //grid.Add(tileObject);

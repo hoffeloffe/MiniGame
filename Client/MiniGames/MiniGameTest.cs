@@ -21,7 +21,7 @@ namespace NotAGame.MiniGames
             emilGO.AddComponent(sr);
             emilGO.AddComponent(new MiniGame());
 
-            sr.Scale = 1;
+            sr.Scale = new Vector2(sr.Sprite.Width, sr.Sprite.Height);
             sr.SetSpriteName("Emil");
             sr.Layerdepth = 0;
             emilGO.transform.Position = new Vector2(500, 970);

@@ -56,7 +56,7 @@ namespace NotAGame.Component
             sr.Font = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/" + font);
             sr.FontOut = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/HandsOut");
             sr.Text = text;
-            sr.Scale = scale;
+            sr.ScaleText = scale;
             sr.IsText = true;
             sr.Rotation = rotation;
             sr.IsText = true;
