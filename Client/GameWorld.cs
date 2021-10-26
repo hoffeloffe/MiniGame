@@ -276,6 +276,7 @@ namespace SpaceRTS
                     //Din ID
                     superservermessage.Remove(0, 2);
                     playerID = Convert.ToInt32(superservermessage);
+                    CreateOpponentObj();
                 }
 
                 //Send Dine Totale Points til serveren.
@@ -480,6 +481,25 @@ namespace SpaceRTS
             srr.Text = playerInfomationList[id][0] + " " + playerInfomationList[id][7];
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
+        }
+        public void CreateOpponentObj()
+        {
+            rnd = new Random();
+            //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            GameObject oppObj = new GameObject();
+            SpriteRenderer oppSpr = new SpriteRenderer();
+            Opponent oppOpp = new Opponent();
+            //oppSpr.Color = randomColor;
+            oppObj.AddComponent(oppSpr);
+            oppObj.AddComponent(oppOpp);
+            //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
+            opponents.Add(oppObj);
+            playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
+            oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
+            oppSpr.hasLabel = true;
+            oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
+            oppObj.Awake();
+            oppObj.Start();
         }
     }
 }
