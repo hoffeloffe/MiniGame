@@ -49,6 +49,7 @@ namespace SpaceRTS
         public int changeInTotalPoints = 0;
         public Vector2 currentPosition;
         public Vector2 changeInPosition;
+        public List
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -74,7 +75,7 @@ namespace SpaceRTS
 
         private Client client = new Client();
         private string serverMessage;
-        private List<List<string>> playerInfomationList = new List<List<string>>();
+        private List<string[]> playerInfomationList = new List<string[]>();
         private Color color;
         private Thread sendThread;
         private Thread reciveThread;
@@ -256,6 +257,19 @@ namespace SpaceRTS
                 if (superservermessage.StartsWith("PO"))
                 {
                     superservermessage.Remove(0, 2);
+                    superservermessage.Split("_");
+                    foreach (var item in playerInfomationList)
+                    {
+                        string ID = superservermessage[1].ToString();
+                        string Position = superservermessage[0].ToString();
+
+                        if (!item.Contains(superservermessage[1].ToString()))
+                        {
+                            playerInfomationList.Add(new string[] { ID, Position });
+                        }
+                        else
+                            playerInfomationList[Int32.Parse(ID)][1] = Position;
+                    }
                 }
 
                 if (superservermessage.StartsWith("ID"))
