@@ -47,9 +47,7 @@ namespace SpaceRTS
         public int playerID;
         public int totalPoints = 0;
         public int changeInTotalPoints = 0;
-        public Vector2 currentPosition;
         public Vector2 changeInPosition;
-        public List
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -249,11 +247,12 @@ namespace SpaceRTS
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
-                if (currentPosition != changeInPosition)
+                if (playerGo.transform.Position != changeInPosition)
                 {
-                    client.cq.Enqueue("PO" + currentPosition);
-                    currentPosition = changeInPosition;
+                    client.cq.Enqueue("PO" + playerGo.transform.Position);
+                    changeInPosition = playerGo.transform.Position;
                 }
+
                 if (superservermessage.StartsWith("PO"))
                 {
                     superservermessage.Remove(0, 2);
