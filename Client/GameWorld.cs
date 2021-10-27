@@ -477,7 +477,8 @@ namespace SpaceRTS
 
         public void UpdatePos(int id, string value)
         {
-            string som = playerInfomationList[id][1].ToString();
+            playerInfomationList[id][1] = value; //update position in ListString
+            string som = playerInfomationList[id][1].ToString(); //used for exracting the position from the string
             string cleanString = som.Replace("{X:", "");
             cleanString = cleanString.Replace("Y:", "");
             cleanString = cleanString.Replace("}", "");
@@ -485,9 +486,10 @@ namespace SpaceRTS
             string[] xyVals = cleanString.Split(' ');
             float XPos = float.Parse(xyVals[0]);
             float YPos = float.Parse(xyVals[1]);
-            opponents[id].transform.Position = new Vector2(XPos, YPos);
-            playerInfomationList[id][1] = value;
-            Debug.WriteLine("OppList id " + id + ": upd. position X: " + XPos + ", Y: " + YPos + " = " + opponents[id].transform.Position + ", InfoValue: " + playerInfomationList[id][1]);
+            opponents[id].transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
+
+            //Debug.WriteLine("Upd. Pos. OppList id " + id + ": X" + XPos + ", Y" + YPos + " " + opponents[id].transform.Position + ", InfoVal: " + playerInfomationList[id][1]);
+            Debug.Write("[Obj:" + id + ", id:"+ playerInfomationList[id][0] + "]");
         }
 
         public void UpdateColor(int id)
