@@ -83,6 +83,7 @@ namespace SpaceRTS
         private readonly object recivelock = new object();
         private readonly object sendlock = new object();
         private string serverMessageIsTheSame;
+        private List<string> chatstring;
 
         public float DeltaTime { get; set; }
 
@@ -230,7 +231,7 @@ namespace SpaceRTS
             {
                 gameObject.Update(gameTime);
             }
-            
+
             foreach (GameObject opponent in opponents)
             {
                 opponent.Update(gameTime);
@@ -239,6 +240,7 @@ namespace SpaceRTS
             #region Client/Server
 
             #region Server Beskeder
+
             if (playerGo.transform.Position != changeInPosition)
             {
                 client.cq.Enqueue("PO" + playerGo.transform.Position);
@@ -250,6 +252,7 @@ namespace SpaceRTS
             if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
+
                 Debug.WriteLine(">");
                 if (superservermessage.StartsWith("PO"))
                 {
@@ -295,12 +298,11 @@ namespace SpaceRTS
                             Debug.Write("(I already know player ID " + ID + "!)");
                         }
                     }
-                    
+
                     UpdatePos(Convert.ToInt32(ID), Position);
-                    
+
                     serverMessageIsTheSame = "PO" + superservermessage;
                 }
-                
 
                 if (superservermessage.StartsWith("ID"))
                 {
@@ -323,6 +325,12 @@ namespace SpaceRTS
                             Debug.WriteLine("(I already know player ID " + ID + "!)");
                     }
                     serverMessageIsTheSame = "ID" + superservermessage;
+                }
+                //Modtagende beskeder.
+                if (superservermessage.StartsWith("ME"))
+                {
+                    superservermessage = superservermessage.Remove(0, 2);
+                    chatstring.Add(superservermessage);
                 }
 
                 //Send Dine Totale Points til serveren.
@@ -450,6 +458,10 @@ namespace SpaceRTS
                 opponent.Draw(_spriteBatch);
             }
 
+            foreach (string message in chatstring)
+            {
+                _spriteBatch.DrawString(, message, new Vector2(100, 100), Color.Black);
+            }
             gameManager.DrawNextGame(_spriteBatch);
 
             base.Draw(gameTime);
@@ -498,7 +510,7 @@ namespace SpaceRTS
             opponents[id].transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
 
             //Debug.WriteLine("Upd. Pos. OppList id " + id + ": X" + XPos + ", Y" + YPos + " " + opponents[id].transform.Position + ", InfoVal: " + playerInfomationList[id][1]);
-            Debug.Write("[Obj:" + id + ", id:"+ playerInfomationList[id][0] + "]");
+            Debug.Write("[Obj:" + id + ", id:" + playerInfomationList[id][0] + "]");
         }
 
         public void UpdateColor(int id)
@@ -530,6 +542,7 @@ namespace SpaceRTS
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
         }
+
         public void CreateOpponentObj()
         {
             rnd = new Random();
