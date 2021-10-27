@@ -41,18 +41,24 @@ namespace NotAGame.MiniGames
             {
                 
                 Mouse.SetCursor(MouseCursor.FromTexture2D(GameWorld.mouseSprite, 1,1));
+
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectRock))
                 {
                     choiceRock = true;
-
+                    choicePaper = false;
+                    choiceScissor = false;
                 }
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper))
                 {
                     choicePaper = true;
+                    choiceRock = false;
+                    choiceScissor = false;
                 }
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor))
                 {
                     choiceScissor = true;
+                    choicePaper = false;
+                    choiceRock = false;
                 }
             }
             else
