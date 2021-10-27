@@ -23,11 +23,21 @@ namespace NotAGame.MiniGames
         private Rectangle rectPaper2;
         private Rectangle rectScissor2;
 
+        private Rectangle rectReady;
+        private bool playerReady;
+
+        private int botAI;
+        private bool rockAI = false;
+        private bool paperAI = false;
+        private bool scissorAI = false;
+
+        private bool noHoldDown = false;
+        private Random rnd;
+
         private Vector2 mousePosition;
         public GameSSP()
         {
             DrawGame();
-
         }
 
         public void Update()
@@ -37,7 +47,8 @@ namespace NotAGame.MiniGames
 
             if (new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectRock) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper) ||
                 new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectRock2) ||
-                new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper2) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor2))
+                new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper2) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor2) ||
+                new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectReady))
             {
                 
                 Mouse.SetCursor(MouseCursor.FromTexture2D(GameWorld.mouseSprite, 1,1));
@@ -60,13 +71,39 @@ namespace NotAGame.MiniGames
                     choicePaper = false;
                     choiceRock = false;
                 }
+                if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectReady) && noHoldDown == false)
+                {
+                    noHoldDown = true;
+                    playerReady = true;
+                    rnd = new Random();
+                    botAI = rnd.Next(1,3);
+                    switch (botAI)
+                    {
+                        case 1:
+                            rockAI = true;
+                            paperAI = false;
+                            scissorAI = false;
+                            noHoldDown = false;
+                            break;
+                        case 2:
+                            paperAI = true;
+                            rockAI = false;
+                            scissorAI = false;
+                            noHoldDown = false;
+                            break;
+                        case 3:
+                            scissorAI = true;
+                            rockAI = false;
+                            paperAI = false;
+                            noHoldDown = false;
+                            break;
+                    }
+                }
             }
             else
             {
                 Mouse.SetCursor(MouseCursor.Arrow);
             }
-
-
         }
 
         public void DrawText(SpriteBatch spriteBatch)
@@ -74,6 +111,8 @@ namespace NotAGame.MiniGames
             spriteBatch.DrawString(GameWorld.smallFont, "Rock", new Vector2(285, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.DrawString(GameWorld.smallFont, "Paper", new Vector2(475, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.DrawString(GameWorld.smallFont, "Scissor", new Vector2(665, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(GameWorld.smallFont, "Ready", new Vector2(475, 875), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
 
             if (choiceRock == true)
             {
@@ -92,7 +131,27 @@ namespace NotAGame.MiniGames
                 spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(385, 480), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 choiceRock = false;
                 choicePaper = false;
-
+            }
+            if (playerReady == true)
+            {
+                if (rockAI == true)
+                {
+                    spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(1265, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    paperAI = false;
+                    scissorAI = false;
+                }
+                if (paperAI == true)
+                {
+                    spriteBatch.DrawString(GameWorld.font, "PAPER", new Vector2(1240, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    rockAI = false;
+                    scissorAI = false;
+                }
+                if (scissorAI == true)
+                {
+                    spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(1315, 440), Color.DarkMagenta, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                    paperAI = false;
+                    rockAI = false;
+                }
             }
         }
 
@@ -182,7 +241,18 @@ namespace NotAGame.MiniGames
             scissors2.transform.Position = new Vector2(1545, 760);
             GameWorld.Instance.GameObjects.Add(scissors2);
             rectScissor2 = new Rectangle(1545, 760, 190, 100);
-#endregion
+
+            GameObject ready = new GameObject();
+            SpriteRenderer readySR = new SpriteRenderer();
+            ready.AddComponent(readySR);
+            readySR.SetSpriteName("buttonLong_blue");
+            readySR.Scale = new Vector2(1, 1);
+            readySR.Layerdepth = 01f;
+            ready.transform.Position = new Vector2(425, 870);
+            GameWorld.Instance.GameObjects.Add(ready);
+            rectReady = new Rectangle(425, 870, 190, 100);
+
+            #endregion
         }
     }
 }
