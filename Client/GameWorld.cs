@@ -292,7 +292,7 @@ namespace SpaceRTS
                         }
                         else
                         {
-                            Debug.Write("(Found)");
+                            Debug.Write("(I already know player ID " + ID + "!)");
                         }
                     }
                     
