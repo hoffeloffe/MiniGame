@@ -12,6 +12,7 @@ namespace Server
 {
     internal class Program
     {
+        #region Importering af ekstra konsol farve funktioner
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
 
@@ -19,13 +20,12 @@ namespace Server
         public static extern bool GetConsoleMode(IntPtr handle, out int mode);
 
         [DllImport("kernel32.dll", SetLastError = true)]
+        #endregion
         public static extern IntPtr GetStdHandle(int handle);
 
         private static void Main(string[] args)
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("\x1b[38;5;" + 238 + "m");
+            Console.Write("\x1b[38;5;" + 238 + "m"); //dark-gray console text color
 
             int k = 0;
             int idmaker = 0;
@@ -61,7 +61,7 @@ namespace Server
                             ViewAddedMsg("ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList", ConsoleColor.Yellow, "");
 
                             Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + idmaker);
-                            receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "\x1b[38;5;" + 48 + "m");
+                            receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "\x1b[38;5;" + 48 + "m=> " + RemoteIpEndPoint.Port + ": ");
                         }
                     }
                     else
@@ -70,7 +70,7 @@ namespace Server
                         string consoleMsg = "ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList"; ViewAddedMsg(consoleMsg, ConsoleColor.Yellow, "");
 
                         Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + 0);
-                        receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Yellow, "");
+                        receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Yellow, "=> " + RemoteIpEndPoint.Port + ": ");
                     }
                     //Console.WriteLine("IP:  " + RemoteIpEndPoint.Address.ToString() + " Port: " + RemoteIpEndPoint.Port.ToString() + " Position " + returnData.ToString());
 
@@ -88,7 +88,7 @@ namespace Server
                             Byte[] sendBytes0 = Encoding.ASCII.GetBytes("PO" + itemh.position + "_" + itemh.id);
                             for (int i = 0; i < PlayerList.Count; i++)
                             {
-                                receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, Int32.Parse(PlayerList[i].port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "");
+                                receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, Int32.Parse(PlayerList[i].port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
                             }
                         }
                     }
@@ -98,7 +98,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes1 = Encoding.ASCII.GetBytes(PlayerList[k].message + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes1, sendBytes1.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes1, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes1, sendBytes1.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes1, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }
@@ -108,7 +108,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes2 = Encoding.ASCII.GetBytes(PlayerList[k].totalPoints.ToString() + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes2, sendBytes2.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes2, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes2, sendBytes2.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes2, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }
@@ -117,7 +117,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes3 = Encoding.ASCII.GetBytes(PlayerList[k].minigamePoints.ToString() + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes3, sendBytes3.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes3, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes3, sendBytes3.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes3, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }
@@ -127,7 +127,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes4 = Encoding.ASCII.GetBytes(PlayerList[k].done.ToString() + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes4, sendBytes4.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes4, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes4, sendBytes4.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes4, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }
@@ -137,7 +137,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes5 = Encoding.ASCII.GetBytes(PlayerList[k].failed.ToString() + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes5, sendBytes5.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes5, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes5, sendBytes5.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes5, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }
@@ -146,7 +146,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes6 = Encoding.ASCII.GetBytes(PlayerList[k].username + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes6, sendBytes6.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes6, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes6, sendBytes6.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes6, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }
@@ -156,7 +156,7 @@ namespace Server
                         foreach (PlayerInfo item in PlayerList)
                         {
                             Byte[] sendBytes7 = Encoding.ASCII.GetBytes(PlayerList[k].playerColor.ToString() + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes7, sendBytes7.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes7, ConsoleColor.Green, "");
+                            receivingUdpClient.Send(sendBytes7, sendBytes7.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes7, ConsoleColor.Green, "=> " + item.port + ": ");
                             k++;
                         }
                     }

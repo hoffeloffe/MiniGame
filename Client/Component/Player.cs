@@ -59,6 +59,7 @@ namespace NotAGame.Component
             }
             velocity *= speed;
             Vector2 translater = velocity * GameWorld.Instance.DeltaTime;
+            //Casting coordinates to prevent crazy long float numbers
             translater.X = (int)translater.X;
             translater.Y = (int)translater.Y;
             GameObject.transform.Translate(translater);

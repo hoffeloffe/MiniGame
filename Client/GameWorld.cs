@@ -248,19 +248,18 @@ namespace SpaceRTS
             {
                 if (positionWait > 5)
                 {
-                    //client.cq.Enqueue("PO" + playerGo.transform.Position);
-                    //positionWait = 0;
+                    client.cq.Enqueue("PO" + playerGo.transform.Position);
+                    positionWait = 0;
                 }
-                client.cq.Enqueue("PO" + playerGo.transform.Position);
+                //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
 
             }
-            string superservermessage = serverMessage;
-            if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
+            if (serverMessage != null && serverMessage != serverMessageIsTheSame) //if not empty or same
             {
+                string superservermessage = serverMessage;
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                Debug.Write(superservermessage + "  ");
-                Debug.Write("<");
+                Debug.Write(superservermessage + "  <");
                 if (superservermessage.StartsWith("PO"))
                 {
                     Debug.Write("(PO)");
@@ -498,13 +497,6 @@ namespace SpaceRTS
             }
         }
 
-        public void SendThread()
-        {
-            while (true)
-            {
-                client.SendDataOnce(playerGo.transform.ReturnPosition(playerGo).ToString());
-            }
-        }
 
         #endregion Thread Method
 
