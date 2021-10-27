@@ -86,7 +86,10 @@ namespace Server
                             }
 
                             Byte[] sendBytes0 = Encoding.ASCII.GetBytes("PO" + itemh.position + "_" + itemh.id);
-                            receivingUdpClient.Send(sendBytes0, sendBytes0.Length, itemh.ip, Int32.Parse(itemh.port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "");
+                            for (int i = 0; i < PlayerList.Count; i++)
+                            {
+                                receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, Int32.Parse(PlayerList[i].port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "");
+                            }
                         }
                     }
 

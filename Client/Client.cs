@@ -13,7 +13,7 @@ namespace NotAGame
         // This constructor arbitrarily assigns the local port number.
         public UdpClient udpClient = new UdpClient(42069);
 
-        private string serverip = "10.131.68.20";
+        private string serverip = "10.131.68.40";
         private int serverPort = 12000;
         public ConcurrentQueue<string> cq = new ConcurrentQueue<string>();
 

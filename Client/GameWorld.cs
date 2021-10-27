@@ -458,10 +458,10 @@ namespace SpaceRTS
                 opponent.Draw(_spriteBatch);
             }
 
-            foreach (string message in chatstring)
-            {
-                _spriteBatch.DrawString(, message, new Vector2(100, 100), Color.Black);
-            }
+            //foreach (string message in chatstring)
+            //{
+            //    _spriteBatch.DrawString(, message, new Vector2(100, 100), Color.Black);
+            //}
             gameManager.DrawNextGame(_spriteBatch);
 
             base.Draw(gameTime);
@@ -515,17 +515,14 @@ namespace SpaceRTS
                             string[] xyVals = cleanString.Split(' ');
                             float XPos = float.Parse(xyVals[0]);
                             float YPos = float.Parse(xyVals[1]);
-                            opponents[id].transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
+                            obj.transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
                         }
                     }
                 }
             }
 
-            
-            
-
             //Debug.WriteLine("Upd. Pos. OppList id " + id + ": X" + XPos + ", Y" + YPos + " " + opponents[id].transform.Position + ", InfoVal: " + playerInfomationList[id][1]);
-            Debug.Write("[Obj:" + id + ", id:" + playerInfomationList[id][0] + "]");
+            //Debug.Write("[Obj:" + id + ", id:" + playerInfomationList[id][0] + "]");
         }
 
         public void UpdateColor(int id)
@@ -557,6 +554,7 @@ namespace SpaceRTS
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
         }
+
         public void CreateOpponentObj(string ID)
         {
             int theID = Convert.ToInt32(ID);
