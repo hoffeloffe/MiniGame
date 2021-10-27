@@ -16,7 +16,7 @@ namespace NotAGame.Component
         public Color Color { get; set; } = Color.White;
         public float Rotation { get; set; }
         public bool Spin { get; set; } = false;
-        public float Layerdepth { get; set; }
+        public float Layerdepth { get; set; } = 0.5f;
 
         #region Text/Font Properties
         public SpriteFont Font { get; set; } = GameWorld.Instance.Content.Load<SpriteFont>("Fonts/Arial");
@@ -38,9 +38,9 @@ namespace NotAGame.Component
         {
             spriteBatch.Draw(Sprite, GameObject.transform.Position, null, Color, 0f, Origin, Scale, SpriteEffects.None, Layerdepth);
 
-            if (hasLabel)//Draw text above the sprite.
+            if (hasLabel)//Draw text above a sprite.
             {
-                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 15, GameObject.transform.Position.Y + -40f), Color.White, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 15, GameObject.transform.Position.Y + -40f), Color.White, Rotation, Origin, Scale, SpriteEffects.None, Layerdepth);
             }
         }
 
@@ -48,13 +48,13 @@ namespace NotAGame.Component
         {
             if (hasOutline) //outdated
             {
-                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, Scale, SpriteEffects.None, Layerdepth);
             }
             if (hasShadow) //Draws a black font with offset before the main font.
             {
-                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, Scale, SpriteEffects.None, 0.6f);
             }
-            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, Scale, SpriteEffects.None, 1f);
+            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, Scale, SpriteEffects.None, Layerdepth);
         }
 
         public override void Update(GameTime gametime)

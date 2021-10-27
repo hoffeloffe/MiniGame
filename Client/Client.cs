@@ -16,6 +16,8 @@ namespace NotAGame
         private string serverip = "192.168.1.7";
         private int serverPort = 12000;
         public ConcurrentQueue<string> cq = new ConcurrentQueue<string>();
+        private string prevSentMsg;
+        private string prevRecievedMsg;
 
         public void SendData()
         {
@@ -67,8 +69,12 @@ namespace NotAGame
                 // Blocks until a message returns on this socket from a remote host.
                 Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
                 string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
-
-                return returnData;
+                if (returnData != prevRecievedMsg)
+                {
+                    prevRecievedMsg = returnData;
+                    return returnData;
+                }
+                return null;
             }
             catch (Exception e)
             {

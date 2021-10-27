@@ -50,7 +50,8 @@ namespace SpaceRTS
         public int changeInTotalPoints = 0;
         public Vector2 changeInPosition;
         public int positionWait = 0;
-        public int positionPrev = 0;
+        public bool playerMoveFrame = false;
+        public bool playerHaltFrame = false;
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -84,7 +85,7 @@ namespace SpaceRTS
 
         private readonly object recivelock = new object();
         private readonly object sendlock = new object();
-        private string serverMessageIsTheSame;
+        private string comparePrevServerMsg;
         private List<string> chatstring;
 
         public float DeltaTime { get; set; }
@@ -129,6 +130,7 @@ namespace SpaceRTS
             CpText.SetText("Arial96", "MonoParty!", 620, 5, 1f, 0.12f, Color.MonoGameOrange);
             cpSprite.hasShadow = true;
             cpSprite.Color2 = Color.Black;
+            //cpSprite.Layerdepth = 0.5f;
             gameObjects.Add(goText);
             //--------------
             goText = new GameObject();
@@ -244,27 +246,27 @@ namespace SpaceRTS
 
             #region Server Beskeder
 
-            if (playerGo.transform.Position != changeInPosition)
+            if (playerGo.transform.Position != changeInPosition) //If player pos. is new, send position to server.
             {
-                if (positionWait > 5)
+                if (positionWait > 5) //Sleeptimer
                 {
                     client.cq.Enqueue("PO" + playerGo.transform.Position);
                     positionWait = 0;
                 }
                 //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
-
             }
-            if (serverMessage != null && serverMessage != serverMessageIsTheSame) //if not empty or same
+            Debug.Write(" AAAA " + serverMessage + " AAAA ");
+            if (serverMessage != null && serverMessage != comparePrevServerMsg) //if not empty or same
             {
-                string superservermessage = serverMessage;
+                string serverMsg = serverMessage;
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                Debug.Write(superservermessage + "  <");
-                if (superservermessage.StartsWith("PO"))
+                Debug.Write(serverMsg + "  <");
+                if (serverMsg.StartsWith("PO"))
                 {
                     Debug.Write("(PO)");
-                    superservermessage = superservermessage.Remove(0, 2);
-                    string[] serverMsgArray = superservermessage.Split("_");
+                    serverMsg = serverMsg.Remove(0, 2);
+                    string[] serverMsgArray = serverMsg.Split("_");
                     string ID = serverMsgArray[1].ToString();
                     string Position = serverMsgArray[0].ToString();
 
@@ -303,36 +305,36 @@ namespace SpaceRTS
 
                     UpdatePos(Convert.ToInt32(ID), Position);
 
-                    serverMessageIsTheSame = "PO" + superservermessage;
+                    comparePrevServerMsg = "PO" + serverMsg;
                 }
 
-                if (superservermessage.StartsWith("ID"))
+                if (serverMsg.StartsWith("ID"))
                 {
                     Debug.Write("(ID)");
                     //Din ID
-                    superservermessage = superservermessage.Remove(0, 2);
-                    playerID = Convert.ToInt32(superservermessage);
+                    serverMsg = serverMsg.Remove(0, 2);
+                    playerID = Convert.ToInt32(serverMsg);
                     foreach (var item in playerInfomationList)
                     {
-                        string ID = superservermessage[1].ToString();
+                        string ID = serverMsg[1].ToString();
                         bool foundID = false;
 
-                        if (!item.Contains(superservermessage[1].ToString()))
+                        if (!item.Contains(serverMsg[1].ToString()))
                         {
-                            Debug.Write("(no ID: " + superservermessage[1] + " , adding)");
+                            Debug.Write("(no ID: " + serverMsg[1] + " , adding)");
                             playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
-                            CreateOpponentObj(superservermessage[1].ToString());
+                            CreateOpponentObj(serverMsg[1].ToString());
                         }
                         else
                             Debug.Write("(I already know player ID " + ID + "!)");
                     }
-                    serverMessageIsTheSame = "ID" + superservermessage;
+                    comparePrevServerMsg = "ID" + serverMsg;
                 }
                 //Modtagende beskeder.
-                if (superservermessage.StartsWith("ME"))
+                if (serverMsg.StartsWith("ME"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
-                    chatstring.Add(superservermessage);
+                    serverMsg = serverMsg.Remove(0, 2);
+                    chatstring.Add(serverMsg);
                 }
 
                 //Send Dine Totale Points til serveren.
@@ -343,60 +345,60 @@ namespace SpaceRTS
                 }
 
                 //Modtag Alles Totale Points
-                if (superservermessage.StartsWith("TP"))
+                if (serverMsg.StartsWith("TP"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Send Dine Minigame points til serveren.
-                if (superservermessage.StartsWith("MP"))
+                if (serverMsg.StartsWith("MP"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Modtage alles Minigame points til serveren.
-                if (superservermessage.StartsWith("MP"))
+                if (serverMsg.StartsWith("MP"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
 
                 //Send Done
-                if (superservermessage.StartsWith("DO"))
+                if (serverMsg.StartsWith("DO"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Modtage Done
-                if (superservermessage.StartsWith("DO"))
+                if (serverMsg.StartsWith("DO"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Send Fail
-                if (superservermessage.StartsWith("FA"))
+                if (serverMsg.StartsWith("FA"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Modtage Fails
-                if (superservermessage.StartsWith("FA"))
+                if (serverMsg.StartsWith("FA"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Send Username
-                if (superservermessage.StartsWith("US"))
+                if (serverMsg.StartsWith("US"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Modtage Username
-                if (superservermessage.StartsWith("US"))
+                if (serverMsg.StartsWith("US"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Send Color
-                if (superservermessage.StartsWith("CO"))
+                if (serverMsg.StartsWith("CO"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
                 //Modtage Color
-                if (superservermessage.StartsWith("CO"))
+                if (serverMsg.StartsWith("CO"))
                 {
-                    superservermessage = superservermessage.Remove(0, 2);
+                    serverMsg = serverMsg.Remove(0, 2);
                 }
 
                 if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
@@ -436,7 +438,7 @@ namespace SpaceRTS
 
 
                 plInfoListCountIsTheSame = playerInfomationList.Count;
-                Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + serverMessageIsTheSame);
+                Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + comparePrevServerMsg);
                 Debug.WriteLine("");
                 //serverMessageIsTheSame = serverMessage;
                 //if (serverMessage != serverMessageIsTheSame)
@@ -452,6 +454,7 @@ namespace SpaceRTS
             // position + message + totalPoints +  minigamePoints + done + failed username + color;
             //                  position,                                                        message,     totalPoints, minigamePoints + done + failed username + color;
             //client.cq.Enqueue(playerGo.transform.ReturnPosition(playerGo).ToString() + "@" + "messageTest" + "@" + "1" + "@" + "9" + "@" + "false" + "@" + "false" + "@" + name + "@" + yourColor);
+            serverMessage = null;
             base.Update(gameTime);
         }
 
