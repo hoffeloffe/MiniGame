@@ -250,11 +250,10 @@ namespace SpaceRTS
             if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-
-                
-
+                Debug.WriteLine(">");
                 if (superservermessage.StartsWith("PO"))
                 {
+                    Debug.Write("(PO)");
                     superservermessage = superservermessage.Remove(0, 2);
                     string[] serverMsgArray = superservermessage.Split("_");
                     string ID = serverMsgArray[1].ToString();
@@ -262,11 +261,13 @@ namespace SpaceRTS
 
                     if (playerInfomationList.Count == 0)
                     {
+                        Debug.Write("(cr)");
                         playerInfomationList.Add(new string[] { ID, Position });
                         CreateOpponentObj();
                     }
                     if (playerInfomationList.Count != plInfoListCountIsTheSame)
                     {
+                        Debug.Write("(UNEQUAL)");
                         bool foundID = false;
                         for (int i = 0; i < playerInfomationList.Count; i++)
                         {
@@ -285,8 +286,13 @@ namespace SpaceRTS
                         }
                         if (foundID == false)
                         {
+                            Debug.Write("(no ID: " + serverMsgArray[1] + ", adding)");
                             playerInfomationList.Add(new string[] { ID, Position });
                             CreateOpponentObj();
+                        }
+                        else
+                        {
+                            Debug.Write("(I already know player ID " + ID + "!)");
                         }
                     }
                     
@@ -298,20 +304,23 @@ namespace SpaceRTS
 
                 if (superservermessage.StartsWith("ID"))
                 {
+                    Debug.Write("(ID)");
                     //Din ID
                     superservermessage = superservermessage.Remove(0, 2);
                     playerID = Convert.ToInt32(superservermessage);
                     foreach (var item in playerInfomationList)
                     {
                         string ID = superservermessage[1].ToString();
+                        bool foundID = false;
 
                         if (!item.Contains(superservermessage[1].ToString()))
                         {
+                            Debug.Write("(no ID: " + superservermessage[1] + " , adding)");
                             playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
                             CreateOpponentObj();
                         }
                         else
-                            Debug.WriteLine("I already know this player's ID, why did you send me it again?");
+                            Debug.WriteLine("(I already know player ID " + ID + "!)");
                     }
                     serverMessageIsTheSame = "ID" + superservermessage;
                 }
