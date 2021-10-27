@@ -262,7 +262,7 @@ namespace SpaceRTS
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
-                Debug.WriteLine(">");
+                Debug.WriteLine("<");
                 if (superservermessage.StartsWith("PO"))
                 {
                     Debug.Write("(PO)");
@@ -273,30 +273,27 @@ namespace SpaceRTS
 
                     if (playerInfomationList.Count == 0)
                     {
-                        Debug.Write("(cr)");
                         playerInfomationList.Add(new string[] { ID, Position });
+                        Debug.Write("(ID " + serverMsgArray[1] + " == 0, CREATED NEW. NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
                         CreateOpponentObj(ID);
                     }
                     else
                     {
-                        Debug.Write("(UNEQUAL)");
+                        Debug.Write("(PIL NOT == 0)");
                         bool foundID = false;
                         for (int i = 0; i < playerInfomationList.Count; i++)
                         {
-                            if (playerInfomationList[i].Contains(serverMsgArray[1]))
+                            if (playerInfomationList[i][0].Contains(ID)) //Is the player whose servermessage belong to in the PIL list?
                             {
                                 foundID = true;
-                            }
-                            else
-                            {
-                                foundID = false;
+                                Debug.Write("(FOUND ID, do nothing.)");
                             }
                         }
-                        if (foundID == false)
+                        if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
                         {
-                            Debug.Write("(no ID: " + serverMsgArray[1] + ", adding)");
                             playerInfomationList.Add(new string[] { ID, Position });
                             CreateOpponentObj(serverMsgArray[1]);
+                            Debug.Write("(DIDN'T FIND ID: " + serverMsgArray[1] + ", CREATED. NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
                         }
                         else
                         {
@@ -439,8 +436,9 @@ namespace SpaceRTS
                 #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
 
-                Debug.WriteLine("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count);
                 plInfoListCountIsTheSame = playerInfomationList.Count;
+                Debug.WriteLine("");
+                Debug.WriteLine("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count);
             }
 
             #endregion Server Beskeder
@@ -585,7 +583,7 @@ namespace SpaceRTS
             oppObj.Awake();
             oppObj.Start();
 
-            Debug.WriteLine("= " + opponents.Count + " total Opponent Objects, 1 new.");
+            Debug.WriteLine("= " + opponents.Count + "Opponent Objs, 1 new. " + playerInfomationList.Count + " in PIList.");
         }
     }
 }
