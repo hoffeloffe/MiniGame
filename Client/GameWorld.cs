@@ -92,7 +92,7 @@ namespace SpaceRTS
         private string serverMessageIsTheSame;
         #endregion
 
-        private List<string> chatstring;
+        private List<string> chatstring = new List<string>();
         public float DeltaTime { get; set; }
 
         public GameWorld()
@@ -237,7 +237,7 @@ namespace SpaceRTS
             }
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
-            MiniGamesManager.Instance.Update();
+            MiniGamesManager.Instance.Update(gameTime);
 
 
             foreach (GameObject gameObject in gameObjects)

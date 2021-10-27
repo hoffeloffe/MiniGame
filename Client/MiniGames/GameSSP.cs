@@ -25,8 +25,10 @@ namespace NotAGame.MiniGames
 
         private Rectangle rectReady;
         private bool playerReady;
+        private string choicePlayer;
 
         private int botAI;
+        private string choiceAI;
         private bool rockAI = false;
         private bool paperAI = false;
         private bool scissorAI = false;
@@ -40,7 +42,7 @@ namespace NotAGame.MiniGames
             DrawGame();
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             MouseState mouse = Mouse.GetState();
             mousePosition = new Vector2(mouse.X, mouse.Y);
@@ -56,20 +58,23 @@ namespace NotAGame.MiniGames
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectRock))
                 {
                     choiceRock = true;
-                    choicePaper = false;
+                    choicePaper = false;    
                     choiceScissor = false;
+                    choicePlayer = "ROCK";
                 }
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper))
                 {
                     choicePaper = true;
                     choiceRock = false;
                     choiceScissor = false;
+                    choicePlayer = "PAPER";
                 }
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor))
                 {
                     choiceScissor = true;
                     choicePaper = false;
                     choiceRock = false;
+                    choicePlayer = "SCISSOR";
                 }
                 if (mouse.LeftButton == ButtonState.Pressed && new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectReady) && noHoldDown == false)
                 {
@@ -83,19 +88,19 @@ namespace NotAGame.MiniGames
                             rockAI = true;
                             paperAI = false;
                             scissorAI = false;
-                            noHoldDown = false;
+                            choiceAI = "ROCK";
                             break;
                         case 2:
                             paperAI = true;
                             rockAI = false;
                             scissorAI = false;
-                            noHoldDown = false;
+                            choiceAI = "PAPER";
                             break;
                         case 3:
                             scissorAI = true;
                             rockAI = false;
                             paperAI = false;
-                            noHoldDown = false;
+                            choiceAI = "SCISSOR";
                             break;
                     }
                 }
@@ -139,6 +144,17 @@ namespace NotAGame.MiniGames
                     spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(1265, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     paperAI = false;
                     scissorAI = false;
+                    if (choicePlayer == choiceAI)
+                    {
+
+                    }
+                    else
+                    {
+                        if (choicePlayer == "PAPER")
+                        {
+                            spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(965, 240), Color.Chartreuse, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        }
+                    }
                 }
                 if (paperAI == true)
                 {
@@ -151,7 +167,10 @@ namespace NotAGame.MiniGames
                     spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(1315, 440), Color.DarkMagenta, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                     paperAI = false;
                     rockAI = false;
+
                 }
+
+                
             }
         }
 

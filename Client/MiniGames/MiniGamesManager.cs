@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NotAGame.MiniGames;
 using SpaceRTS;
@@ -40,7 +41,7 @@ namespace NotAGame
             currentGame = 0;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             KeyboardState key = Keyboard.GetState();
 
@@ -49,9 +50,7 @@ namespace NotAGame
                 currentGame += 1;
                 noHoldDown = true;
             }
-
-            sSP.Update();
-
+            sSP.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
