@@ -263,7 +263,7 @@ namespace SpaceRTS
                     {
                         Debug.Write("(cr)");
                         playerInfomationList.Add(new string[] { ID, Position });
-                        CreateOpponentObj();
+                        CreateOpponentObj(ID);
                     }
                     if (playerInfomationList.Count != plInfoListCountIsTheSame)
                     {
@@ -288,7 +288,7 @@ namespace SpaceRTS
                         {
                             Debug.Write("(no ID: " + serverMsgArray[1] + ", adding)");
                             playerInfomationList.Add(new string[] { ID, Position });
-                            CreateOpponentObj();
+                            CreateOpponentObj(serverMsgArray[1]);
                         }
                         else
                         {
@@ -317,7 +317,7 @@ namespace SpaceRTS
                         {
                             Debug.Write("(no ID: " + superservermessage[1] + " , adding)");
                             playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
-                            CreateOpponentObj();
+                            CreateOpponentObj(superservermessage[1].ToString());
                         }
                         else
                             Debug.WriteLine("(I already know player ID " + ID + "!)");
@@ -486,16 +486,31 @@ namespace SpaceRTS
 
         public void UpdatePos(int id, string value)
         {
-            playerInfomationList[id][1] = value; //update position in ListString
-            string som = playerInfomationList[id][1].ToString(); //used for exracting the position from the string
-            string cleanString = som.Replace("{X:", "");
-            cleanString = cleanString.Replace("Y:", "");
-            cleanString = cleanString.Replace("}", "");
-            cleanString = cleanString.Replace(".", ",");
-            string[] xyVals = cleanString.Split(' ');
-            float XPos = float.Parse(xyVals[0]);
-            float YPos = float.Parse(xyVals[1]);
-            opponents[id].transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
+            foreach (var obj in opponents)
+            {
+                if (id == obj.Id)
+                {
+                    foreach (var InfoID in playerInfomationList)
+                    {
+                        if (id == Convert.ToInt32(InfoID[0]))
+                        {
+                            InfoID[1] = value;//update position in ListString
+                            string replacer = InfoID[1].ToString();
+                            string cleanString = replacer.Replace("{X:", "");
+                            cleanString = cleanString.Replace("Y:", "");
+                            cleanString = cleanString.Replace("}", "");
+                            cleanString = cleanString.Replace(".", ",");
+                            string[] xyVals = cleanString.Split(' ');
+                            float XPos = float.Parse(xyVals[0]);
+                            float YPos = float.Parse(xyVals[1]);
+                            opponents[id].transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
+                        }
+                    }
+                }
+            }
+
+            
+            
 
             //Debug.WriteLine("Upd. Pos. OppList id " + id + ": X" + XPos + ", Y" + YPos + " " + opponents[id].transform.Position + ", InfoVal: " + playerInfomationList[id][1]);
             Debug.Write("[Obj:" + id + ", id:"+ playerInfomationList[id][0] + "]");
@@ -530,11 +545,13 @@ namespace SpaceRTS
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
         }
-        public void CreateOpponentObj()
+        public void CreateOpponentObj(string ID)
         {
+            int theID = Convert.ToInt32(ID);
             rnd = new Random();
             //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             GameObject oppObj = new GameObject();
+            oppObj.Id = theID;
             SpriteRenderer oppSpr = new SpriteRenderer();
             Opponent oppOpp = new Opponent();
             //oppSpr.Color = randomColor;

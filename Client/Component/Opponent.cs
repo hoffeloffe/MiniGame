@@ -11,6 +11,7 @@ namespace NotAGame.Component
     {
         private Vector2 Position = new Vector2(200, 200);
         SpriteRenderer sr;
+        public bool ID { get; set; }
 
         public Opponent()
         {
