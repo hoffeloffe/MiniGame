@@ -49,6 +49,8 @@ namespace SpaceRTS
         public int totalPoints = 0;
         public int changeInTotalPoints = 0;
         public Vector2 changeInPosition;
+        public int positionWait = 0;
+        public int positionPrev = 0;
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -219,6 +221,7 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
+            positionWait++;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
                 Exit();
@@ -243,8 +246,13 @@ namespace SpaceRTS
 
             if (playerGo.transform.Position != changeInPosition)
             {
-                client.cq.Enqueue("PO" + playerGo.transform.Position);
+                if (positionWait > 5)
+                {
+                    client.cq.Enqueue("PO" + playerGo.transform.Position);
+                    positionWait = 0;
+                }
                 changeInPosition = playerGo.transform.Position;
+
             }
             string superservermessage;
             superservermessage = serverMessage;
@@ -447,6 +455,7 @@ namespace SpaceRTS
 
         protected override void Draw(GameTime gameTime)
         {
+            
             GraphicsDevice.Clear(Color.DarkGray);
             _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             foreach (GameObject gameObject in gameObjects)
