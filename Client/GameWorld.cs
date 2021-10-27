@@ -275,10 +275,9 @@ namespace SpaceRTS
                     {
                         Debug.Write("(cr)");
                         playerInfomationList.Add(new string[] { ID, Position });
-                        plInfoListCountIsTheSame = playerInfomationList.Count;
                         CreateOpponentObj(ID);
                     }
-                    if (playerInfomationList.Count != plInfoListCountIsTheSame)
+                    else if (playerInfomationList.Count != plInfoListCountIsTheSame)
                     {
                         Debug.Write("(UNEQUAL)");
                         bool foundID = false;
@@ -301,7 +300,6 @@ namespace SpaceRTS
                         {
                             Debug.Write("(no ID: " + serverMsgArray[1] + ", adding)");
                             playerInfomationList.Add(new string[] { ID, Position });
-                            plInfoListCountIsTheSame = playerInfomationList.Count;
                             CreateOpponentObj(serverMsgArray[1]);
                         }
                         else
@@ -330,7 +328,6 @@ namespace SpaceRTS
                         {
                             Debug.Write("(no ID: " + superservermessage[1] + " , adding)");
                             playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
-                            plInfoListCountIsTheSame = playerInfomationList.Count;
                             CreateOpponentObj(superservermessage[1].ToString());
                         }
                         else
@@ -446,6 +443,7 @@ namespace SpaceRTS
 
 
                 Debug.WriteLine("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count);
+                plInfoListCountIsTheSame = playerInfomationList.Count;
             }
 
             #endregion Server Beskeder
