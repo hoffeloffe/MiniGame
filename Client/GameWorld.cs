@@ -255,14 +255,12 @@ namespace SpaceRTS
                 changeInPosition = playerGo.transform.Position;
 
             }
-            string superservermessage;
-            superservermessage = serverMessage;
-
+            string superservermessage = serverMessage;
             if (superservermessage != null && superservermessage != serverMessageIsTheSame) //if not empty or same
             {
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-
-                Debug.WriteLine("<");
+                Debug.Write(superservermessage + "  ");
+                Debug.Write("<");
                 if (superservermessage.StartsWith("PO"))
                 {
                     Debug.Write("(PO)");
@@ -273,8 +271,9 @@ namespace SpaceRTS
 
                     if (playerInfomationList.Count == 0)
                     {
+                        Debug.Write("(ID " + serverMsgArray[1] + " == 0)");
                         playerInfomationList.Add(new string[] { ID, Position });
-                        Debug.Write("(ID " + serverMsgArray[1] + " == 0, CREATED NEW. NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
+                        Debug.Write("(NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
                         CreateOpponentObj(ID);
                     }
                     else
@@ -291,9 +290,10 @@ namespace SpaceRTS
                         }
                         if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
                         {
+                            Debug.Write("(DIDN'T FIND ID: " + serverMsgArray[1] + ")");
                             playerInfomationList.Add(new string[] { ID, Position });
                             CreateOpponentObj(serverMsgArray[1]);
-                            Debug.Write("(DIDN'T FIND ID: " + serverMsgArray[1] + ", CREATED. NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
+                            Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
                         }
                         else
                         {
@@ -325,7 +325,7 @@ namespace SpaceRTS
                             CreateOpponentObj(superservermessage[1].ToString());
                         }
                         else
-                            Debug.WriteLine("(I already know player ID " + ID + "!)");
+                            Debug.Write("(I already know player ID " + ID + "!)");
                     }
                     serverMessageIsTheSame = "ID" + superservermessage;
                 }
@@ -424,7 +424,7 @@ namespace SpaceRTS
                 }
                 if (opponents.Count > playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
-                    Debug.WriteLine("Oops, somebody disconnected");
+                    Debug.WriteLine("Oops, somebody somehow disconnected?");
                 }
                 foreach (int id in playersId)
                 {
@@ -437,8 +437,13 @@ namespace SpaceRTS
 
 
                 plInfoListCountIsTheSame = playerInfomationList.Count;
+                Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + serverMessageIsTheSame);
                 Debug.WriteLine("");
-                Debug.WriteLine("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count);
+                //serverMessageIsTheSame = serverMessage;
+                //if (serverMessage != serverMessageIsTheSame)
+                //{
+                    
+                //}
             }
 
             #endregion Server Beskeder
@@ -583,7 +588,7 @@ namespace SpaceRTS
             oppObj.Awake();
             oppObj.Start();
 
-            Debug.WriteLine("= " + opponents.Count + "Opponent Objs, 1 new. " + playerInfomationList.Count + " in PIList.");
+            Debug.Write("(Creating... " + opponents.Count + " Opponent Objs 1 new.");
         }
     }
 }
