@@ -248,9 +248,10 @@ namespace SpaceRTS
             {
                 if (positionWait > 5)
                 {
-                    client.cq.Enqueue("PO" + playerGo.transform.Position);
-                    positionWait = 0;
+                    //client.cq.Enqueue("PO" + playerGo.transform.Position);
+                    //positionWait = 0;
                 }
+                client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
 
             }
@@ -274,6 +275,7 @@ namespace SpaceRTS
                     {
                         Debug.Write("(cr)");
                         playerInfomationList.Add(new string[] { ID, Position });
+                        plInfoListCountIsTheSame = playerInfomationList.Count;
                         CreateOpponentObj(ID);
                     }
                     if (playerInfomationList.Count != plInfoListCountIsTheSame)
@@ -299,6 +301,7 @@ namespace SpaceRTS
                         {
                             Debug.Write("(no ID: " + serverMsgArray[1] + ", adding)");
                             playerInfomationList.Add(new string[] { ID, Position });
+                            plInfoListCountIsTheSame = playerInfomationList.Count;
                             CreateOpponentObj(serverMsgArray[1]);
                         }
                         else
@@ -327,6 +330,7 @@ namespace SpaceRTS
                         {
                             Debug.Write("(no ID: " + superservermessage[1] + " , adding)");
                             playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
+                            plInfoListCountIsTheSame = playerInfomationList.Count;
                             CreateOpponentObj(superservermessage[1].ToString());
                         }
                         else
@@ -440,7 +444,8 @@ namespace SpaceRTS
 
                 #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
-                plInfoListCountIsTheSame++;
+
+                Debug.WriteLine("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count);
             }
 
             #endregion Server Beskeder
