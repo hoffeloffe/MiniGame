@@ -277,7 +277,7 @@ namespace SpaceRTS
                         playerInfomationList.Add(new string[] { ID, Position });
                         CreateOpponentObj(ID);
                     }
-                    else if (playerInfomationList.Count != plInfoListCountIsTheSame)
+                    else
                     {
                         Debug.Write("(UNEQUAL)");
                         bool foundID = false;
@@ -285,14 +285,10 @@ namespace SpaceRTS
                         {
                             if (playerInfomationList[i].Contains(serverMsgArray[1]))
                             {
-                                int testId = i;
-                                string test = serverMsgArray[1];
                                 foundID = true;
                             }
                             else
                             {
-                                int testId = i;
-                                string test = serverMsgArray[1];
                                 foundID = false;
                             }
                         }
@@ -307,6 +303,7 @@ namespace SpaceRTS
                             Debug.Write("(I already know player ID " + ID + "!)");
                         }
                     }
+
 
                     UpdatePos(Convert.ToInt32(ID), Position);
 
