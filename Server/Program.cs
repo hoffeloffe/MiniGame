@@ -14,17 +14,20 @@ namespace Server
     {
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
+
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool GetConsoleMode(IntPtr handle, out int mode);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern IntPtr GetStdHandle(int handle);
+
         private static void Main(string[] args)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\x1b[38;5;" + 238 + "m");
 
+            int k = 0;
             int idmaker = 0;
             List<PlayerInfo> PlayerList = new List<PlayerInfo>();
             //Creates a UdpClient for reading incoming data.
@@ -71,67 +74,87 @@ namespace Server
                     }
                     //Console.WriteLine("IP:  " + RemoteIpEndPoint.Address.ToString() + " Port: " + RemoteIpEndPoint.Port.ToString() + " Position " + returnData.ToString());
 
-                    foreach (PlayerInfo item in PlayerList)
+                    if (returnData.ToString().StartsWith("PO"))
                     {
-                        for (int i = 0; i < PlayerList.Count; i++)
+                        string playerPostion = returnData.ToString();
+                        playerPostion = playerPostion.Remove(0, 2);
+                        foreach (PlayerInfo itemh in PlayerList)
                         {
-                            if (PlayerList[i].position != null || PlayerList[i].position != "")
+                            if (itemh.ip == RemoteIpEndPoint.Address.ToString())
                             {
-                                if (returnData.ToString().StartsWith("PO"))
-                                {
-                                    string playerPostion = returnData.ToString();
-                                    playerPostion = playerPostion.Remove(0, 2);
-                                    foreach (PlayerInfo itemh in PlayerList)
-                                    {
-                                        if (itemh.ip == RemoteIpEndPoint.Address.ToString())
-                                        {
-                                            itemh.position = playerPostion;
-                                        }
-                                    }
-                                    Byte[] sendBytes0 = Encoding.ASCII.GetBytes("PO" + PlayerList[i].position + "_" + PlayerList[i].id);
-                                    receivingUdpClient.Send(sendBytes0, sendBytes0.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "");
-                                }
-
-                                if (returnData.ToString().StartsWith("ME"))
-                                {
-                                    Byte[] sendBytes1 = Encoding.ASCII.GetBytes(PlayerList[i].message);
-                                    receivingUdpClient.Send(sendBytes1, sendBytes1.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes1, ConsoleColor.Green, "");
-                                }
-
-                                if (returnData.ToString().StartsWith("TP"))
-                                {
-                                    Byte[] sendBytes2 = Encoding.ASCII.GetBytes(PlayerList[i].totalPoints.ToString());
-                                    receivingUdpClient.Send(sendBytes2, sendBytes2.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes2, ConsoleColor.Green, "");
-                                }
-                                if (returnData.ToString().StartsWith("MP"))
-                                {
-                                    Byte[] sendBytes3 = Encoding.ASCII.GetBytes(PlayerList[i].minigamePoints.ToString());
-                                    receivingUdpClient.Send(sendBytes3, sendBytes3.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes3, ConsoleColor.Green, "");
-                                }
-
-                                if (returnData.ToString().StartsWith("DO"))
-                                {
-                                    Byte[] sendBytes4 = Encoding.ASCII.GetBytes(PlayerList[i].done.ToString());
-                                    receivingUdpClient.Send(sendBytes4, sendBytes4.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes4, ConsoleColor.Green, "");
-                                }
-
-                                if (returnData.ToString().StartsWith("FA"))
-                                {
-                                    Byte[] sendBytes5 = Encoding.ASCII.GetBytes(PlayerList[i].failed.ToString());
-                                    receivingUdpClient.Send(sendBytes5, sendBytes5.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes5, ConsoleColor.Green, "");
-                                }
-                                if (returnData.ToString().StartsWith("US"))
-                                {
-                                    Byte[] sendBytes6 = Encoding.ASCII.GetBytes(PlayerList[i].username);
-                                    receivingUdpClient.Send(sendBytes6, sendBytes6.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes6, ConsoleColor.Green, "");
-                                }
-
-                                if (returnData.ToString().StartsWith("CO"))
-                                {
-                                    Byte[] sendBytes7 = Encoding.ASCII.GetBytes(PlayerList[i].playerColor.ToString());
-                                    receivingUdpClient.Send(sendBytes7, sendBytes7.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes7, ConsoleColor.Green, "");
-                                }
+                                itemh.position = playerPostion;
                             }
+
+                            Byte[] sendBytes0 = Encoding.ASCII.GetBytes("PO" + itemh.position + "_" + itemh.id);
+                            receivingUdpClient.Send(sendBytes0, sendBytes0.Length, itemh.ip, Int32.Parse(itemh.port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "");
+                        }
+                    }
+
+                    if (returnData.ToString().StartsWith("ME"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes1 = Encoding.ASCII.GetBytes(PlayerList[k].message + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes1, sendBytes1.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes1, ConsoleColor.Green, "");
+                            k++;
+                        }
+                    }
+
+                    if (returnData.ToString().StartsWith("TP"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes2 = Encoding.ASCII.GetBytes(PlayerList[k].totalPoints.ToString() + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes2, sendBytes2.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes2, ConsoleColor.Green, "");
+                            k++;
+                        }
+                    }
+                    if (returnData.ToString().StartsWith("MP"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes3 = Encoding.ASCII.GetBytes(PlayerList[k].minigamePoints.ToString() + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes3, sendBytes3.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes3, ConsoleColor.Green, "");
+                            k++;
+                        }
+                    }
+
+                    if (returnData.ToString().StartsWith("DO"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes4 = Encoding.ASCII.GetBytes(PlayerList[k].done.ToString() + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes4, sendBytes4.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes4, ConsoleColor.Green, "");
+                            k++;
+                        }
+                    }
+
+                    if (returnData.ToString().StartsWith("FA"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes5 = Encoding.ASCII.GetBytes(PlayerList[k].failed.ToString() + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes5, sendBytes5.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes5, ConsoleColor.Green, "");
+                            k++;
+                        }
+                    }
+                    if (returnData.ToString().StartsWith("US"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes6 = Encoding.ASCII.GetBytes(PlayerList[k].username + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes6, sendBytes6.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes6, ConsoleColor.Green, "");
+                            k++;
+                        }
+                    }
+
+                    if (returnData.ToString().StartsWith("CO"))
+                    {
+                        foreach (PlayerInfo item in PlayerList)
+                        {
+                            Byte[] sendBytes7 = Encoding.ASCII.GetBytes(PlayerList[k].playerColor.ToString() + "_" + PlayerList[k].id);
+                            receivingUdpClient.Send(sendBytes7, sendBytes7.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes7, ConsoleColor.Green, "");
+                            k++;
                         }
                     }
 
@@ -166,7 +189,6 @@ namespace Server
                 Console.Write("\x1b[38;5;" + 238 + "m");
             }
         }
-        
     }
 }
 
