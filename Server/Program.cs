@@ -38,7 +38,7 @@ namespace Server
                 {
                     // Blocks until a message returns on this socket from a remote host.
                     Byte[] receiveBytes = receivingUdpClient.Receive(ref RemoteIpEndPoint);
-                    Console.WriteLine("GET ------------ " + PlayerList.Count + " " + RemoteIpEndPoint.Address + " " + RemoteIpEndPoint.Port + " .....");
+                    Console.WriteLine("WHILE LOOP ------------- " + PlayerList.Count + " " + RemoteIpEndPoint.Address + " " + RemoteIpEndPoint.Port + " .....");
                     string returnData = Encoding.ASCII.GetString(receiveBytes); ViewReceivedMsg(returnData);
                     if (PlayerList.Count > 0)
                     {
@@ -136,7 +136,7 @@ namespace Server
                     }
 
                     // Sends a message to the host to which you have connected.
-                    Console.WriteLine("END ------------ " + PlayerList.Count + " " + RemoteIpEndPoint.Address + " " + RemoteIpEndPoint.Port + " ID: " + idmaker);
+                    Console.WriteLine("LOOP END   ------------- " + PlayerList.Count + " " + RemoteIpEndPoint.Address + " " + RemoteIpEndPoint.Port + " ID: " + idmaker);
                 }
                 catch (Exception e)
                 {
@@ -146,14 +146,14 @@ namespace Server
             void ViewReceivedMsg(string m)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write("IN_: ");
+                Console.Write("MES: ");
                 Console.WriteLine(m);
                 Console.Write("\x1b[38;5;" + 238 + "m");
             }
             void ViewSentMsg(Byte[] m, ConsoleColor color, string customColor)
             {
                 Console.ForegroundColor = color;
-                Console.Write(customColor + "OUT: ");
+                Console.Write(customColor + "SEN: ");
                 Console.WriteLine(Encoding.ASCII.GetString(m));
                 //Console.ForegroundColor = ConsoleColor.;
                 Console.Write("\x1b[38;5;" + 238 + "m");
