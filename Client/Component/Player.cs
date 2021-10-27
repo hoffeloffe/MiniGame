@@ -58,7 +58,10 @@ namespace NotAGame.Component
                 velocity.Normalize();
             }
             velocity *= speed;
-            GameObject.transform.Translate(velocity * GameWorld.Instance.DeltaTime);
+            Vector2 translater = velocity * GameWorld.Instance.DeltaTime;
+            translater.X = (int)translater.X;
+            translater.Y = (int)translater.Y;
+            GameObject.transform.Translate(translater);
         }
     }
 }
