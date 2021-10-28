@@ -255,15 +255,15 @@ namespace SpaceRTS
             if (playerGo.transform.Position != changeInPosition) //Send Player position if player has moved.
             {
                 #region Player Position Message Cooldown
-                //if (positionWait > 5) //Sleeptimer
-                //{
-                //    client.cq.Enqueue("PO" + playerGo.transform.Position);
-                //    positionWait = 0;
-                //}
+                if (positionWait > 5) //Sleeptimer
+                {
+                    client.cq.Enqueue("PO" + playerGo.transform.Position);
+                    positionWait = 0;
+                }
                 //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 #endregion
 
-                client.cq.Enqueue("PO" + playerGo.transform.Position);
+                //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
             }
             while (eggSalad.Count != 0)
