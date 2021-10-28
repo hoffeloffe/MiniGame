@@ -37,8 +37,8 @@ namespace NotAGame.MiniGames
         private bool noHoldDown = false;
         private Random rnd;
 
-        private float textLayerDepth = 0.5f;
-        private float panelDepth = 0.3f;
+        private float textLayerDepth = 0;
+        private float panelDepth = 0f;
         #endregion
 
         private Vector2 mousePosition;
