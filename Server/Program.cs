@@ -69,7 +69,7 @@ namespace Server
                         PlayerList.Add(new PlayerInfo(idmaker, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString()));
                         string consoleMsg = "ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList"; ViewAddedMsg(consoleMsg, ConsoleColor.Yellow, "");
 
-                        Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + 0);
+                        Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID0_0");//You are the first in the server, congrats
                         receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Yellow, "=> " + RemoteIpEndPoint.Port + ": ");
                     }
                     //Console.WriteLine("IP:  " + RemoteIpEndPoint.Address.ToString() + " Port: " + RemoteIpEndPoint.Port.ToString() + " Position " + returnData.ToString());

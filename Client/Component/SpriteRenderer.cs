@@ -48,7 +48,7 @@ namespace NotAGame.Component
         {
             if (hasOutline) //outdated
             {
-                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, Scale, SpriteEffects.None, Layerdepth);
+                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, Scale, SpriteEffects.None, 0.6f);
             }
             if (hasShadow) //Draws a black font with offset before the main font.
             {

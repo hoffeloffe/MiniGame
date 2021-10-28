@@ -53,6 +53,7 @@ namespace SpaceRTS
         public bool playerMoveFrame = false;
         public bool playerHaltFrame = false;
         public bool firstPersonConnected = false;
+        public bool firstUpdateLoop = false;
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -247,30 +248,35 @@ namespace SpaceRTS
 
             #region Server Beskeder
 
-            if (playerGo.transform.Position != changeInPosition) //If player pos. is new, send position to server.
+            if (playerGo.transform.Position != changeInPosition) //Send Player position if player has moved.
             {
+                #region Player Position Message Cooldown
                 //if (positionWait > 5) //Sleeptimer
                 //{
                 //    client.cq.Enqueue("PO" + playerGo.transform.Position);
                 //    positionWait = 0;
                 //}
+                //client.cq.Enqueue("PO" + playerGo.transform.Position);
+                #endregion
+
                 client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
             }
-            if (serverMessage != null && serverMessage != comparePrevServerMsg) //if not empty or same
+
+            if (serverMessage != null && serverMessage != comparePrevServerMsg) //If this is a different serverMessage from last, use it
             {
                 string storedSeverMsg, serverMsgMod;
                 storedSeverMsg = serverMsgMod = serverMessage;
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
                 Debug.Write("  <");
-                serverMsgMod = serverMsgMod.Remove(0, 2);
-                string[] serverMsgArray = serverMsgMod.Split("_");
+                serverMsgMod = serverMsgMod.Remove(0, 2); //Remove two first letters
+                string[] serverMsgArray = serverMsgMod.Split("_"); //split id and value from eachother
                 string ID = serverMsgArray[1];
+                int intID = Convert.ToInt32(serverMsgArray[1]);
                 string Position = serverMsgArray[0];
                 bool foundID = false; //Whether ID from message is in PIL or not
 
-                #region Check if message is in PIL. If not, create.
-
+                #region Check if message is in PIL. If not, create Obj and add opponent to PIL.
                 for (int i = 0; i < PIL.Count; i++)
                 {
                     if (PIL[i][0].Contains(ID)) //Is the client in the PIL?
@@ -282,7 +288,7 @@ namespace SpaceRTS
                 {
                     Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
                     PIL.Add(new string[] { ID, Position });
-                    CreateOpponentObj(ID);
+                    CreateOpponentObj(intID);
                     firstPersonConnected = true;
                     //Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
                 }
@@ -303,23 +309,6 @@ namespace SpaceRTS
                 if (serverMsgMod.StartsWith("ID")) //Incoming ID message
                 {
                     Debug.Write("//////////////////////////////////////////////////////(ID)");
-                    //serverMsg = serverMsg.Remove(0, 2);
-                    //playerID = Convert.ToInt32(serverMsg);
-                    //foreach (var item in PIL)
-                    //{
-                    //    string ID = serverMsg[1].ToString();
-                    //    bool foundID = false;
-
-                    //    if (!item.Contains(serverMsg[1].ToString()))
-                    //    {
-                    //        Debug.Write("(no ID: " + serverMsg[1] + " , adding)");
-                    //        PIL.Add(new string[] { ID, new Vector2().ToString() });
-                    //        CreateOpponentObj(serverMsg[1].ToString());
-                    //    }
-                    //    else
-                    //        Debug.Write("(I already know player ID " + ID + "!)");
-                    //}
-                    //comparePrevServerMsg = "ID" + serverMsg;
                 }
                 //Modtagende beskeder.
                 if (serverMsgMod.StartsWith("ME"))
@@ -559,11 +548,9 @@ namespace SpaceRTS
             Debug.WriteLine(srr.Color);
         }
 
-        public void CreateOpponentObj(string ID)
+        public void CreateOpponentObj(int theID)
         {
-            int theID = Convert.ToInt32(ID);
             rnd = new Random();
-            //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             GameObject oppObj = new GameObject();
             oppObj.Id = theID;
             SpriteRenderer oppSpr = new SpriteRenderer();
@@ -571,11 +558,13 @@ namespace SpaceRTS
             //oppSpr.Color = randomColor;
             oppObj.AddComponent(oppSpr);
             oppObj.AddComponent(oppOpp);
-            //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
+            Color newColor = new Color(255, 255, 255);
+            oppSpr.Color = newColor;
+            oppSpr.Text = "Bob " + theID;
             opponents.Add(oppObj);
             //playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
-            //oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
-            //oppSpr.hasLabel = true;
+            oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
+            oppSpr.hasLabel = true;
             //oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
             oppObj.Awake();
             oppObj.Start();
