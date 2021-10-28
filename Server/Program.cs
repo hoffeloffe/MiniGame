@@ -42,7 +42,7 @@ namespace Server
                     // Blocks until a message returns on this socket from a remote host.
                     Byte[] receiveBytes = receivingUdpClient.Receive(ref RemoteIpEndPoint);
                     Console.WriteLine("WHILE LOOP ------------- " + PlayerList.Count + " " + RemoteIpEndPoint.Address + " " + RemoteIpEndPoint.Port + " .....");
-                    string returnData = Encoding.ASCII.GetString(receiveBytes); ViewReceivedMsg(returnData);
+                    string returnData = Encoding.ASCII.GetString(receiveBytes); ViewReceivedMsg(returnData); 
                     if (PlayerList.Count > 0)
                     {
                         foreach (PlayerInfo item in PlayerList)
@@ -61,7 +61,7 @@ namespace Server
                             ViewAddedMsg("ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList", ConsoleColor.Yellow, "");
 
                             Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + idmaker);
-                            receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "\x1b[38;5;" + 48 + "m=> " + RemoteIpEndPoint.Port + ": ");
+                            receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "\x1b[38;5;" + 48 + "m=> " + RemoteIpEndPoint.Port);
                         }
                     }
                     else
@@ -176,11 +176,11 @@ namespace Server
                 Console.WriteLine(m);
                 Console.Write("\x1b[38;5;" + 238 + "m");
             }
-            void ViewSentMsg(Byte[] m, ConsoleColor color, string customColor)
+            void ViewSentMsg(Byte[] m, ConsoleColor color, string Port)
             {
                 Console.ForegroundColor = color;
-                Console.Write(customColor + "SEN: ");
-                Console.WriteLine(Encoding.ASCII.GetString(m));
+                Console.Write("SEN: ");
+                Console.WriteLine(Encoding.ASCII.GetString(m) + " " + Port);
                 //Console.ForegroundColor = ConsoleColor.;
                 Console.Write("\x1b[38;5;" + 238 + "m");
             }
