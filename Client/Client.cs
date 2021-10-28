@@ -16,6 +16,7 @@ namespace NotAGame
         private string serverip = "10.131.68.152";
         private int serverPort = 12000;
         public ConcurrentQueue<string> cq = new ConcurrentQueue<string>();
+        public string direct;
         private string prevSentMsg;
         private string prevRecievedMsg;
 
@@ -29,11 +30,12 @@ namespace NotAGame
                     try
                     {
                         // Sends a message to the host to which you have connected.
-                        string message;
-                        cq.TryDequeue(out message);
-                        Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+                        //string message;
+                        //cq.TryDequeue(out message);
+                        Byte[] sendBytes = Encoding.ASCII.GetBytes(direct);
 
                         udpClient.Send(sendBytes, sendBytes.Length);
+                        Thread.Sleep(50);
                     }
                     catch (Exception e)
                     {
