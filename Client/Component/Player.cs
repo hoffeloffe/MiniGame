@@ -16,7 +16,7 @@ namespace NotAGame.Component
         public Player()
         {
             InputHandler.Instance.player = this;
-            this.speed = 600;
+            this.speed = 900;
         }
 
         public override void Awake()
@@ -28,8 +28,8 @@ namespace NotAGame.Component
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             sr.SetSpriteName("Emil");
-            sr.Scale = 1;
-            sr.Layerdepth = 0.9f;
+            sr.Scale = new Vector2(1, 1);
+            sr.Layerdepth = 01f;
             
         }
 
@@ -40,15 +40,7 @@ namespace NotAGame.Component
 
         public void ChangeInput()
         {
-            switch (GameWorld.changeGame)
-            {
-                case false:
-                    GameWorld.changeGame = true;
-                    break;
-                case true:
-                    GameWorld.changeGame = false;
-                    break;
-            }
+            MiniGamesManager.Instance.currentGame++;
         }
 
         public void Move(Vector2 velocity)

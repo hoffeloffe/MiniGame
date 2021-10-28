@@ -11,8 +11,9 @@ using System.Threading;
 using NotAGame.Command_Pattern;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
+using NotAGame.MiniGames;
+using Microsoft.Xna.Framework.Media;
 
 namespace SpaceRTS
 {
@@ -38,7 +39,10 @@ namespace SpaceRTS
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Lobby lobby;
+        public static Texture2D mouseSprite;
+        public static SpriteFont font;
+        public static SpriteFont smallFont;
+
         private Random rnd = new Random();
         private Color yourColor;
         private List<int> playersId = new List<int>();
@@ -59,8 +63,7 @@ namespace SpaceRTS
         public bool firstPersonConnected = false;
         public bool firstUpdateLoop = false;
 
-        private List<GameObject> gameObjects = new List<GameObject>();
-
+        private List<GameObject> gameObjects;
         public List<GameObject> GameObjects
         {
             get
@@ -77,10 +80,13 @@ namespace SpaceRTS
         private GameObject playerGo;
         private List<Player> players = new List<Player>();
 
-        public static bool changeGame = false;
+        #region Mini games manager fields
         private MiniGamesManager gameManager;
+        public static bool changeGame = false;
         public static Texture2D Emil;
+        #endregion
 
+        #region server/client fields
         private Client client = new Client();
         private string serverMessage;
         private List<string[]> PIL = new List<string[]>(); //PLAYER INFORMATION LIST
@@ -94,7 +100,10 @@ namespace SpaceRTS
         private string comparePrevServerMsg;
         private List<string> chatstring;
 
+        private List<string> chatstring = new List<string>();
         public float DeltaTime { get; set; }
+
+        private Song monsterSound;
 
         public GameWorld()
 
@@ -108,13 +117,15 @@ namespace SpaceRTS
 
         protected override void Initialize()
         {
+            gameObjects = new List<GameObject>();
+
+            #region GameObjects - Player, texts, add to gameObjects
+
             gameManager = new MiniGamesManager();
-            lobby = new Lobby();
 
             // #region GameObjects - Player, texts, add to gameObjects
 
             #region Component
-
             playerGo = new GameObject();
             player = new Player();
             playerGo.AddComponent(player);
@@ -196,18 +207,15 @@ namespace SpaceRTS
             {
                 opponent.Awake();
             }
-
-            #endregion Component
+            #endregion Componenent
 
             #region Server Thread
-
             sendThread = new Thread(() => client.SendData());
             reciveThread = new Thread(() => ReceiveThread());
             sendThread.IsBackground = true;
             reciveThread.IsBackground = true;
             sendThread.Start();
             reciveThread.Start();
-
             #endregion Server Thread
 
             base.Initialize();
@@ -217,6 +225,10 @@ namespace SpaceRTS
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Emil = Content.Load<Texture2D>("Emil");
+            mouseSprite = Content.Load<Texture2D>("cursorGauntlet_grey");
+            font = Content.Load<SpriteFont>("Fonts/Arial48");
+            smallFont = Content.Load<SpriteFont>("Fonts/Arial24");
+            monsterSound = Content.Load<Song>("MonsterVoice");
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
@@ -240,7 +252,12 @@ namespace SpaceRTS
             }
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
-            gameManager.ChangeGame();
+            MiniGamesManager.Instance.Update(gameTime);
+            if (true)
+            {
+                MediaPlayer.Play(monsterSound);
+                MediaPlayer.IsRepeating = true;
+            }
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -419,12 +436,7 @@ namespace SpaceRTS
                     {
                         Debug.WriteLine("Oops, somebody somehow disconnected?");
                     }
-                    foreach (int id in playersId)
-                    {
-                        //UpdatePos(id);
-                        UpdateColor(id);
-                        UpdateName(id);
-                    }
+                    
 
                     #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
@@ -433,11 +445,6 @@ namespace SpaceRTS
                     Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + comparePrevServerMsg);
                     Debug.WriteLine("");
                     comparePrevServerMsg = storedSeverMsg;
-                    //serverMessageIsTheSame = serverMessage;
-                    //if (serverMessage != serverMessageIsTheSame)
-                    //{
-
-                    //}
                 }
                 else
                 {
@@ -470,6 +477,8 @@ namespace SpaceRTS
             {
                 opponent.Draw(_spriteBatch);
             }
+            MiniGamesManager.Instance.DrawNextGame(_spriteBatch);
+            MiniGamesManager.Instance.Draw(_spriteBatch);
 
             //foreach (string message in chatstring)
             //{
@@ -479,14 +488,6 @@ namespace SpaceRTS
 
             base.Draw(gameTime);
             _spriteBatch.End();
-        }
-
-        public void UnloadGame(GameObject go)
-        {
-            if (go.Tag == "Tiles")
-            {
-                gameObjects.Remove(go);
-            }
         }
 
         #region Thread Method
@@ -586,5 +587,6 @@ namespace SpaceRTS
 
             Debug.Write("(Creating... " + opponents.Count + " Opponent Objs 1 new.");
         }
+#endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NotAGame.MiniGames;
 using SpaceRTS;
@@ -10,16 +11,36 @@ namespace NotAGame
 {
     class MiniGamesManager
     {
-        private int currentGame;
-        MiniGameTest miniGame = new MiniGameTest();
+        #region Singleton
+        private static MiniGamesManager instance;
+        public static MiniGamesManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MiniGamesManager();
+                }
+                return instance;
+            }
+        }
+        #endregion Singleton
+        public int currentGame;
+        private static GameSSP sSP;
+        Lobby lobby;
+
         private bool noHoldDown = false;
+        public static bool startOver = false;
 
         public MiniGamesManager()
         {
+            lobby = new Lobby();
+            sSP = new GameSSP();
+
             currentGame = 0;
         }
 
-        public void ChangeGame()
+        public void Update(GameTime gameTime)
         {
             KeyboardState key = Keyboard.GetState();
 
@@ -28,6 +49,12 @@ namespace NotAGame
                 currentGame += 1;
                 noHoldDown = true;
             }
+            sSP.Update(gameTime);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            sSP.DrawText(spriteBatch);
         }
 
         public void DrawNextGame(SpriteBatch spriteBatch)
@@ -35,21 +62,12 @@ namespace NotAGame
             switch (currentGame)
             {
                 case 1:
-                    miniGame.DrawEmil(spriteBatch);
-                    foreach (GameObject game in GameWorld.Instance.GameObjects)
-                    {
-                        if (game.Tag == "Tile")
-                        {
-                            GameWorld.Instance.UnloadGame(game);
-                        }
-                    }
-                    break;
-                case 2:
-                    //Lobby lobby = new Lobby();
+                    lobby.LobbyMaker();
                     break;
             }
-            if (currentGame < 5)
+            if (currentGame > 5)
             {
+                currentGame = 0;
                 noHoldDown = false;
             }
            
