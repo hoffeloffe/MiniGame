@@ -60,7 +60,7 @@ namespace Server
 
                             ViewAddedMsg("ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList", ConsoleColor.Yellow, "");
 
-                            Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + idmaker);
+                            Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + idmaker + "_" + idmaker);
                             receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "\x1b[38;5;" + 48 + "m=> " + RemoteIpEndPoint.Port);
                         }
                     }
