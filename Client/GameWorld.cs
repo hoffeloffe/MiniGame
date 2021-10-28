@@ -10,6 +10,8 @@ using NotAGame.Component;
 using System.Threading;
 using NotAGame.Command_Pattern;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SpaceRTS
 {
@@ -44,6 +46,7 @@ namespace SpaceRTS
         private Player player;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
+        private Queue<string> eggSalad = new Queue<string>();
         private int OpponentGOBJCounter = 0;
         public int playerID;
         public int totalPoints = 0;
@@ -262,176 +265,182 @@ namespace SpaceRTS
                 client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
             }
-
-            if (serverMessage != null && serverMessage != comparePrevServerMsg) //If this is a different serverMessage from last, use it
+            while (eggSalad.Count != 0)
             {
-                string storedSeverMsg, serverMsgMod;
-                storedSeverMsg = serverMsgMod = serverMessage;
-                #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                Debug.Write("  <");
-                serverMsgMod = serverMsgMod.Remove(0, 2); //Remove two first letters
-                string[] serverMsgArray = serverMsgMod.Split("_"); //split id and value from eachother
-                string ID = serverMsgArray[1];
-                int intID = Convert.ToInt32(serverMsgArray[1]);
-                string Position = serverMsgArray[0];
-                bool foundID = false; //Whether ID from message is in PIL or not
+                Debug.WriteLine("Queue Count: " + eggSalad.Count);
+                // Get the first in the Queue 
+                string queueMsg = eggSalad.Dequeue();
+                Debug.WriteLine("Queue Message: " + queueMsg);
 
-                #region Check if message is in PIL. If not, create Obj and add opponent to PIL.
-                for (int i = 0; i < PIL.Count; i++)
+                if (queueMsg != null && queueMsg != comparePrevServerMsg) //If this is a different serverMessage from last, use it
                 {
-                    if (PIL[i][0].Contains(ID)) //Is the client in the PIL?
+                    string storedSeverMsg, serverMsgMod;
+                    storedSeverMsg = serverMsgMod = queueMsg;
+                    #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
+                    Debug.Write("  <");
+                    serverMsgMod = serverMsgMod.Remove(0, 2); //Remove two first letters
+                    string[] serverMsgArray = serverMsgMod.Split("_"); //split id and value from eachother
+                    string ID = serverMsgArray[1];
+                    int intID = Convert.ToInt32(serverMsgArray[1]);
+                    string Position = serverMsgArray[0];
+                    bool foundID = false; //Whether ID from message is in PIL or not
+
+                    #region Check if message ID is in PIL. If not, create Obj and add opponent to PIL.
+                    for (int i = 0; i < PIL.Count; i++)
                     {
-                        foundID = true;
+                        if (PIL[i][0].Contains(ID)) //Is the client in the PIL?
+                        {
+                            foundID = true;
+                        }
                     }
-                }
-                if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
-                {
-                    Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
-                    PIL.Add(new string[] { ID, Position });
-                    CreateOpponentObj(intID);
-                    firstPersonConnected = true;
-                    //Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
+                    if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
+                    {
+                        Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
+                        PIL.Add(new string[] { ID, Position });
+                        CreateOpponentObj(intID);
+                        firstPersonConnected = true;
+                    }
+                    else
+                    {
+                        Debug.Write("(ID " + ID + " found.)");
+                    }
+
+                    #endregion
+
+                    if (storedSeverMsg.StartsWith("PO"))
+                    {
+                        Debug.Write("(PO)");
+                        UpdatePos(Convert.ToInt32(ID), Position);
+                    }
+
+                    if (serverMsgMod.StartsWith("ID")) //Incoming ID message
+                    {
+                        Debug.Write("(ID//////////////////////////////////////////////////////)");
+                    }
+                    //Modtagende beskeder.
+                    if (serverMsgMod.StartsWith("ME"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                        chatstring.Add(serverMsgMod);
+                    }
+
+                    //Send Dine Totale Points til serveren.
+                    if (totalPoints != changeInTotalPoints)
+                    {
+                        client.cq.Enqueue("TP" + totalPoints);
+                        changeInTotalPoints = totalPoints;
+                    }
+
+                    //Modtag Alles Totale Points
+                    if (serverMsgMod.StartsWith("TP"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Send Dine Minigame points til serveren.
+                    if (serverMsgMod.StartsWith("MP"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    ////Modtage alles Minigame points til serveren.
+                    //if (serverMsgMod.StartsWith("MP"))
+                    //{
+                    //    serverMsgMod = serverMsgMod.Remove(0, 2);
+                    //}
+
+                    //Send Done
+                    if (serverMsgMod.StartsWith("DO"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Modtage Done
+                    if (serverMsgMod.StartsWith("DO"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Send Fail
+                    if (serverMsgMod.StartsWith("FA"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Modtage Fails
+                    if (serverMsgMod.StartsWith("FA"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Send Username
+                    if (serverMsgMod.StartsWith("US"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Modtage Username
+                    if (serverMsgMod.StartsWith("US"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Send Color
+                    if (serverMsgMod.StartsWith("CO"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+                    //Modtage Color
+                    if (serverMsgMod.StartsWith("CO"))
+                    {
+                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                    }
+
+                    if (opponents.Count < PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                    {
+                        while (opponents.Count < PIL.Count)
+                        {
+                            rnd = new Random();
+                            //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                            GameObject oppObj = new GameObject();
+                            SpriteRenderer oppSpr = new SpriteRenderer();
+                            Opponent oppOpp = new Opponent();
+                            //oppSpr.Color = randomColor;
+                            oppObj.AddComponent(oppSpr);
+                            oppObj.AddComponent(oppOpp);
+                            //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
+                            opponents.Add(oppObj);
+                            playersId.Add(Convert.ToInt32(PIL[PIL.Count - 1][0]));
+                            oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
+                            oppSpr.hasLabel = true;
+                            oppSpr.Text = PIL[PIL.Count - 1][0] + " ";
+                            oppObj.Awake();
+                            oppObj.Start();
+                        }
+                    }
+                    if (opponents.Count > PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                    {
+                        Debug.WriteLine("Oops, somebody somehow disconnected?");
+                    }
+                    foreach (int id in playersId)
+                    {
+                        //UpdatePos(id);
+                        UpdateColor(id);
+                        UpdateName(id);
+                    }
+
+                    #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
+
+
+                    plInfoListCountIsTheSame = PIL.Count;
+                    Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + comparePrevServerMsg);
+                    Debug.WriteLine("");
+                    comparePrevServerMsg = storedSeverMsg;
+                    //serverMessageIsTheSame = serverMessage;
+                    //if (serverMessage != serverMessageIsTheSame)
+                    //{
+
+                    //}
                 }
                 else
                 {
-                    Debug.Write("(I already know player ID " + ID + "!)");
+                    //comparePrevServerMsg = serverMessage;
+                    //Console.Write("///"+ c);
                 }
-
-                #endregion
-                
-                if (storedSeverMsg.StartsWith("PO"))
-                {
-                    Debug.Write("(PO)");
-
-                    UpdatePos(Convert.ToInt32(ID), Position);
-                }
-
-                if (serverMsgMod.StartsWith("ID")) //Incoming ID message
-                {
-                    Debug.Write("//////////////////////////////////////////////////////(ID)");
-                }
-                //Modtagende beskeder.
-                if (serverMsgMod.StartsWith("ME"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                    chatstring.Add(serverMsgMod);
-                }
-
-                //Send Dine Totale Points til serveren.
-                if (totalPoints != changeInTotalPoints)
-                {
-                    client.cq.Enqueue("TP" + totalPoints);
-                    changeInTotalPoints = totalPoints;
-                }
-
-                //Modtag Alles Totale Points
-                if (serverMsgMod.StartsWith("TP"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Send Dine Minigame points til serveren.
-                if (serverMsgMod.StartsWith("MP"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Modtage alles Minigame points til serveren.
-                if (serverMsgMod.StartsWith("MP"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-
-                //Send Done
-                if (serverMsgMod.StartsWith("DO"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Modtage Done
-                if (serverMsgMod.StartsWith("DO"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Send Fail
-                if (serverMsgMod.StartsWith("FA"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Modtage Fails
-                if (serverMsgMod.StartsWith("FA"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Send Username
-                if (serverMsgMod.StartsWith("US"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Modtage Username
-                if (serverMsgMod.StartsWith("US"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Send Color
-                if (serverMsgMod.StartsWith("CO"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-                //Modtage Color
-                if (serverMsgMod.StartsWith("CO"))
-                {
-                    serverMsgMod = serverMsgMod.Remove(0, 2);
-                }
-
-                if (opponents.Count < PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
-                {
-                    while (opponents.Count < PIL.Count)
-                    {
-                        rnd = new Random();
-                        //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                        GameObject oppObj = new GameObject();
-                        SpriteRenderer oppSpr = new SpriteRenderer();
-                        Opponent oppOpp = new Opponent();
-                        //oppSpr.Color = randomColor;
-                        oppObj.AddComponent(oppSpr);
-                        oppObj.AddComponent(oppOpp);
-                        //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
-                        opponents.Add(oppObj);
-                        playersId.Add(Convert.ToInt32(PIL[PIL.Count - 1][0]));
-                        oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
-                        oppSpr.hasLabel = true;
-                        oppSpr.Text = PIL[PIL.Count - 1][0] + " ";
-                        oppObj.Awake();
-                        oppObj.Start();
-                    }
-                }
-                if (opponents.Count > PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
-                {
-                    Debug.WriteLine("Oops, somebody somehow disconnected?");
-                }
-                foreach (int id in playersId)
-                {
-                    //UpdatePos(id);
-                    UpdateColor(id);
-                    UpdateName(id);
-                }
-
-                #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-
-
-                plInfoListCountIsTheSame = PIL.Count;
-                Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + comparePrevServerMsg);
-                Debug.WriteLine("");
-                comparePrevServerMsg = storedSeverMsg;
-                //serverMessageIsTheSame = serverMessage;
-                //if (serverMessage != serverMessageIsTheSame)
-                //{
-                    
-                //}
             }
-            else
-            {
-                //comparePrevServerMsg = serverMessage;
-                //Console.Write("///"+ c);
-            }
+            
 
             #endregion Server Beskeder
 
@@ -481,7 +490,8 @@ namespace SpaceRTS
         {
             while (true)
             {
-                serverMessage = client.ReceiveData();
+                //serverMessage = client.ReceiveData();
+                eggSalad.Enqueue(client.ReceiveData());
                 Debug.Write("[" + serverMessage + "] ");
             }
         }
