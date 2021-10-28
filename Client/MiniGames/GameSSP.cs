@@ -36,6 +36,8 @@ namespace NotAGame.MiniGames
 
         private bool noHoldDown = false;
         private Random rnd;
+
+        private float textLayerDepth = 0f;
         #endregion
 
         private Vector2 mousePosition;
@@ -115,27 +117,27 @@ namespace NotAGame.MiniGames
 
         public void DrawText(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.smallFont, "Rock", new Vector2(285, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
-            spriteBatch.DrawString(GameWorld.smallFont, "Paper", new Vector2(475, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
-            spriteBatch.DrawString(GameWorld.smallFont, "Scissor", new Vector2(665, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
-            spriteBatch.DrawString(GameWorld.smallFont, "Ready", new Vector2(475, 875), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+            spriteBatch.DrawString(GameWorld.smallFont, "Rock", new Vector2(285, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
+            spriteBatch.DrawString(GameWorld.smallFont, "Paper", new Vector2(475, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
+            spriteBatch.DrawString(GameWorld.smallFont, "Scissor", new Vector2(665, 785), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
+            spriteBatch.DrawString(GameWorld.smallFont, "Ready", new Vector2(475, 875), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
 
 
             if (choiceRock == true)
             {
-                spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(335, 440), Color.Yellow, 0, Vector2.Zero, 2, SpriteEffects.None, 01f);
+                spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(335, 440), Color.Yellow, 0, Vector2.Zero, 2, SpriteEffects.None, textLayerDepth);
                 choiceScissor = false;
                 choicePaper = false;
             }
             if (choicePaper == true)
             {
-                spriteBatch.DrawString(GameWorld.font, "PAPER", new Vector2(310, 440), Color.Yellow, 0, Vector2.Zero, 2, SpriteEffects.None, 01f);
+                spriteBatch.DrawString(GameWorld.font, "PAPER", new Vector2(310, 440), Color.Yellow, 0, Vector2.Zero, 2, SpriteEffects.None, textLayerDepth);
                 choiceRock = false;
                 choiceScissor = false;
             }
             if (choiceScissor == true)
             {
-                spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(385, 480), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(385, 480), Color.Yellow, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                 choiceRock = false;
                 choicePaper = false;
             }
@@ -143,55 +145,55 @@ namespace NotAGame.MiniGames
             {
                 if (rockAI == true)
                 {
-                    spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(1265, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, 01f);
+                    spriteBatch.DrawString(GameWorld.font, "ROCK", new Vector2(1265, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, textLayerDepth);
                     paperAI = false;
                     scissorAI = false;
                     if (choicePlayer == choiceAI)
                     {
-                        spriteBatch.DrawString(GameWorld.font, "DRAW", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                        spriteBatch.DrawString(GameWorld.font, "DRAW", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                     }
                     if (choicePlayer == "PAPER")
                     {
-                        spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                        spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                     }
                     else
                     {
-                        spriteBatch.DrawString(GameWorld.font, "YOU LOST", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                        spriteBatch.DrawString(GameWorld.font, "YOU LOST", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                     }
                 }
                 if (paperAI == true)
                 {
-                    spriteBatch.DrawString(GameWorld.font, "PAPER", new Vector2(1240, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, 01f);
+                    spriteBatch.DrawString(GameWorld.font, "PAPER", new Vector2(1240, 440), Color.DarkMagenta, 0, Vector2.Zero, 2, SpriteEffects.None, textLayerDepth);
                     rockAI = false;
                     scissorAI = false;
                     if (choicePlayer == choiceAI)
                     {
-                        spriteBatch.DrawString(GameWorld.font, "DRAW", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                        spriteBatch.DrawString(GameWorld.font, "DRAW", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                         if (choicePlayer == "ROCK")
                         {
-                            spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                            spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                         }
                         else
                         {
-                            spriteBatch.DrawString(GameWorld.font, "YOU LOST", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                            spriteBatch.DrawString(GameWorld.font, "YOU LOST", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                         }
                     }
                 }
                 if (scissorAI == true)
                 {
-                    spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(1315, 440), Color.DarkMagenta, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                    spriteBatch.DrawString(GameWorld.font, "SCISSOR", new Vector2(1315, 440), Color.DarkMagenta, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                     paperAI = false;
                     rockAI = false;
                     if (choicePlayer == choiceAI)
                     {
-                        spriteBatch.DrawString(GameWorld.font, "DRAW", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                        spriteBatch.DrawString(GameWorld.font, "DRAW", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                         if (choicePlayer == "PAPER")
                         {
-                            spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                            spriteBatch.DrawString(GameWorld.font, "YOU WON", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                         }
                         else
                         {
-                            spriteBatch.DrawString(GameWorld.font, "YOU LOST", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, 01f);
+                            spriteBatch.DrawString(GameWorld.font, "YOU LOST", new Vector2(835, 220), Color.GhostWhite, 0, Vector2.Zero, 1, SpriteEffects.None, textLayerDepth);
                         }
                     }
                 }
@@ -239,7 +241,7 @@ namespace NotAGame.MiniGames
             paper.AddComponent(paperSR);
             paperSR.SetSpriteName("buttonLong_blue");
             paperSR.Scale = new Vector2(1, 2);
-            paperSR.Layerdepth = 02f;
+            paperSR.Layerdepth = 01f;
             paper.transform.Position = new Vector2(425, 760);
             GameWorld.Instance.GameObjects.Add(paper);
             rectPaper = new Rectangle(425, 760, 190, 100);
@@ -249,7 +251,7 @@ namespace NotAGame.MiniGames
             scissors.AddComponent(scissorsSR);
             scissorsSR.SetSpriteName("buttonLong_blue");
             scissorsSR.Scale = new Vector2(1, 2);
-            scissorsSR.Layerdepth = 02f;
+            scissorsSR.Layerdepth = 01f;
             scissors.transform.Position = new Vector2(620, 760);
             GameWorld.Instance.GameObjects.Add(scissors);
             rectScissor = new Rectangle(620, 760, 190, 100);
@@ -260,7 +262,7 @@ namespace NotAGame.MiniGames
             rock2.AddComponent(rockSR2);
             rockSR2.SetSpriteName("buttonLong_blue");
             rockSR2.Scale = new Vector2(1, 2);
-            rockSR2.Layerdepth = 02f;
+            rockSR2.Layerdepth = 01f;
             rock2.transform.Position = new Vector2(1155, 760);
             GameWorld.Instance.GameObjects.Add(rock2);
             rectRock2 = new Rectangle(1155, 760, 190, 100);
@@ -270,7 +272,7 @@ namespace NotAGame.MiniGames
             paper2.AddComponent(paperSR2);
             paperSR2.SetSpriteName("buttonLong_blue");
             paperSR2.Scale = new Vector2(1, 2);
-            paperSR2.Layerdepth = 02f;
+            paperSR2.Layerdepth = 01f;
             paper2.transform.Position = new Vector2(1350, 760);
             GameWorld.Instance.GameObjects.Add(paper2);
             rectPaper2 = new Rectangle(1350, 760, 190, 100);
@@ -280,7 +282,7 @@ namespace NotAGame.MiniGames
             scissors2.AddComponent(scissorsSR2);
             scissorsSR2.SetSpriteName("buttonLong_blue");
             scissorsSR2.Scale = new Vector2(1, 2);
-            scissorsSR2.Layerdepth = 02f;
+            scissorsSR2.Layerdepth = 01f;
             scissors2.transform.Position = new Vector2(1545, 760);
             GameWorld.Instance.GameObjects.Add(scissors2);
             rectScissor2 = new Rectangle(1545, 760, 190, 100);
@@ -290,7 +292,7 @@ namespace NotAGame.MiniGames
             ready.AddComponent(readySR);
             readySR.SetSpriteName("buttonLong_blue");
             readySR.Scale = new Vector2(1, 1);
-            readySR.Layerdepth = 02f;
+            readySR.Layerdepth = 01f;
             ready.transform.Position = new Vector2(425, 870);
             GameWorld.Instance.GameObjects.Add(ready);
             rectReady = new Rectangle(425, 870, 190, 100);

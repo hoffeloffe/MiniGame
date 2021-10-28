@@ -28,6 +28,7 @@ namespace NotAGame.Component
         public bool hasOutline { get; set; } = false;
         public bool hasShadow { get; set; } = false;
         public bool hasLabel { get; set; } = false;
+        private float textLayerDepth = 0f;
         #endregion
 
         public void SetSpriteName(string spriteName)
@@ -50,13 +51,13 @@ namespace NotAGame.Component
         {
             if (hasOutline) //outdated
             {
-                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 01f);
+                spriteBatch.DrawString(FontOut, Text, GameObject.transform.Position, Color2, Rotation, Origin, ScaleText, SpriteEffects.None, textLayerDepth);
             }
             if (hasShadow) //Draws a black font with offset before the main font.
             {
-                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, ScaleText, SpriteEffects.None, 01f);
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 2, GameObject.transform.Position.Y + 2f), Color2, Rotation, Origin, ScaleText, SpriteEffects.None, textLayerDepth);
             }
-            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, ScaleText, SpriteEffects.None, 01f);
+            spriteBatch.DrawString(Font, Text, GameObject.transform.Position, Color, Rotation, Origin, ScaleText, SpriteEffects.None, textLayerDepth);
         }
 
         public override void Update(GameTime gametime)

@@ -41,7 +41,6 @@ namespace SpaceRTS
         public static SpriteFont font;
         public static SpriteFont smallFont;
 
-        private Lobby lobby;
         private Random rnd = new Random();
         private Color yourColor;
         private List<int> playersId = new List<int>();
