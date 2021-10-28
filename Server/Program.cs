@@ -58,7 +58,7 @@ namespace Server
                             //PlayerList.Add(new PlayerInfo(RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString(), returnData));
                             PlayerList.Add(new PlayerInfo(idmaker, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString()));
 
-                            ViewAddedMsg("ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList", ConsoleColor.Yellow, "");
+                            ViewAddedMsg("ADDED A---------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList", ConsoleColor.Yellow, "");
 
                             Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID" + idmaker + "_" + idmaker);
                             receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "\x1b[38;5;" + 48 + "m=> " + RemoteIpEndPoint.Port);
@@ -67,7 +67,7 @@ namespace Server
                     else
                     {
                         PlayerList.Add(new PlayerInfo(idmaker, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port.ToString()));
-                        string consoleMsg = "ADDED ----------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList"; ViewAddedMsg(consoleMsg, ConsoleColor.Yellow, "");
+                        string consoleMsg = "ADDED B---------   " + RemoteIpEndPoint.Address.ToString() + " " + RemoteIpEndPoint.Port.ToString() + " ID: " + idmaker + " to PlayerList"; ViewAddedMsg(consoleMsg, ConsoleColor.Yellow, "");
 
                         Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ID0_0");//You are the first in the server, congrats
                         receivingUdpClient.Send(sendBytes0, sendBytes0.Length, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port); ViewSentMsg(sendBytes0, ConsoleColor.Yellow, "=> " + RemoteIpEndPoint.Port + ": ");
