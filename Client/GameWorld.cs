@@ -12,6 +12,7 @@ using NotAGame.Command_Pattern;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace SpaceRTS
 {
@@ -46,7 +47,7 @@ namespace SpaceRTS
         private Player player;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
-        private Queue<string> eggSalad = new Queue<string>();
+        private ConcurrentQueue<string> eggSalad = new ConcurrentQueue<string>();
         private int OpponentGOBJCounter = 0;
         public int playerID;
         public int totalPoints = 0;
@@ -269,7 +270,8 @@ namespace SpaceRTS
             {
                 Debug.WriteLine("Queue Count: " + eggSalad.Count);
                 // Get the first in the Queue 
-                string queueMsg = eggSalad.Dequeue();
+                string queueMsg;
+                eggSalad.TryDequeue(out queueMsg);
                 Debug.WriteLine("Queue Message: " + queueMsg);
 
                 if (queueMsg != null && queueMsg != comparePrevServerMsg) //If this is a different serverMessage from last, use it
