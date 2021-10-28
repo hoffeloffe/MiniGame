@@ -256,12 +256,11 @@ namespace SpaceRTS
                 //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 changeInPosition = playerGo.transform.Position;
             }
-            Debug.Write(" AAAA " + serverMessage + " AAAA ");
             if (serverMessage != null && serverMessage != comparePrevServerMsg) //if not empty or same
             {
                 string serverMsg = serverMessage;
                 #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                Debug.Write(serverMsg + "  <");
+                Debug.Write("  <");
                 if (serverMsg.StartsWith("PO"))
                 {
                     Debug.Write("(PO)");
@@ -446,6 +445,10 @@ namespace SpaceRTS
                     
                 //}
             }
+            else
+            {
+                comparePrevServerMsg = serverMessage;
+            }
 
             #endregion Server Beskeder
 
@@ -497,6 +500,7 @@ namespace SpaceRTS
             while (true)
             {
                 serverMessage = client.ReceiveData();
+                Debug.Write("~" + serverMessage + "~. ");
             }
         }
 
