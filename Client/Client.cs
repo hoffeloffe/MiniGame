@@ -25,7 +25,7 @@ namespace NotAGame
             udpClient.Connect(serverip, serverPort);
             while (true)
             {
-                if (!cq.IsEmpty)
+                if (direct != null || direct != "")
                 {
                     try
                     {
@@ -36,6 +36,7 @@ namespace NotAGame
 
                         udpClient.Send(sendBytes, sendBytes.Length);
                         Thread.Sleep(50);
+                        direct = null;
                     }
                     catch (Exception e)
                     {

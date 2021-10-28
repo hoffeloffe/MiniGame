@@ -95,11 +95,20 @@ namespace Server
 
                     if (returnData.ToString().StartsWith("ME"))
                     {
+                        string playerMsg = returnData.ToString();
+                        playerMsg = playerMsg.Remove(0, 2);
                         foreach (PlayerInfo item in PlayerList)
                         {
-                            Byte[] sendBytes1 = Encoding.ASCII.GetBytes(PlayerList[k].message + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes1, sendBytes1.Length, item.ip, Int32.Parse(item.port)); ViewSentMsg(sendBytes1, ConsoleColor.Green, "=> " + item.port + ": ");
-                            k++;
+                            if (item.ip == RemoteIpEndPoint.Address.ToString())
+                            {
+                                item.message = playerMsg;
+                            }
+                            Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ME" + item.message + "_" + item.id);
+
+                            for (int i = 0; i < PlayerList.Count; i++)
+                            {
+                                receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, Int32.Parse(PlayerList[i].port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                            }
                         }
                     }
 

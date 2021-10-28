@@ -234,6 +234,10 @@ namespace SpaceRTS
             {
                 Exit();
             }
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed  || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
+            {
+                client.direct = "ME" + "vov";
+            }
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
             gameManager.ChangeGame();
@@ -263,7 +267,7 @@ namespace SpaceRTS
                 //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 #endregion
 
-                client.cq.Enqueue("PO" + playerGo.transform.Position);
+                //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 client.direct = "PO" + playerGo.transform.Position;
                 changeInPosition = playerGo.transform.Position;
             }
@@ -316,15 +320,15 @@ namespace SpaceRTS
                         UpdatePos(Convert.ToInt32(ID), Position);
                     }
 
-                    if (serverMsgMod.StartsWith("ID")) //Incoming ID message
+                    if (storedSeverMsg.StartsWith("ID")) //Incoming ID message
                     {
                         Debug.Write("(ID//////////////////////////////////////////////////////)");
                     }
                     //Modtagende beskeder.
-                    if (serverMsgMod.StartsWith("ME"))
+                    if (storedSeverMsg.StartsWith("ME"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
-                        chatstring.Add(serverMsgMod);
+                        //chatstring.Add(serverMsgMod);
+                        Debug.WriteLine("VOVH!!!!!!!!!!!!!!!");
                     }
 
                     //Send Dine Totale Points til serveren.
@@ -335,14 +339,12 @@ namespace SpaceRTS
                     }
 
                     //Modtag Alles Totale Points
-                    if (serverMsgMod.StartsWith("TP"))
+                    if (storedSeverMsg.StartsWith("TP"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     //Send Dine Minigame points til serveren.
-                    if (serverMsgMod.StartsWith("MP"))
+                    if (storedSeverMsg.StartsWith("MP"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     ////Modtage alles Minigame points til serveren.
                     //if (serverMsgMod.StartsWith("MP"))
@@ -351,7 +353,7 @@ namespace SpaceRTS
                     //}
 
                     //Send Done
-                    if (serverMsgMod.StartsWith("DO"))
+                    if (storedSeverMsg.StartsWith("DO"))
                     {
                         serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
