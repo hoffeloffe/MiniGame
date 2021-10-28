@@ -69,12 +69,8 @@ namespace NotAGame
                 // Blocks until a message returns on this socket from a remote host.
                 Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
                 string returnData = Encoding.ASCII.GetString(receiveBytes).ToString();
-                if (returnData != prevRecievedMsg)
-                {
-                    prevRecievedMsg = returnData;
-                    return returnData;
-                }
-                return null;
+
+                return returnData;
             }
             catch (Exception e)
             {

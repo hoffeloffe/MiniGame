@@ -77,7 +77,7 @@ namespace SpaceRTS
 
         private Client client = new Client();
         private string serverMessage;
-        private List<string[]> playerInfomationList = new List<string[]>();
+        private List<string[]> PIL = new List<string[]>(); //PLAYER INFORMATION LIST
         private int plInfoListCountIsTheSame = 0;
         private Color color;
         private Thread sendThread;
@@ -266,41 +266,28 @@ namespace SpaceRTS
                     Debug.Write("(PO)");
                     serverMsg = serverMsg.Remove(0, 2);
                     string[] serverMsgArray = serverMsg.Split("_");
-                    string ID = serverMsgArray[1].ToString();
-                    string Position = serverMsgArray[0].ToString();
+                    string ID = serverMsgArray[1];
+                    string Position = serverMsgArray[0];
+                    bool foundID = false; //Whether ID from message is in PIL or not
 
-                    if (playerInfomationList.Count == 0)
+                    for (int i = 0; i < PIL.Count; i++)
                     {
-                        Debug.Write("(ID " + serverMsgArray[1] + " == 0)");
-                        playerInfomationList.Add(new string[] { ID, Position });
-                        Debug.Write("(NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
+                        if (PIL[i][0].Contains(ID)) //Is the client in the PIL?
+                        {
+                            foundID = true;
+                        }
+                    }
+                    if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
+                    {
+                        Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
+                        PIL.Add(new string[] { ID, Position });
                         CreateOpponentObj(ID);
+                        //Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
                     }
                     else
                     {
-                        Debug.Write("(PIL NOT == 0)");
-                        bool foundID = false;
-                        for (int i = 0; i < playerInfomationList.Count; i++)
-                        {
-                            if (playerInfomationList[i][0].Contains(ID)) //Is the player whose servermessage belong to in the PIL list?
-                            {
-                                foundID = true;
-                                Debug.Write("(FOUND ID, do nothing.)");
-                            }
-                        }
-                        if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
-                        {
-                            Debug.Write("(DIDN'T FIND ID: " + serverMsgArray[1] + ")");
-                            playerInfomationList.Add(new string[] { ID, Position });
-                            CreateOpponentObj(serverMsgArray[1]);
-                            Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
-                        }
-                        else
-                        {
-                            Debug.Write("(I already know player ID " + ID + "!)");
-                        }
+                        Debug.Write("(I already know player ID " + ID + "!)");
                     }
-
 
                     UpdatePos(Convert.ToInt32(ID), Position);
 
@@ -313,7 +300,7 @@ namespace SpaceRTS
                     //Din ID
                     serverMsg = serverMsg.Remove(0, 2);
                     playerID = Convert.ToInt32(serverMsg);
-                    foreach (var item in playerInfomationList)
+                    foreach (var item in PIL)
                     {
                         string ID = serverMsg[1].ToString();
                         bool foundID = false;
@@ -321,7 +308,7 @@ namespace SpaceRTS
                         if (!item.Contains(serverMsg[1].ToString()))
                         {
                             Debug.Write("(no ID: " + serverMsg[1] + " , adding)");
-                            playerInfomationList.Add(new string[] { ID, new Vector2().ToString() });
+                            PIL.Add(new string[] { ID, new Vector2().ToString() });
                             CreateOpponentObj(serverMsg[1].ToString());
                         }
                         else
@@ -400,9 +387,9 @@ namespace SpaceRTS
                     serverMsg = serverMsg.Remove(0, 2);
                 }
 
-                if (opponents.Count < playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                if (opponents.Count < PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
-                    while (opponents.Count < playerInfomationList.Count)
+                    while (opponents.Count < PIL.Count)
                     {
                         rnd = new Random();
                         //Color randomColor = new Color(rnd.Next(256), rnd.Next(256), rnd.Next(256));
@@ -414,15 +401,15 @@ namespace SpaceRTS
                         oppObj.AddComponent(oppOpp);
                         //Adding opponents and playerId at the same time should help us keep track of who is who, because their positions in the lists are the same...
                         opponents.Add(oppObj);
-                        playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
+                        playersId.Add(Convert.ToInt32(PIL[PIL.Count - 1][0]));
                         oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
                         oppSpr.hasLabel = true;
-                        oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
+                        oppSpr.Text = PIL[PIL.Count - 1][0] + " ";
                         oppObj.Awake();
                         oppObj.Start();
                     }
                 }
-                if (opponents.Count > playerInfomationList.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                if (opponents.Count > PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                 {
                     Debug.WriteLine("Oops, somebody somehow disconnected?");
                 }
@@ -436,7 +423,7 @@ namespace SpaceRTS
                 #endregion Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
 
 
-                plInfoListCountIsTheSame = playerInfomationList.Count;
+                plInfoListCountIsTheSame = PIL.Count;
                 Debug.Write("> PLInfo: " + plInfoListCountIsTheSame + ", opponents: " + opponents.Count + " " + comparePrevServerMsg);
                 Debug.WriteLine("");
                 //serverMessageIsTheSame = serverMessage;
@@ -447,7 +434,8 @@ namespace SpaceRTS
             }
             else
             {
-                comparePrevServerMsg = serverMessage;
+                //comparePrevServerMsg = serverMessage;
+                //Console.Write("///"+ c);
             }
 
             #endregion Server Beskeder
@@ -513,7 +501,7 @@ namespace SpaceRTS
             {
                 if (id == obj.Id)
                 {
-                    foreach (var InfoID in playerInfomationList)
+                    foreach (var InfoID in PIL)
                     {
                         if (id == Convert.ToInt32(InfoID[0]))
                         {
@@ -538,7 +526,7 @@ namespace SpaceRTS
 
         public void UpdateColor(int id)
         {
-            string som = playerInfomationList[id][8].ToString();
+            string som = PIL[id][8].ToString();
             string cleanString = som.Replace("{R:", "");
             cleanString = cleanString.Replace("G:", "");
             cleanString = cleanString.Replace("B:", "");
@@ -559,9 +547,9 @@ namespace SpaceRTS
 
         public void UpdateName(int id)
         {
-            string som = playerInfomationList[id][8].ToString();
+            string som = PIL[id][8].ToString();
             SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
-            srr.Text = playerInfomationList[id][0] + " " + playerInfomationList[id][7];
+            srr.Text = PIL[id][0] + " " + PIL[id][7];
             //srr.Color = new Color(R, G, B);
             Debug.WriteLine(srr.Color);
         }
