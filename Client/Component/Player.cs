@@ -40,16 +40,7 @@ namespace NotAGame.Component
 
         public void ChangeInput()
         {
-            switch (GameWorld.changeGame)
-            {
-                case false:
-                    MiniGamesManager.Instance.currentGame++;
-                    GameWorld.changeGame = true;
-                    break;
-                case true:
-                    GameWorld.changeGame = false;
-                    break;
-            }
+            MiniGamesManager.Instance.currentGame++;
         }
 
         public void Move(Vector2 velocity)

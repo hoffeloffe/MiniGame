@@ -51,6 +51,7 @@ namespace NotAGame.Command_Pattern
                     if (key.IsKeyDown(Keys.N))
                     {
                         noHoldDown = false;
+
                     }
                 }
                 else if (key.IsKeyUp(Keys.N))

@@ -37,7 +37,8 @@ namespace NotAGame.MiniGames
         private bool noHoldDown = false;
         private Random rnd;
 
-        private float textLayerDepth = 0f;
+        private float textLayerDepth = 0.5f;
+        private float panelDepth = 0.3f;
         #endregion
 
         private Vector2 mousePosition;
@@ -51,6 +52,7 @@ namespace NotAGame.MiniGames
             MouseState mouse = Mouse.GetState();
             mousePosition = new Vector2(mouse.X, mouse.Y);
 
+            #region Mouse Input
             if (new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectRock) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper) ||
                 new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectRock2) ||
                 new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectPaper2) || new Rectangle(mouse.X, mouse.Y, 1, 1).Intersects(rectScissor2) ||
@@ -113,6 +115,9 @@ namespace NotAGame.MiniGames
             {
                 Mouse.SetCursor(MouseCursor.Arrow);
             }
+            #endregion
+
+
         }
 
         public void DrawText(SpriteBatch spriteBatch)
@@ -210,7 +215,7 @@ namespace NotAGame.MiniGames
             go.AddComponent(new MiniGame());
             sr.SetSpriteName("panel_blue");
             sr.Scale = new Vector2(5, 5);
-            sr.Layerdepth = 01f;
+            sr.Layerdepth = panelDepth;
             go.transform.Position = new Vector2(275 , 250);
             GameWorld.Instance.GameObjects.Add(go);
 
@@ -221,7 +226,7 @@ namespace NotAGame.MiniGames
             go1.AddComponent(new MiniGame());
             sr1.SetSpriteName("panel_blue");
             sr1.Scale = new Vector2(5, 5);
-            sr1.Layerdepth = 01f;
+            sr1.Layerdepth = panelDepth;
             go1.transform.Position = new Vector2(1200, 250);
             GameWorld.Instance.GameObjects.Add(go1);
 
@@ -231,7 +236,7 @@ namespace NotAGame.MiniGames
             rock.AddComponent(sr2);
             sr2.SetSpriteName("buttonLong_blue");
             sr2.Scale = new Vector2(1, 2);
-            sr2.Layerdepth = 01f;
+            sr2.Layerdepth = panelDepth;
             rock.transform.Position = new Vector2(230, 760);
             GameWorld.Instance.GameObjects.Add(rock);
             rectRock = new Rectangle(230, 750, 190, 100);
@@ -241,7 +246,7 @@ namespace NotAGame.MiniGames
             paper.AddComponent(paperSR);
             paperSR.SetSpriteName("buttonLong_blue");
             paperSR.Scale = new Vector2(1, 2);
-            paperSR.Layerdepth = 01f;
+            paperSR.Layerdepth = panelDepth;
             paper.transform.Position = new Vector2(425, 760);
             GameWorld.Instance.GameObjects.Add(paper);
             rectPaper = new Rectangle(425, 760, 190, 100);
@@ -251,7 +256,7 @@ namespace NotAGame.MiniGames
             scissors.AddComponent(scissorsSR);
             scissorsSR.SetSpriteName("buttonLong_blue");
             scissorsSR.Scale = new Vector2(1, 2);
-            scissorsSR.Layerdepth = 01f;
+            scissorsSR.Layerdepth = panelDepth;
             scissors.transform.Position = new Vector2(620, 760);
             GameWorld.Instance.GameObjects.Add(scissors);
             rectScissor = new Rectangle(620, 760, 190, 100);
@@ -262,7 +267,7 @@ namespace NotAGame.MiniGames
             rock2.AddComponent(rockSR2);
             rockSR2.SetSpriteName("buttonLong_blue");
             rockSR2.Scale = new Vector2(1, 2);
-            rockSR2.Layerdepth = 01f;
+            rockSR2.Layerdepth = panelDepth;
             rock2.transform.Position = new Vector2(1155, 760);
             GameWorld.Instance.GameObjects.Add(rock2);
             rectRock2 = new Rectangle(1155, 760, 190, 100);
@@ -272,7 +277,7 @@ namespace NotAGame.MiniGames
             paper2.AddComponent(paperSR2);
             paperSR2.SetSpriteName("buttonLong_blue");
             paperSR2.Scale = new Vector2(1, 2);
-            paperSR2.Layerdepth = 01f;
+            paperSR2.Layerdepth = panelDepth;
             paper2.transform.Position = new Vector2(1350, 760);
             GameWorld.Instance.GameObjects.Add(paper2);
             rectPaper2 = new Rectangle(1350, 760, 190, 100);
@@ -282,7 +287,7 @@ namespace NotAGame.MiniGames
             scissors2.AddComponent(scissorsSR2);
             scissorsSR2.SetSpriteName("buttonLong_blue");
             scissorsSR2.Scale = new Vector2(1, 2);
-            scissorsSR2.Layerdepth = 01f;
+            scissorsSR2.Layerdepth = panelDepth;
             scissors2.transform.Position = new Vector2(1545, 760);
             GameWorld.Instance.GameObjects.Add(scissors2);
             rectScissor2 = new Rectangle(1545, 760, 190, 100);
@@ -292,11 +297,10 @@ namespace NotAGame.MiniGames
             ready.AddComponent(readySR);
             readySR.SetSpriteName("buttonLong_blue");
             readySR.Scale = new Vector2(1, 1);
-            readySR.Layerdepth = 01f;
+            readySR.Layerdepth = panelDepth;
             ready.transform.Position = new Vector2(425, 870);
             GameWorld.Instance.GameObjects.Add(ready);
             rectReady = new Rectangle(425, 870, 190, 100);
-
             #endregion
         }
     }
