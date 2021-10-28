@@ -505,11 +505,7 @@ namespace SpaceRTS
 
         public void UnloadGame(GameObject go)
         {
-
-            if (go.Tag == "Tiles")
-            {
-                gameObjects.Remove(go);
-            }
+            gameObjects.Remove(go);
         }
 
         #region Thread Method

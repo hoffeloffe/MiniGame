@@ -31,11 +31,11 @@ namespace NotAGame
         Lobby lobby;
 
         private bool noHoldDown = false;
+        public static bool startOver = false;
 
         public MiniGamesManager()
         {
             lobby = new Lobby();
-            miniGame = new MiniGameTest();
             sSP = new GameSSP();
 
             currentGame = 0;

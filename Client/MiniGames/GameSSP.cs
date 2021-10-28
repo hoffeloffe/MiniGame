@@ -6,6 +6,7 @@ using SpaceRTS;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace NotAGame.MiniGames
 {
@@ -39,6 +40,9 @@ namespace NotAGame.MiniGames
 
         private float textLayerDepth = 0;
         private float panelDepth = 0f;
+
+        private Thread timerThread;
+        
         #endregion
 
         private Vector2 mousePosition;
@@ -109,6 +113,7 @@ namespace NotAGame.MiniGames
                             choiceAI = "SCISSOR";
                             break;
                     }
+                    timerThread = new Thread(new ThreadStart(Timer));
                 }
             }
             else
@@ -116,8 +121,6 @@ namespace NotAGame.MiniGames
                 Mouse.SetCursor(MouseCursor.Arrow);
             }
             #endregion
-
-
         }
 
         public void DrawText(SpriteBatch spriteBatch)
@@ -202,6 +205,13 @@ namespace NotAGame.MiniGames
                         }
                     }
                 }
+            }
+
+            if (playerReady == true)
+            {
+                spriteBatch.DrawString(GameWorld.smallFont, timer.ToString(), new Vector2(1800, 100), Color.DarkSlateGray);
+                timerThread.IsBackground = true;
+                timerThread.Start();
             }
         }
 
@@ -302,6 +312,23 @@ namespace NotAGame.MiniGames
             GameWorld.Instance.GameObjects.Add(ready);
             rectReady = new Rectangle(425, 870, 190, 100);
             #endregion
+        }
+
+        private int timer = 5;
+
+        public void Timer()
+        {
+            while (timer != 0)
+            {
+                Thread.Sleep(1000);
+                timer -= 1;
+
+                if (timer == 0)
+                {
+                    playerReady = false;
+                    MiniGamesManager.startOver = true;
+                }
+            }
         }
     }
 }
