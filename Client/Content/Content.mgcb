@@ -91,6 +91,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/HandsOut.spritefont
 
+#begin MonsterVoice.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:MonsterVoice.mp3
+
 #begin panel_blue.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -11,6 +11,7 @@ using System.Threading;
 using NotAGame.Command_Pattern;
 using System;
 using NotAGame.MiniGames;
+using Microsoft.Xna.Framework.Media;
 
 namespace SpaceRTS
 {
@@ -95,6 +96,8 @@ namespace SpaceRTS
         private List<string> chatstring = new List<string>();
         public float DeltaTime { get; set; }
 
+        private Song monsterSound;
+
         public GameWorld()
 
         {
@@ -108,12 +111,10 @@ namespace SpaceRTS
         protected override void Initialize()
         {
             gameObjects = new List<GameObject>();
-            lobby = new Lobby();
 
             #region GameObjects - Player, texts, add to gameObjects
 
             gameManager = new MiniGamesManager();
-            lobby = new Lobby();
 
             // #region GameObjects - Player, texts, add to gameObjects
 
@@ -219,6 +220,7 @@ namespace SpaceRTS
             mouseSprite = Content.Load<Texture2D>("cursorGauntlet_grey");
             font = Content.Load<SpriteFont>("Fonts/Arial48");
             smallFont = Content.Load<SpriteFont>("Fonts/Arial24");
+            monsterSound = Content.Load<Song>("MonsterVoice");
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
@@ -238,7 +240,11 @@ namespace SpaceRTS
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
             MiniGamesManager.Instance.Update(gameTime);
-
+            if (true)
+            {
+                MediaPlayer.Play(monsterSound);
+                MediaPlayer.IsRepeating = true;
+            }
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -473,7 +479,6 @@ namespace SpaceRTS
             }
             MiniGamesManager.Instance.DrawNextGame(_spriteBatch);
             MiniGamesManager.Instance.Draw(_spriteBatch);
-
 
             foreach (string message in chatstring)
             {

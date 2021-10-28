@@ -16,8 +16,8 @@ namespace SpaceRTS
 
         public Lobby()
         {
-            //grid = new List<GameObject>();
-            //GameWorld.Instance.Games.AddRange(grid);
+            grid = new List<GameObject>();
+            GameWorld.Instance.Games.AddRange(grid);
         }
 
         public void LobbyMaker()
@@ -37,9 +37,9 @@ namespace SpaceRTS
                     sr.SetSpriteName("Tile");
                     tileObject.transform.Position = new Vector2(x * 65, y * 65);
                     sr.Scale = new Vector2(sr.Sprite.Width, sr.Sprite.Height);
-                    sr.Layerdepth = 02f;
+                    sr.Layerdepth = 01f;
 
-                    GameWorld.Instance.Games.Add(tileObject);
+                    GameWorld.Instance.GameObjects.Add(tileObject);
                     //grid.Add(tileObject);
                 }
             }
