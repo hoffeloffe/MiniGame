@@ -269,29 +269,28 @@ namespace SpaceRTS
                 string Position = serverMsgArray[0];
                 bool foundID = false; //Whether ID from message is in PIL or not
 
-                #region When the first person/message is recieved
-                if (firstPersonConnected == false)
+                #region Check if message is in PIL. If not, create.
+
+                for (int i = 0; i < PIL.Count; i++)
                 {
-                    for (int i = 0; i < PIL.Count; i++)
+                    if (PIL[i][0].Contains(ID)) //Is the client in the PIL?
                     {
-                        if (PIL[i][0].Contains(ID)) //Is the client in the PIL?
-                        {
-                            foundID = true;
-                        }
-                    }
-                    if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
-                    {
-                        Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
-                        PIL.Add(new string[] { ID, Position });
-                        CreateOpponentObj(ID);
-                        firstPersonConnected = true;
-                        //Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
-                    }
-                    else
-                    {
-                        Debug.Write("(I already know player ID " + ID + "!)");
+                        foundID = true;
                     }
                 }
+                if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
+                {
+                    Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
+                    PIL.Add(new string[] { ID, Position });
+                    CreateOpponentObj(ID);
+                    firstPersonConnected = true;
+                    //Debug.Write("NOW PLI: " + playerInfomationList.Count + " Opponents: " + opponents.Count + ")");
+                }
+                else
+                {
+                    Debug.Write("(I already know player ID " + ID + "!)");
+                }
+
                 #endregion
                 
                 if (storedSeverMsg.StartsWith("PO"))
