@@ -17,7 +17,7 @@ namespace SpaceRTS
         public Lobby()
         {
             grid = new List<GameObject>();
-            GameWorld.Instance.Games.AddRange(grid);
+            //GameWorld.Instance.Games.AddRange(grid);
         }
 
         public void LobbyMaker()

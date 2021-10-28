@@ -489,25 +489,6 @@ namespace SpaceRTS
             _spriteBatch.End();
         }
 
-        List<GameObject> games = new List<GameObject>();
-        public List<GameObject> Games 
-        {
-            get
-            {
-                return games;
-            }
-
-            set
-            {
-                games = value;
-            }
-        }
-
-        public void UnloadGame(GameObject go)
-        {
-            gameObjects.Remove(go);
-        }
-
         #region Thread Method
 
         public void ReceiveThread()

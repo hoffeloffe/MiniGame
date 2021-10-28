@@ -26,7 +26,6 @@ namespace NotAGame
         }
         #endregion Singleton
         public int currentGame;
-        MiniGameTest miniGame;
         private static GameSSP sSP;
         Lobby lobby;
 
@@ -63,9 +62,6 @@ namespace NotAGame
             switch (currentGame)
             {
                 case 1:
-                    miniGame.DrawEmil(spriteBatch);
-                    break;
-                case 2:
                     lobby.LobbyMaker();
                     break;
             }

@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace NotAGame.MiniGames
 {
-    class GameSSP
+    public class GameSSP
     {
         #region fields
         private Rectangle rectRock;
@@ -39,8 +39,8 @@ namespace NotAGame.MiniGames
         private Random rnd;
 
         private float textLayerDepth = 0;
-        private float panelDepth = 0f;
-
+        private float panelDepth = 01f;
+        private int timer = 5;
         private Thread timerThread;
         
         #endregion
@@ -49,6 +49,7 @@ namespace NotAGame.MiniGames
         public GameSSP()
         {
             DrawGame();
+            timerThread = new Thread(new ThreadStart(Timer));
         }
 
         public void Update(GameTime gameTime)
@@ -113,7 +114,8 @@ namespace NotAGame.MiniGames
                             choiceAI = "SCISSOR";
                             break;
                     }
-                    timerThread = new Thread(new ThreadStart(Timer));
+                    timerThread.IsBackground = true;
+                    timerThread.Start();
                 }
             }
             else
@@ -210,8 +212,7 @@ namespace NotAGame.MiniGames
             if (playerReady == true)
             {
                 spriteBatch.DrawString(GameWorld.smallFont, timer.ToString(), new Vector2(1800, 100), Color.DarkSlateGray);
-                timerThread.IsBackground = true;
-                timerThread.Start();
+                
             }
         }
 
@@ -314,9 +315,8 @@ namespace NotAGame.MiniGames
             #endregion
         }
 
-        private int timer = 5;
 
-        public void Timer()
+        private void Timer()
         {
             while (timer != 0)
             {
