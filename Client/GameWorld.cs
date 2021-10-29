@@ -42,7 +42,7 @@ namespace SpaceRTS
         public static Texture2D mouseSprite;
         public static SpriteFont font;
         public static SpriteFont smallFont;
-        //private Lobby lobby;
+        private Lobby lobby;
 
         private Random rnd = new Random();
         private Color yourColor;
@@ -63,6 +63,7 @@ namespace SpaceRTS
         public bool playerHaltFrame = false;
         public bool firstPersonConnected = false;
         public bool firstUpdateLoop = false;
+        public bool spaceDown = false;
 
         private List<GameObject> gameObjects;
         public List<GameObject> GameObjects
@@ -123,8 +124,8 @@ namespace SpaceRTS
             #region GameObjects - Player, texts, add to gameObjects
 
             gameManager = new MiniGamesManager();
-            //lobby = new Lobby();
-            //lobby.LobbyMaker();
+            lobby = new Lobby();
+            lobby.LobbyMaker();
 
             // #region GameObjects - Player, texts, add to gameObjects
 
@@ -232,6 +233,9 @@ namespace SpaceRTS
             font = Content.Load<SpriteFont>("Fonts/Arial48");
             smallFont = Content.Load<SpriteFont>("Fonts/Arial24");
             monsterSound = Content.Load<Song>("MonsterVoice");
+            //MediaPlayer.Play(monsterSound);
+            //MediaPlayer.IsRepeating = true;
+
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Start();
@@ -249,18 +253,24 @@ namespace SpaceRTS
             {
                 Exit();
             }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed  || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
             {
-                client.direct = "ME" + "vov";
+                if (spaceDown == false)
+                {
+                    client.direct = "ME" + "vov";
+                    spaceDown = true;
+                }                
             }
+            else
+            {
+                spaceDown = false;
+            }
+
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
             MiniGamesManager.Instance.Update(gameTime);
-            //if (true)
-            //{
-            //    MediaPlayer.Play(monsterSound);
-            //    MediaPlayer.IsRepeating = true;
-            //}
+            
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -299,7 +309,7 @@ namespace SpaceRTS
                 eggSalad.TryDequeue(out queueMsg);
                 //Debug.WriteLine(" Message: " + queueMsg);
 
-                if (queueMsg != null && queueMsg != comparePrevServerMsg) //If this is a different serverMessage from last, use it
+                if (queueMsg != null && queueMsg != comparePrevServerMsg || queueMsg.StartsWith("ME")) //If this is a different serverMessage from last, use it
                 {
                     string storedSeverMsg, serverMsgMod;
                     storedSeverMsg = serverMsgMod = queueMsg;
@@ -341,13 +351,27 @@ namespace SpaceRTS
                     if (storedSeverMsg.StartsWith("PO"))
                     {
                         Debug.Write("(PO)");
-                        UpdatePos(Convert.ToInt32(ID), Position);
+                        UpdatePos(intID, Position);
                     }
                     //Modtagende beskeder.
                     if (storedSeverMsg.StartsWith("ME"))
                     {
                         //chatstring.Add(serverMsgMod);
                         Debug.WriteLine("VOVH!!!!!!!!!!!!!!!");
+                        foreach (var obj in opponents)
+                        {
+                            if (intID == obj.Id)
+                            {
+                                foreach (var InfoID in PIL)
+                                {
+                                    if (intID == Convert.ToInt32(InfoID[0]))
+                                    {
+                                        Opponent oppCp = (Opponent)opponents[intID].GetComponent("Opponent");
+                                        oppCp.PlaySound(false, obj.transform.Position.X);
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     //Send Dine Totale Points til serveren.

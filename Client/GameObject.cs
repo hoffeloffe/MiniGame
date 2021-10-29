@@ -30,6 +30,7 @@ namespace SpaceRTS
         public string Tag { get; set; }
         public int Id { get; set; }
         public Transform transform { get; set; }
+        public GameObject _gameObject { get; set; }
 
         public GameObject()
         {
