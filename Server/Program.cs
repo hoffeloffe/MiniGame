@@ -178,6 +178,7 @@ namespace Server
                     Console.WriteLine(e.ToString());
                 }
             }
+            Console.WriteLine("Error, Server is supposed to stay in its while-loop");
             void ViewReceivedMsg(string m)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;

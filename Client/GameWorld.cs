@@ -42,7 +42,7 @@ namespace SpaceRTS
         public static Texture2D mouseSprite;
         public static SpriteFont font;
         public static SpriteFont smallFont;
-        private Lobby lobby;
+        //private Lobby lobby;
 
         private Random rnd = new Random();
         private Color yourColor;
@@ -123,8 +123,8 @@ namespace SpaceRTS
             #region GameObjects - Player, texts, add to gameObjects
 
             gameManager = new MiniGamesManager();
-            lobby = new Lobby();
-            lobby.LobbyMaker();
+            //lobby = new Lobby();
+            //lobby.LobbyMaker();
 
             // #region GameObjects - Player, texts, add to gameObjects
 
@@ -293,18 +293,18 @@ namespace SpaceRTS
             }
             while (eggSalad.Count != 0)
             {
-                Debug.WriteLine("Queue Count: " + eggSalad.Count);
+                //Debug.Write("Queue Count: " + eggSalad.Count);
                 // Get the first in the Queue 
                 string queueMsg;
                 eggSalad.TryDequeue(out queueMsg);
-                Debug.WriteLine("Queue Message: " + queueMsg);
+                //Debug.WriteLine(" Message: " + queueMsg);
 
                 if (queueMsg != null && queueMsg != comparePrevServerMsg) //If this is a different serverMessage from last, use it
                 {
                     string storedSeverMsg, serverMsgMod;
                     storedSeverMsg = serverMsgMod = queueMsg;
                     #region Create Opponent GameObjects Equal to total opponents (virker med dig selv, men ikke med flere spillere endnu)
-                    Debug.Write("  <");
+                    Debug.Write("  <[" + queueMsg + "] ");
                     serverMsgMod = serverMsgMod.Remove(0, 2); //Remove two first letters
                     string[] serverMsgArray = serverMsgMod.Split("_"); //split id and value from eachother
                     string ID = serverMsgArray[1];
@@ -334,15 +334,14 @@ namespace SpaceRTS
 
                     #endregion
 
+                    if (storedSeverMsg.StartsWith("ID")) //Incoming ID message
+                    {
+                        Debug.Write("(ID//////////////////////////////////////////////////////)");
+                    }
                     if (storedSeverMsg.StartsWith("PO"))
                     {
                         Debug.Write("(PO)");
                         UpdatePos(Convert.ToInt32(ID), Position);
-                    }
-
-                    if (storedSeverMsg.StartsWith("ID")) //Incoming ID message
-                    {
-                        Debug.Write("(ID//////////////////////////////////////////////////////)");
                     }
                     //Modtagende beskeder.
                     if (storedSeverMsg.StartsWith("ME"))
@@ -501,7 +500,7 @@ namespace SpaceRTS
             {
                 //serverMessage = client.ReceiveData();
                 eggSalad.Enqueue(client.ReceiveData());
-                Debug.Write("[" + serverMessage + "] ");
+                //Debug.WriteLine("[" + client.ReceiveData() + "]");
             }
         }
 
@@ -528,6 +527,7 @@ namespace SpaceRTS
                             float XPos = float.Parse(xyVals[0]);
                             float YPos = float.Parse(xyVals[1]);
                             obj.transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
+                            Debug.Write("[Obj " + obj.Id + " to X:" + XPos +" Y:" + YPos + "]");
                         }
                     }
                 }
@@ -584,12 +584,13 @@ namespace SpaceRTS
             //playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
             oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
             oppSpr.hasLabel = true;
-            oppSpr.Layerdepth = 0.5f;
+            //oppSpr.SetSpriteName("Sprites/dog_stand");
+            //oppSpr.Layerdepth = 0f;
             //oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
             oppObj.Awake();
             oppObj.Start();
 
-            Debug.Write("(Creating... " + opponents.Count + " Opponent Objs 1 new.");
+            Debug.Write("(Created Obj w/ id:" + oppObj.Id + ". " + opponents.Count + " in total.");
         }
 #endregion
     }
