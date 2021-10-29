@@ -159,7 +159,7 @@ namespace SpaceRTS
             CpText = new Text();
             goText.AddComponent(cpSprite);
             goText.AddComponent(CpText);
-            CpText.SetText("Arial24", "More text here!", 100, 190, 1f, -0.05f, Color.Black);
+            CpText.SetText("Arial24", "Controls:", 100, 190, 1f, -0.05f, Color.Black);
             gameObjects.Add(goText);
             //--------------
             goText = new GameObject();
@@ -167,7 +167,7 @@ namespace SpaceRTS
             CpText = new Text();
             goText.AddComponent(cpSprite);
             goText.AddComponent(CpText);
-            CpText.SetText("Hands", "Outline test.", 100, 250, 0.5f, 0, Color.White);
+            CpText.SetText("Hands", "Arrow keys: Move", 100, 250, 0.5f, 0, Color.White);
             cpSprite.hasOutline = true;
             cpSprite.Color2 = Color.Black;
             gameObjects.Add(goText);
@@ -177,7 +177,7 @@ namespace SpaceRTS
             CpText = new Text();
             goText.AddComponent(cpSprite);
             goText.AddComponent(CpText);
-            CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
+            CpText.SetText("Hands", "Communicate: Space", 100, 330, 0.5f, 0, Color.White);
             cpSprite.hasShadow = true;
             gameObjects.Add(goText);
             //--------------
@@ -192,14 +192,6 @@ namespace SpaceRTS
             cpSprite.Spin = true;
             gameObjects.Add(goText);
             //--------------
-            goText = new GameObject();
-            cpSprite = new SpriteRenderer();
-            CpText = new Text();
-            goText.AddComponent(cpSprite);
-            goText.AddComponent(CpText);
-            CpText.SetText("Hands", "Shadow test.", 100, 330, 0.5f, 0, Color.White);
-            cpSprite.hasShadow = true;
-            gameObjects.Add(goText);
 
             #endregion Tekst
 
@@ -366,6 +358,7 @@ namespace SpaceRTS
                                 {
                                     if (intID == Convert.ToInt32(InfoID[0]))
                                     {
+                                        Debug.WriteLine("BANANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN!");
                                         Opponent oppCp = (Opponent)opponents[intID].GetComponent("Opponent");
                                         oppCp.PlaySound(false, obj.transform.Position.X);
                                     }

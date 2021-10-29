@@ -45,13 +45,7 @@ namespace Server
                     string returnData = Encoding.ASCII.GetString(receiveBytes); ViewReceivedMsg(returnData); 
                     if (PlayerList.Count > 0)
                     {
-                        foreach (PlayerInfo item in PlayerList)
-                        {
-                            if (item.ip == RemoteIpEndPoint.Address.ToString())
-                            {
-                                item.position = returnData.ToString();
-                            }
-                        }
+
                         if (!PlayerList.Any(playerInfo => playerInfo.ip == RemoteIpEndPoint.Address.ToString()))
                         {
                             idmaker++;
@@ -93,26 +87,29 @@ namespace Server
                         }
                     }
 
-                    if (returnData.ToString().StartsWith("ME"))
+                    else if (returnData.ToString().StartsWith("ME"))
                     {
                         string playerMsg = returnData.ToString();
                         playerMsg = playerMsg.Remove(0, 2);
+                        Byte[] sendBytes1 = Encoding.ASCII.GetBytes("");
                         foreach (PlayerInfo item in PlayerList)
                         {
                             if (item.ip == RemoteIpEndPoint.Address.ToString())
                             {
                                 item.message = playerMsg;
-                            }
-                            Byte[] sendBytes0 = Encoding.ASCII.GetBytes("ME" + item.message + "_" + item.id);
-
-                            for (int i = 0; i < PlayerList.Count; i++)
-                            {
-                                receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, Int32.Parse(PlayerList[i].port)); ViewSentMsg(sendBytes0, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                                sendBytes1 = Encoding.ASCII.GetBytes("ME" + playerMsg + "_" + item.id);
                             }
                         }
+                        
+
+                        for (int i = 0; i < PlayerList.Count; i++)
+                        {
+                            receivingUdpClient.Send(sendBytes1, sendBytes1.Length, PlayerList[i].ip, Int32.Parse(PlayerList[i].port)); ViewSentMsg(sendBytes1, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                        }
+                        
                     }
 
-                    if (returnData.ToString().StartsWith("TP"))
+                    else if (returnData.ToString().StartsWith("TP"))
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
@@ -121,7 +118,7 @@ namespace Server
                             k++;
                         }
                     }
-                    if (returnData.ToString().StartsWith("MP"))
+                    else if (returnData.ToString().StartsWith("MP"))
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
@@ -131,7 +128,7 @@ namespace Server
                         }
                     }
 
-                    if (returnData.ToString().StartsWith("DO"))
+                    else if (returnData.ToString().StartsWith("DO"))
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
@@ -141,7 +138,7 @@ namespace Server
                         }
                     }
 
-                    if (returnData.ToString().StartsWith("FA"))
+                    else if (returnData.ToString().StartsWith("FA"))
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
@@ -150,7 +147,7 @@ namespace Server
                             k++;
                         }
                     }
-                    if (returnData.ToString().StartsWith("US"))
+                    else if (returnData.ToString().StartsWith("US"))
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
@@ -160,7 +157,7 @@ namespace Server
                         }
                     }
 
-                    if (returnData.ToString().StartsWith("CO"))
+                    else if (returnData.ToString().StartsWith("CO"))
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
