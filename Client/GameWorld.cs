@@ -52,7 +52,7 @@ namespace SpaceRTS
         private Player player;
         private string som;
         public List<GameObject> opponents = new List<GameObject>();
-        private ConcurrentQueue<string> eggSalad = new ConcurrentQueue<string>();
+        private ConcurrentQueue<string> ServerRecieveQ = new ConcurrentQueue<string>();
         private int OpponentGOBJCounter = 0;
         public int playerID;
         public int totalPoints = 0;
@@ -292,13 +292,19 @@ namespace SpaceRTS
                 //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 client.direct = "PO" + playerGo.transform.Position;
                 changeInPosition = playerGo.transform.Position;
+                playerMoveFrame = true;
             }
-            while (eggSalad.Count != 0)
+            else if (playerMoveFrame == true)
+            {
+                client.cq.Enqueue("PO" + playerGo.transform.Position);
+                playerMoveFrame = false;
+            }
+            while (ServerRecieveQ.Count != 0)
             {
                 //Debug.Write("Queue Count: " + eggSalad.Count);
                 // Get the first in the Queue 
                 string queueMsg;
-                eggSalad.TryDequeue(out queueMsg);
+                ServerRecieveQ.TryDequeue(out queueMsg);
                 //Debug.WriteLine(" Message: " + queueMsg);
 
                 if (queueMsg != null && queueMsg != comparePrevServerMsg || queueMsg.StartsWith("ME")) //If this is a different serverMessage from last, use it
@@ -516,7 +522,7 @@ namespace SpaceRTS
             while (true)
             {
                 //serverMessage = client.ReceiveData();
-                eggSalad.Enqueue(client.ReceiveData());
+                ServerRecieveQ.Enqueue(client.ReceiveData());
                 //Debug.WriteLine("[" + client.ReceiveData() + "]");
             }
         }
