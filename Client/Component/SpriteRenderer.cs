@@ -12,7 +12,7 @@ namespace NotAGame.Component
         public Texture2D Sprite { get; set; } = GameWorld.Instance.Content.Load<Texture2D>("Sprites/missing");
         public Rectangle Rectangle{ get; set; }
         public Vector2 Origin { get; set; }
-        public Vector2 Scale { get; set; }
+        public Vector2 Scale { get; set; } = new Vector2(1f,1f);
         public Color Color { get; set; } = Color.White;
         public float Layerdepth { get; set; } = 0.5f;
 
