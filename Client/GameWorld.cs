@@ -42,6 +42,7 @@ namespace SpaceRTS
         public static Texture2D mouseSprite;
         public static SpriteFont font;
         public static SpriteFont smallFont;
+        private Lobby lobby;
 
         private Random rnd = new Random();
         private Color yourColor;
@@ -99,8 +100,8 @@ namespace SpaceRTS
         private readonly object sendlock = new object();
         private string comparePrevServerMsg;
         private List<string> chatstring;
-
-        private List<string> chatstring = new List<string>();
+        #endregion
+        //private List<string> chatstring = new List<string>();
         public float DeltaTime { get; set; }
 
         private Song monsterSound;
@@ -122,6 +123,8 @@ namespace SpaceRTS
             #region GameObjects - Player, texts, add to gameObjects
 
             gameManager = new MiniGamesManager();
+            lobby = new Lobby();
+            lobby.LobbyMaker();
 
             // #region GameObjects - Player, texts, add to gameObjects
 
@@ -253,11 +256,11 @@ namespace SpaceRTS
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             InputHandler.Instance.Excute(player);
             MiniGamesManager.Instance.Update(gameTime);
-            if (true)
-            {
-                MediaPlayer.Play(monsterSound);
-                MediaPlayer.IsRepeating = true;
-            }
+            //if (true)
+            //{
+            //    MediaPlayer.Play(monsterSound);
+            //    MediaPlayer.IsRepeating = true;
+            //}
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -581,6 +584,7 @@ namespace SpaceRTS
             //playersId.Add(Convert.ToInt32(playerInfomationList[playerInfomationList.Count - 1][0]));
             oppSpr.Font = Content.Load<SpriteFont>("Fonts/Arial24");
             oppSpr.hasLabel = true;
+            oppSpr.Layerdepth = 0.5f;
             //oppSpr.Text = playerInfomationList[playerInfomationList.Count - 1][0] + " ";
             oppObj.Awake();
             oppObj.Start();

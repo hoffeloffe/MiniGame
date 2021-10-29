@@ -14,8 +14,6 @@ namespace NotAGame
         public UdpClient udpClient = new UdpClient(42068);
 
         private string serverip = "10.131.68.152";
-        public UdpClient udpClient = new UdpClient(19000);
-        private string serverip = "10.131.68.93";
         private int serverPort = 12000;
         public ConcurrentQueue<string> cq = new ConcurrentQueue<string>();
         public string direct;

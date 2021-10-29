@@ -28,7 +28,7 @@ namespace NotAGame.Component
         public bool hasOutline { get; set; } = false;
         public bool hasShadow { get; set; } = false;
         public bool hasLabel { get; set; } = false;
-        private float textLayerDepth = 0f;
+        private float textLayerDepth = 0.1f;
         #endregion
 
         public void SetSpriteName(string spriteName)
@@ -43,7 +43,7 @@ namespace NotAGame.Component
 
             if (hasLabel)//Draw text above a sprite.
             {
-                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 15, GameObject.transform.Position.Y + -40f), Color.White, Rotation, Origin, Scale, SpriteEffects.None, Layerdepth);
+                spriteBatch.DrawString(Font, Text, new Vector2(GameObject.transform.Position.X + 15, GameObject.transform.Position.Y + -40f), Color.White, Rotation, Origin, Scale, SpriteEffects.None, 0.1f);
             }
         }
 

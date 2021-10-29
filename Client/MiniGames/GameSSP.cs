@@ -39,7 +39,7 @@ namespace NotAGame.MiniGames
         private Random rnd;
 
         private float textLayerDepth = 0;
-        private float panelDepth = 01f;
+        private float panelDepth = 0.1f;
         private int timer = 5;
         private Thread timerThread;
         
