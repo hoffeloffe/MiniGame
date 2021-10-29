@@ -109,17 +109,11 @@
 /processorParam:TextureFormat=Color
 /build:panel_blue.png
 
-#begin Sounds/Bark1.wav
+#begin Sounds/Bark.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/Bark1.wav
-
-#begin Sounds/Gabe1.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Sounds/Gabe1.mp3
+/build:Sounds/Bark.wav
 
 #begin Sprites/dog_stand.png
 /importer:TextureImporter
