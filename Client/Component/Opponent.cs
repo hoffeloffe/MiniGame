@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Audio;
+using System.Diagnostics;
 
 namespace NotAGame.Component
 {
@@ -15,11 +16,11 @@ namespace NotAGame.Component
         public SoundEffectInstance _effect;
         public bool Loop { get; set; } = false;
         public bool ID { get; set; }
-        public string SoundPath { get; set; } = "Sounds/Bark1";
+        public string SoundPath { get; set; } = "Sounds/Bark";
 
         public Opponent()
         {
-            _effect = GameWorld.Instance.Content.Load<SoundEffect>("Sounds/Bark1").CreateInstance();
+            _effect = GameWorld.Instance.Content.Load<SoundEffect>("Sounds/Bark").CreateInstance();
         }
         public Opponent(Color color)
         {
@@ -81,8 +82,25 @@ namespace NotAGame.Component
             double val = (random.NextDouble() * (1 - (-1)) + (-1));
             _effect.Pitch = (float)val;
 
-            UpdatePanning(x);
-            _effect.Stop();
+            
+            
+            float percentage = x * 100.0f / GameWorld.Instance.GraphicsDevice.Viewport.Width - 1f;
+            Debug.WriteLine(percentage / 100);
+            Debug.WriteLine(percentage / 100 / -1f);
+            float calculation = 0 + (2 - 0) * percentage / 100 - 1f;
+            if (calculation > 1)
+            {
+                _effect.Pan = 1f;
+            }
+            else if (calculation < -1)
+            {
+                _effect.Pan = -1f;
+            }
+            else
+            {
+                _effect.Pan = calculation;
+            }
+
             _effect.Play();
         }
     }
