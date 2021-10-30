@@ -307,7 +307,7 @@ namespace SpaceRTS
                     string[] serverMsgArray = serverMsgMod.Split("_"); //split id and value from eachother
                     string ID = serverMsgArray[1];
                     int intID = Convert.ToInt32(serverMsgArray[1]);
-                    string Position = serverMsgArray[0];
+                    string MsgAlone = serverMsgArray[0];
                     bool foundID = false; //Whether ID from message is in PIL or not
 
                     #region Check if message ID is in PIL. If not, create Obj and add opponent to PIL.
@@ -322,7 +322,7 @@ namespace SpaceRTS
                     {
                         //0-id 1-position, 2-name, 3-message, 4-color, 5-totalP, 6-miniP, 7-done, 8-failed
                         Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
-                        PIL.Add(new string[] { ID, Position, "NoName", "NoMessage", "noColor", "NoTotalP", "NMiniP", "NoDone", "NoFailed" });
+                        PIL.Add(new string[] { ID, MsgAlone, "NoName", "NoMessage", "noColor", "NoTotalP", "NMiniP", "NoDone", "NoFailed" });
                         CreateOpponentObj(intID);
                         client.cq.Enqueue("US" + name);
                         firstPersonConnected = true;
@@ -341,7 +341,7 @@ namespace SpaceRTS
                     else if (storedSeverMsg.StartsWith("PO"))
                     {
                         Debug.Write("(PO)");
-                        UpdatePos(intID, Position);
+                        UpdatePos(intID, MsgAlone);
                     }
                     //Modtagende beskeder.
                     else if (storedSeverMsg.StartsWith("ME"))
@@ -409,7 +409,7 @@ namespace SpaceRTS
                     //Modtage Username
                     else if (storedSeverMsg.StartsWith("US"))
                     {
-                        UpdateName(intID);
+                        UpdateName(intID, MsgAlone);
                     }
                     //Send Color
                     else if (storedSeverMsg.StartsWith("CO"))
@@ -563,7 +563,7 @@ namespace SpaceRTS
             Debug.WriteLine(srr.Color);
         }
 
-        public void UpdateName(int id)
+        public void UpdateName(int id, string value)
         {
             foreach (var obj in opponents) //go through Objects
             {
@@ -573,7 +573,7 @@ namespace SpaceRTS
                     {
                         if (id == Convert.ToInt32(InfoID[0])) //if message id match in PIL array, update array, update Obj.
                         {
-                            InfoID[2] = name; //update name in PIL
+                            InfoID[2] = value; //update name in PIL
                             SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
                             string cleanString = InfoID[1].ToString(); //position ready to be manipulated
                             srr.Text = PIL[id][2]; // update name from value

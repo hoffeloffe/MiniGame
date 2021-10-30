@@ -83,7 +83,7 @@ namespace Server
                             sendBytes = Encoding.ASCII.GetBytes("PO" + player.position + "_" + player.id);
                             for (int i = 0; i < PlayerList.Count; i++) //send to every player
                             {
-                                Sending(sendBytes, i); ViewSentMsg(sendBytes, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                                Sending(sendBytes, i);
                             }
                         }
                     }
@@ -99,7 +99,7 @@ namespace Server
                         }
                         for (int i = 0; i < PlayerList.Count; i++)
                         {
-                            Sending(sendBytes, i); ViewSentMsg(sendBytes, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                            Sending(sendBytes, i);
                         }
                     }
 
@@ -149,11 +149,10 @@ namespace Server
                             sendBytes = Encoding.ASCII.GetBytes("US" + player.username + "_" + player.id);
                             for (int i = 0; i < PlayerList.Count; i++)
                             {
-                                Sending(sendBytes, i); ViewSentMsg(sendBytes, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                                Sending(sendBytes, i);
                             }
                         }
                     }
-
                     else if (returnData.ToString().StartsWith("CO"))
                     {
                         foreach (PlayerInfo item in PlayerList)
@@ -164,23 +163,24 @@ namespace Server
                             sendBytes = Encoding.ASCII.GetBytes("US" + item.username + "_" + item.id);
                             for (int i = 0; i < PlayerList.Count; i++)
                             {
-                                Sending(sendBytes, i); ViewSentMsg(sendBytes, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                                Sending(sendBytes, i);
                             }
                         }
                     }
 
                     // Sends a message to the host to which you have connected.
                     Console.WriteLine("LOOP END   ------------- " + PlayerList.Count + " " + IPEnd + " " + PortEnd + " ID: " + idmaker);
-                    void Sending(byte[] sendBytes0, int i)
-                    {
-                        receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, PlayerList[i].port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
-                    }
+                    
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                 }
             }
+            void Sending(byte[] sendBytes0, int i)
+                    {
+                        receivingUdpClient.Send(sendBytes0, sendBytes0.Length, PlayerList[i].ip, PlayerList[i].port); ViewSentMsg(sendBytes0, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                    }
             Console.WriteLine("Error, Server is supposed to stay in its while-loop");
             void ViewReceivedMsg(string m)
             {
