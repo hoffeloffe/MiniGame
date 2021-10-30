@@ -280,16 +280,6 @@ namespace SpaceRTS
 
             if (playerGo.transform.Position != changeInPosition) //Send Player position if player has moved.
             {
-                #region Player Position Message Cooldown
-                //if (positionWait > 5) //Sleeptimer
-                //{
-                //    client.cq.Enqueue("PO" + playerGo.transform.Position);
-                //    positionWait = 0;
-                //}
-                //client.cq.Enqueue("PO" + playerGo.transform.Position);
-                #endregion
-
-                //client.cq.Enqueue("PO" + playerGo.transform.Position);
                 client.direct = "PO" + playerGo.transform.Position;
                 changeInPosition = playerGo.transform.Position;
                 playerMoveFrame = true;
@@ -330,9 +320,11 @@ namespace SpaceRTS
                     }
                     if (foundID == false) //if servermessage's ID is not on the PIL list, add it to the list and create new opponent object.
                     {
+                        //0-id 1-position, 2-name, 3-message, 4-color, 5-totalP, 6-miniP, 7-done, 8-failed
                         Debug.Write("(UNKNOWN ID: " + serverMsgArray[1] + ")");
-                        PIL.Add(new string[] { ID, Position });
+                        PIL.Add(new string[] { ID, Position, "NoName", "NoMessage", "noColor", "NoTotalP", "NMiniP", "NoDone", "NoFailed" });
                         CreateOpponentObj(intID);
+                        client.cq.Enqueue("US" + name);
                         firstPersonConnected = true;
                     }
                     else
@@ -346,13 +338,13 @@ namespace SpaceRTS
                     {
                         Debug.Write("(ID//////////////////////////////////////////////////////)");
                     }
-                    if (storedSeverMsg.StartsWith("PO"))
+                    else if (storedSeverMsg.StartsWith("PO"))
                     {
                         Debug.Write("(PO)");
                         UpdatePos(intID, Position);
                     }
                     //Modtagende beskeder.
-                    if (storedSeverMsg.StartsWith("ME"))
+                    else if (storedSeverMsg.StartsWith("ME"))
                     {
                         //chatstring.Add(serverMsgMod);
                         Debug.WriteLine("VOVH!!!!!!!!!!!!!!!");
@@ -364,7 +356,6 @@ namespace SpaceRTS
                                 {
                                     if (intID == Convert.ToInt32(InfoID[0]))
                                     {
-                                        Debug.WriteLine("BANANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN!");
                                         Opponent oppCp = (Opponent)opponents[intID].GetComponent("Opponent");
                                         oppCp.PlaySound(false, obj.transform.Position.X);
                                     }
@@ -374,18 +365,18 @@ namespace SpaceRTS
                     }
 
                     //Send Dine Totale Points til serveren.
-                    if (totalPoints != changeInTotalPoints)
+                    else if (totalPoints != changeInTotalPoints)
                     {
                         client.cq.Enqueue("TP" + totalPoints);
                         changeInTotalPoints = totalPoints;
                     }
 
                     //Modtag Alles Totale Points
-                    if (storedSeverMsg.StartsWith("TP"))
+                    else if (storedSeverMsg.StartsWith("TP"))
                     {
                     }
                     //Send Dine Minigame points til serveren.
-                    if (storedSeverMsg.StartsWith("MP"))
+                    else if (storedSeverMsg.StartsWith("MP"))
                     {
                     }
                     ////Modtage alles Minigame points til serveren.
@@ -395,42 +386,38 @@ namespace SpaceRTS
                     //}
 
                     //Send Done
-                    if (storedSeverMsg.StartsWith("DO"))
+                    else if (storedSeverMsg.StartsWith("DO"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     //Modtage Done
-                    if (serverMsgMod.StartsWith("DO"))
+                    else if (serverMsgMod.StartsWith("DO"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     //Send Fail
-                    if (serverMsgMod.StartsWith("FA"))
+                    else if (serverMsgMod.StartsWith("FA"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     //Modtage Fails
-                    if (serverMsgMod.StartsWith("FA"))
+                    else if (serverMsgMod.StartsWith("FA"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     //Send Username
-                    if (serverMsgMod.StartsWith("US"))
+                    else if (serverMsgMod.StartsWith("US"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                        
                     }
                     //Modtage Username
-                    if (serverMsgMod.StartsWith("US"))
+                    else if (storedSeverMsg.StartsWith("US"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                        UpdateName(intID);
                     }
                     //Send Color
-                    if (serverMsgMod.StartsWith("CO"))
+                    else if (serverMsgMod.StartsWith("CO"))
                     {
                         serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
                     //Modtage Color
-                    if (serverMsgMod.StartsWith("CO"))
+                    else if (serverMsgMod.StartsWith("CO"))
                     {
                         serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
@@ -457,7 +444,7 @@ namespace SpaceRTS
                             oppObj.Start();
                         }
                     }
-                    if (opponents.Count > PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
+                    else if (opponents.Count > PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.
                     {
                         Debug.WriteLine("Oops, somebody somehow disconnected?");
                     }
@@ -532,24 +519,20 @@ namespace SpaceRTS
 
         public void UpdatePos(int id, string value)
         {
-            foreach (var obj in opponents)
+            foreach (var obj in opponents) //go through Objects
             {
-                if (id == obj.Id)
+                if (id == obj.Id) //if message Id match Obj id
                 {
                     foreach (var InfoID in PIL)
                     {
-                        if (id == Convert.ToInt32(InfoID[0]))
+                        if (id == Convert.ToInt32(InfoID[0])) //if message id match in PIL array, update array, update Obj.
                         {
-                            InfoID[1] = value;//update position in ListString
-                            string replacer = InfoID[1].ToString();
-                            string cleanString = replacer.Replace("{X:", "");
-                            cleanString = cleanString.Replace("Y:", "");
-                            cleanString = cleanString.Replace("}", "");
-                            cleanString = cleanString.Replace(".", ",");
-                            string[] xyVals = cleanString.Split(' ');
+                            InfoID[1] = value;//update position in PIL
+                            string cleanString = InfoID[1].ToString(); //position ready to be manipulated
+                            string[] xyVals = cleanString.Replace("{X:", "").Replace("Y:", "").Replace("}", "").Replace(".", ",").Split(' ');
                             float XPos = float.Parse(xyVals[0]);
                             float YPos = float.Parse(xyVals[1]);
-                            obj.transform.Position = new Vector2(XPos, YPos); //update position in opponentslist.
+                            obj.transform.Position = new Vector2(XPos, YPos); //update the Obj position.
                             Debug.Write("[Obj " + obj.Id + " to X:" + XPos +" Y:" + YPos + "]");
                         }
                     }
@@ -583,11 +566,27 @@ namespace SpaceRTS
 
         public void UpdateName(int id)
         {
+            foreach (var obj in opponents) //go through Objects
+            {
+                if (id == obj.Id) //if message Id match Obj id
+                {
+                    foreach (var InfoID in PIL)
+                    {
+                        if (id == Convert.ToInt32(InfoID[0])) //if message id match in PIL array, update array, update Obj.
+                        {
+                            InfoID[2] = name; //update name in PIL
+                            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+                            string cleanString = InfoID[1].ToString(); //position ready to be manipulated
+                            srr.Text = PIL[id][2]; // update name from value
+                        }
+                    }
+                }
+            }
             string som = PIL[id][8].ToString();
-            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
-            srr.Text = PIL[id][0] + " " + PIL[id][7];
+            //SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+            
             //srr.Color = new Color(R, G, B);
-            Debug.WriteLine(srr.Color);
+            //Debug.WriteLine(srr.Color);
         }
 
         public void CreateOpponentObj(int theID)

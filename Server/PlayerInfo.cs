@@ -7,11 +7,11 @@ using System.Text;
 namespace Server
 {
     public class PlayerInfo
-    {
+    {   //0-id 1-position, 2-name, 3-message, 4-color, 5-totalP, 6-miniP, 7-done, 8-failed
         public int id { get; set; }
         public string position { get; set; }
         public string ip { get; set; }
-        public string port { get; set; }
+        public int port { get; set; }
         public string message { get; set; }
         public float totalPoints { get; set; }
         public float minigamePoints { get; set; }
@@ -22,7 +22,7 @@ namespace Server
 
         //, string message, float totalpoints, float minigamePoints, bool done, bool failed, string username, string color
         //i + position + message + totalRPoints + minigamePoints + done + "@" failed + username + color;
-        public PlayerInfo(int id, string ip, string port)
+        public PlayerInfo(int id, string ip, int port)
         {
             this.id = id;
             this.ip = ip;
