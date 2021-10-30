@@ -412,14 +412,13 @@ namespace SpaceRTS
                         UpdateName(intID);
                     }
                     //Send Color
-                    else if (serverMsgMod.StartsWith("CO"))
+                    else if (storedSeverMsg.StartsWith("CO"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
+                        UpdateColor(intID);
                     }
                     //Modtage Color
-                    else if (serverMsgMod.StartsWith("CO"))
+                    else if (storedSeverMsg.StartsWith("CO"))
                     {
-                        serverMsgMod = serverMsgMod.Remove(0, 2);
                     }
 
                     if (opponents.Count < PIL.Count)//er opponents mindre end antallet af array strenge? tilføj ny opponent.

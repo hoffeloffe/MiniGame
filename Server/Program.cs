@@ -158,9 +158,14 @@ namespace Server
                     {
                         foreach (PlayerInfo item in PlayerList)
                         {
-                            Byte[] sendBytes7 = Encoding.ASCII.GetBytes(PlayerList[k].playerColor.ToString() + "_" + PlayerList[k].id);
-                            receivingUdpClient.Send(sendBytes7, sendBytes7.Length, item.ip, item.port); ViewSentMsg(sendBytes7, ConsoleColor.Green, "=> " + item.port + ": ");
-                            k++;
+                            if (item.ip == IPEnd)
+                                item.color = RDNoPrefix;
+
+                            sendBytes = Encoding.ASCII.GetBytes("US" + item.username + "_" + item.id);
+                            for (int i = 0; i < PlayerList.Count; i++)
+                            {
+                                Sending(sendBytes, i); ViewSentMsg(sendBytes, ConsoleColor.Green, "=> " + PlayerList[i].port + ": ");
+                            }
                         }
                     }
 
