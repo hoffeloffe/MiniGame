@@ -325,6 +325,7 @@ namespace SpaceRTS
                         PIL.Add(new string[] { ID, MsgAlone, "NoName", "NoMessage", "noColor", "NoTotalP", "NMiniP", "NoDone", "NoFailed" });
                         CreateOpponentObj(intID);
                         client.cq.Enqueue("US" + name);
+                        client.cq.Enqueue("CO" + yourColor);
                         firstPersonConnected = true;
                     }
                     else
@@ -414,7 +415,7 @@ namespace SpaceRTS
                     //Send Color
                     else if (storedSeverMsg.StartsWith("CO"))
                     {
-                        UpdateColor(intID);
+                        UpdateColor(intID, MsgAlone);
                     }
                     //Modtage Color
                     else if (storedSeverMsg.StartsWith("CO"))
@@ -542,25 +543,28 @@ namespace SpaceRTS
             //Debug.Write("[Obj:" + id + ", id:" + playerInfomationList[id][0] + "]");
         }
 
-        public void UpdateColor(int id)
+        public void UpdateColor(int id, string value)
         {
-            string som = PIL[id][8].ToString();
-            string cleanString = som.Replace("{R:", "");
-            cleanString = cleanString.Replace("G:", "");
-            cleanString = cleanString.Replace("B:", "");
-            cleanString = cleanString.Replace("A:255}", "");
-            cleanString = cleanString.Replace(".", ",");
-            string[] xyVals = cleanString.Split(' ');
-            int R = Convert.ToInt32(xyVals[0]);
-            int G = Convert.ToInt32(xyVals[1]);
-            int B = Convert.ToInt32(xyVals[2]);
-            //string client0Message = som + " anyway, X: " + XPos + ", og Y: " + YPos;
-            //Debug.WriteLine(client0Message);
-            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
-            Color newColor = new Color(R, G, B);
-            srr.Color = newColor;
-            //srr.Color = new Color(R, G, B);
-            Debug.WriteLine(srr.Color);
+            foreach (var obj in opponents) //go through Objects
+            {
+                if (id == obj.Id) //if message Id match Obj id
+                {
+                    foreach (var InfoID in PIL)
+                    {
+                        if (id == Convert.ToInt32(InfoID[0])) //if message id match in PIL array, update array, update Obj.
+                        {
+                            InfoID[4] = value;//update position in PIL
+                            string[] xyVals = value.Replace("{R:", "").Replace("G:", "").Replace("B:", "").Replace("A:255}", "").Replace(".", ",").Split(' ');
+                            int R = Convert.ToInt32(xyVals[0]);
+                            int G = Convert.ToInt32(xyVals[1]);
+                            int B = Convert.ToInt32(xyVals[2]);
+                            SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
+                            Color newColor = new Color(R, G, B);
+                            srr.Color = newColor;                        
+                        }
+                    }
+                }
+            }
         }
 
         public void UpdateName(int id, string value)
@@ -575,7 +579,6 @@ namespace SpaceRTS
                         {
                             InfoID[2] = value; //update name in PIL
                             SpriteRenderer srr = (SpriteRenderer)opponents[id].GetComponent("SpriteRenderer");
-                            string cleanString = InfoID[1].ToString(); //position ready to be manipulated
                             srr.Text = PIL[id][2]; // update name from value
                         }
                     }

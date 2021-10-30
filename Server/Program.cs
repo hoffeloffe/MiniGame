@@ -160,7 +160,7 @@ namespace Server
                             if (item.ip == IPEnd)
                                 item.color = RDNoPrefix;
 
-                            sendBytes = Encoding.ASCII.GetBytes("US" + item.username + "_" + item.id);
+                            sendBytes = Encoding.ASCII.GetBytes("CO" + item.color + "_" + item.id);
                             for (int i = 0; i < PlayerList.Count; i++)
                             {
                                 Sending(sendBytes, i);
